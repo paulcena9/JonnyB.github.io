@@ -1,3 +1,6 @@
+/* ------------------------------------------------------------
+   IMPORT TYPEWRITER FONT
+------------------------------------------------------------ */
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
 
 /* ------------------------------------------------------------
@@ -22,9 +25,7 @@ body {
 }
 
 /* ------------------------------------------------------------
-   ↑ END OF UNCHANGED BRUTALIST CSS ↑ */
-/* ------------------------------------------------------------
-   NEW: FULL-SCREEN CANVAS FOR FRACTALS
+   FULL-SCREEN CANVAS FOR FRACTALS
 ------------------------------------------------------------ */
 #bg-canvas {
   position: fixed;
@@ -35,7 +36,6 @@ body {
   z-index: -1;         /* sit behind all content */
   pointer-events: none; /* mouse passes through */
 }
-
 
 /* ------------------------------------------------------------
    SCROLL PROGRESS BAR
@@ -170,19 +170,17 @@ nav a.in-view {
 }
 
 /* ------------------------------------------------------------
-   SKEWED SECTION (INTRO)
+   INTRO SECTION (STRAIGHT, NO SKEW)
 ------------------------------------------------------------ */
-.skewed-section {
-  transform: skewY(-2deg);
+#intro {
   background: #fafafa;
   border-top: 4px dashed #000;
   border-bottom: 4px dashed #000;
 }
-.skewed-section .intro-grid {
+.intro-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  transform: skewY(2deg);
   margin-top: 2rem;
 }
 .intro-text h2 {
@@ -218,7 +216,7 @@ nav a.in-view {
 }
 
 /* ------------------------------------------------------------
-   WRITINGS SECTION (STAGGERED GRID)
+   WRITINGS SECTION (STAGGERED GRID, STRAIGHT CARDS)
 ------------------------------------------------------------ */
 #writings {
   background: #fff;
@@ -248,7 +246,7 @@ nav a.in-view {
 }
 
 /* ------------------------------------------------------------
-   PROJECTS SECTION (GRID-BORDER & ROTATED CARDS)
+   PROJECTS SECTION (STRAIGHT, NO ROTATION)
 ------------------------------------------------------------ */
 #projects {
   background: #fafafa;
@@ -268,17 +266,14 @@ nav a.in-view {
   padding: 1.5rem;
   transition: transform 0.3s ease-out, background 0.2s ease;
   opacity: 0;
-  transform: translateX(40px) rotate(-2deg);
+  transform: translateY(20px);
 }
 .project-card.in-view {
   opacity: 1;
-  transform: translateX(0) rotate(0deg);
-}
-.project-card:nth-child(even) {
-  transform: translateX(-40px) rotate(2deg);
+  transform: translateY(0);
 }
 .project-card:hover {
-  transform: scale(1.02) rotate(0deg);
+  transform: scale(1.02);
   background: #f2f2f2;
 }
 .project-card h3 {
@@ -335,7 +330,7 @@ footer p.in-view {
 }
 
 /* ------------------------------------------------------------
-   RESPONSIVE TWEAKS
+   RESPONSIVE TWEAKS (unchanged)
 ------------------------------------------------------------ */
 @media (max-width: 768px) {
   .intro-grid {
