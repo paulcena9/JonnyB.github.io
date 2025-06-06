@@ -18,7 +18,7 @@ html {
 }
 body {
   font-family: 'Courier Prime', monospace;
-  background: #fff;
+  background: transparent; 
   color: #000;
   overflow-x: hidden;
   position: relative;
@@ -36,6 +36,7 @@ body {
   z-index: -1;         /* sit behind all content */
   pointer-events: none; /* mouse passes through */
 }
+
 
 /* ------------------------------------------------------------
    SCROLL PROGRESS BAR
@@ -173,7 +174,7 @@ nav a.in-view {
    INTRO SECTION (STRAIGHT, NO SKEW)
 ------------------------------------------------------------ */
 #intro {
-  background: #fafafa;
+    background: transparent; 
   border-top: 4px dashed #000;
   border-bottom: 4px dashed #000;
 }
@@ -219,7 +220,7 @@ nav a.in-view {
    WRITINGS SECTION (STAGGERED GRID, STRAIGHT CARDS)
 ------------------------------------------------------------ */
 #writings {
-  background: #fff;
+background: transparent; 
 }
 .writings-grid {
   display: grid;
@@ -249,7 +250,7 @@ nav a.in-view {
    PROJECTS SECTION (STRAIGHT, NO ROTATION)
 ------------------------------------------------------------ */
 #projects {
-  background: #fafafa;
+    background: transparent; 
 }
 .grid-border {
   border-top: 4px dashed #000;
@@ -285,7 +286,7 @@ nav a.in-view {
    CONTACT SECTION
 ------------------------------------------------------------ */
 #contact {
-  background: #fff;
+    background: transparent; 
 }
 .contact-buttons {
   display: flex;
