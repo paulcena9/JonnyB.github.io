@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jonny Bachman – Portfolio</title>
+
+  <!-- Brutalist CSS + Geometric Evolving & Scroll-Responsive Background -->
+  <style>
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+      height: 100%;
+      width: 100%;
+    }
+    body {
+      font-family: "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      background: #ffffff;
+      color: #000000;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* === Scroll Progress Bar === */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: #000000;
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease-out;
+    }
+
+    /* === Geometric Evolving & Parallax Background === */
+    #bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .shape {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+      opacity: 0.04;
+      will-change: transform;
+    }
+    /* Triangle Layer */
+    .shape1 {
+      width: 220vw;
+      height: 220vh;
+      background: #d0d0d0;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      animation: rotateShape1 80s linear infinite;
+    }
+    @keyframes rotateShape1 {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+      }
+      to {
+        transform: translate(-50%, -50%) rotate(360deg) scale(1);
+      }
+    }
+    /* Rounded Rectangle Layer */
+    .shape2 {
+      width: 200vw;
+      height: 200vh;
+      background: #b0b0b0;
+      border-radius: 20%;
+      animation: rotateShape2 100s linear infinite reverse;
+    }
+    @keyframes rotateShape2 {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+      }
+      to {
+        transform: translate(-50%, -50%) rotate(-360deg) scale(1);
+      }
+    }
+    /* Heptagon Layer */
+    .shape3 {
+      width: 240vw;
+      height: 240vh;
+      background: #f0f0f0;
+      clip-path: polygon(50% 0%, 85% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 15% 20%);
+      animation: rotateShape3 120s linear infinite;
+    }
+    @keyframes rotateShape3 {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+      }
+      50% {
+        transform: translate(-50%, -50%) rotate(180deg) scale(1.03);
+      }
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg) scale(1);
+      }
+    }
+
+    /* Parallax effect based on scroll */
+    .parallax-slow {
+      will-change: transform;
+    }
+    .parallax-medium {
+      will-change: transform;
+    }
+    .parallax-fast {
+      will-change: transform;
+    }
+
+    /* === Container & Layout === */
+    header, section, footer {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 1rem;
+      border-bottom: 6px solid #000;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    header.in-view, section.in-view, footer.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    footer {
+      border: none;
+      padding-bottom: 2rem;
+      text-align: center;
+    }
+
+    h1, h2, h3 {
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    h1.in-view, h2.in-view, h3.in-view {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    h1 {
+      font-size: 3rem;
+    }
+    h2 {
+      font-size: 2.2rem;
+    }
+    h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
+    }
+    p.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* === Navigation === */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    nav a {
+      text-decoration: none;
+      color: #000;
+      font-weight: 600;
+      position: relative;
+      padding: 0.25rem 0;
+      transition: color 0.2s ease;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0%;
+      height: 3px;
+      background: #000;
+      transition: width 0.2s ease;
+    }
+    nav a:hover {
+      color: #fff;
+    }
+    nav a:hover::after {
+      width: 100%;
+      background: #000;
+    }
+
+    /* === Hero / Intro === */
+    #hero {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      min-height: 70vh;
+      position: relative;
+    }
+    #hero p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin-top: 1rem;
+    }
+
+    /* === Intro Section === */
+    #intro ul {
+      list-style-type: disc;
+      margin-left: 1.5rem;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s;
+    }
+    #intro ul.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* === Writings Section === */
+    .writing-entry {
+      border: 4px solid #000;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      transition: background 0.2s ease, transform 0.4s ease-out;
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    .writing-entry.in-view {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .writing-entry:hover {
+      background: #f2f2f2;
+    }
+
+    /* === Projects Section === */
+    .project-card {
+      border: 4px solid #000;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease-out, background 0.2s ease;
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    .project-card.in-view {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .project-card:hover {
+      transform: scale(1.02);
+      background: #f2f2f2;
+    }
+    .project-card h3 {
+      margin-bottom: 0.7rem;
+    }
+    .project-card p {
+      font-size: 0.95rem;
+    }
+
+    /* === Contact Buttons === */
+    .contact-btn {
+      display: inline-block;
+      border: 3px solid #000;
+      padding: 0.6rem 1.2rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      margin-right: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
+    }
+    .contact-btn.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .contact-btn:hover {
+      background: #000;
+      color: #fff;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <!-- Scroll Progress Bar -->
+  <div id="progress-bar"></div>
+
+  <!-- Geometric Evolving & Parallax Background Layers -->
+  <div id="bg">
+    <div class="shape shape1 parallax-slow"></div>
+    <div class="shape shape2 parallax-medium"></div>
+    <div class="shape shape3 parallax-fast"></div>
+  </div>
+
+  <!-- === Header / Hero Section === -->
+  <header id="hero">
+    <nav>
+      <a href="#intro">Intro</a>
+      <a href="#writings">Writings</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <h1>Jonny Bachman</h1>
+    <p>
+      MRI Support Specialist &amp; Computational Neuroscience Enthusiast.<br />
+      Bridging physics, software, and neuroimaging to push research forward.
+    </p>
+  </header>
+
+  <!-- === Intro Section === -->
+  <section id="intro">
+    <h2>General Introduction</h2>
+    <p>
+      I’m Jonny Bachman, currently an MRI Support Specialist at UCSF’s Neuroscape Lab. With a background in physics and computer science, I help maintain and optimize our Siemens Prisma 3T scanner workflow—troubleshooting pulse sequences, refining trigger latencies, and ensuring reliable data acquisition for our research teams.
+    </p>
+    <p>
+      My experience spans:
+    </p>
+    <ul>
+      <li>
+        <strong>MRI Hardware &amp; Software Integration:</strong>
+        Designed microcontroller‐based trigger interfaces, implemented TTL pulse conversion, and configured fiber‐optic synchronization systems for fMRI experiments.
+      </li>
+      <li>
+        <strong>Neuroscience &amp; Machine Learning:</strong>
+        Contributed to computer vision–based Parkinsonian symptom quantification projects; developed Python pipelines for Arctic permafrost analysis and random forest models for geospatial classification.
+      </li>
+      <li>
+        <strong>Full‐Stack Development:</strong>
+        Built Swift-based iPad apps for non‐verbal communication, crafted web scraping tools in Python to analyze used car listings, and prototyped AI dispatch tools for wildland firefighting.
+      </li>
+      <li>
+        <strong>OpenAI &amp; AI Integration:</strong>
+        Integrated large language models into collaborative visualization platforms; designed predictive‐text interfaces for RPM spelling communication.
+      </li>
+    </ul>
+    <p>
+      Outside the lab, I’m passionate about neurophilosophy, exploring questions of consciousness through AI and computational models, and I’m always on the lookout for new ways to blend technology with human well‐being.
+    </p>
+  </section>
+
+  <!-- === Writings Section === -->
+  <section id="writings">
+    <h2>Writings</h2>
+
+    <!-- Placeholder: Writing 1 -->
+    <div class="writing-entry">
+      <h3>Title of Writing 1</h3>
+      <p>
+        Brief description or abstract of Writing 1 goes here. Replace this placeholder text with a summary of your article, blog post, or paper. You can later add a link or “Read more” button.
+      </p>
+      <!-- Example: <a href="link-to-writing-1.pdf" class="contact-btn" target="_blank">Read PDF</a> -->
+    </div>
+
+    <!-- Placeholder: Writing 2 -->
+    <div class="writing-entry">
+      <h3>Title of Writing 2</h3>
+      <p>
+        Brief description or abstract of Writing 2 goes here. Replace this with a summary of your second piece—could be a technical write-up, a philosophical essay, or any other writing.
+      </p>
+      <!-- Example: <a href="link-to-writing-2.html" class="contact-btn" target="_blank">Read Online</a> -->
+    </div>
+
+    <!-- Add more .writing-entry blocks as needed -->
+  </section>
+
+  <!-- === Projects Section === -->
+  <section id="projects">
+    <h2>Projects</h2>
+
+    <!-- Placeholder: Project 1 -->
+    <div class="project-card">
+      <h3>Project One: MRI Trigger Interface</h3>
+      <p>
+        Developed an Arduino-based TTL pulse conversion system to synchronize behavioral tasks with Siemens Prisma triggers. Refined timing accuracy to under 5 ms for fMRI event‐related designs.
+      </p>
+      <!-- Later, replace with a screenshot or photo: -->
+      <!-- <img src="path/to/mri-trigger-screenshot.jpg" alt="MRI Trigger Interface Screenshot"> -->
+      <!-- Example link: <a href="https://github.com/yourusername/mri-trigger" class="contact-btn" target="_blank">View Code</a> -->
+    </div>
+
+    <!-- Placeholder: Project 2 -->
+    <div class="project-card">
+      <h3>Project Two: Permafrost ML Analysis</h3>
+      <p>
+        Created a Python pipeline using random forest classification and drone-based RGB imagery to monitor Arctic tundra polygon changes. Achieved 85 % accuracy in distinguishing high‐centered vs. low‐centered polygons.
+      </p>
+      <!-- Later, add relevant images or graphs: -->
+      <!-- <img src="path/to/permafrost-chart.png" alt="Permafrost Resistivity Profile"> -->
+      <!-- Example link: <a href="https://github.com/yourusername/permafrost-ml" class="contact-btn" target="_blank">Explore Repo</a> -->
+    </div>
+
+    <!-- Placeholder: Project 3 -->
+    <div class="project-card">
+      <h3>Project Three: RPM Predictive Text</h3>
+      <p>
+        Built a SwiftUI-based letterboard that integrates OpenAI’s API for predictive‐text suggestions. Designed for rapid spelling communication (RPM) with customized prefix‐matching and context awareness.
+      </p>
+      <!-- Later, embed a short demo video: -->
+      <!--
+      <div class="video-container">
+        <video controls>
+          <source src="path/to/rpm-demo.mp4" type="video/mp4" />
+        </video>
+      </div>
+      -->
+      <!-- Example link: <a href="https://github.com/yourusername/rpm-predictive-text" class="contact-btn" target="_blank">Source Code</a> -->
+    </div>
+
+    <!-- Add more .project-card blocks as needed -->
+  </section>
+
+  <!-- === Contact Section === -->
+  <section id="contact">
+    <h2>Get in Touch</h2>
+    <p>
+      I’m always open to collaborating on neuroimaging tools, machine learning projects, or philosophical explorations of consciousness. Feel free to reach out via email or LinkedIn below:
+    </p>
+    <a class="contact-btn" href="mailto:jonny.bachman@example.com">Email Me</a>
+    <a class="contact-btn" href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+  </section>
+
+  <!-- === Footer === -->
+  <footer>
+    <p>© 2025 Jonny Bachman. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Scroll Progress Bar + Parallax‐on‐Scroll
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = (scrollTop / scrollHeight) * 100;
+      document.getElementById('progress-bar').style.width = progress + '%';
+  
+      // Parallax layers, each moving at a slightly different rate
+      document.querySelectorAll('.parallax-slow').forEach(el => {
+        el.style.transform = `translate(-50%, -50%) translateY(${scrollTop * 0.02}px) rotate(${scrollTop * 0.01}deg)`;
+      });
+      document.querySelectorAll('.parallax-medium').forEach(el => {
+        el.style.transform = `translate(-50%, -50%) translateY(${scrollTop * 0.04}px) rotate(-${scrollTop * 0.015}deg)`;
+      });
+      document.querySelectorAll('.parallax-fast').forEach(el => {
+        el.style.transform = `translate(-50%, -50%) translateY(${scrollTop * 0.06}px) rotate(${scrollTop * 0.02}deg)`;
+      });
+    });  <!-- closes window.addEventListener('scroll', …) -->
+  
+    // Intersection Observer for fade/slide‐in
+    document.addEventListener('DOMContentLoaded', () => {
+      const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+      };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+          }
+        });
+      }, options);
+  
+      // Observe all the sections, headings, paragraphs, cards, buttons, etc.
+      document.querySelectorAll('header, section, footer').forEach(el => observer.observe(el));
+      document.querySelectorAll('h1, h2, h3').forEach(el => observer.observe(el));
+      document.querySelectorAll('p').forEach(el => observer.observe(el));
+      document.querySelectorAll('#intro ul').forEach(el => observer.observe(el));
+      document.querySelectorAll('.writing-entry').forEach(el => observer.observe(el));
+      document.querySelectorAll('.project-card').forEach(el => observer.observe(el));
+      document.querySelectorAll('.contact-btn').forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
