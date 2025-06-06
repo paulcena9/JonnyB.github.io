@@ -1,8 +1,5 @@
-/* ------------------------------------------------------------
-   IMPORT TYPEWRITER FONT
------------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
 
 /* ------------------------------------------------------------
    RESET & BASE
@@ -26,6 +23,19 @@ body {
 }
 
 /* ------------------------------------------------------------
+   NEW: BACKGROUND CANVAS MUST SIT BEHIND EVERYTHING
+------------------------------------------------------------ */
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;       /* behind all content */
+  pointer-events: none;   /* mouse events “pass through” */
+}
+
+/* ------------------------------------------------------------
    SCROLL PROGRESS BAR
 ------------------------------------------------------------ */
 #progress-bar {
@@ -38,83 +48,6 @@ body {
   z-index: 9999;
   transition: width 0.1s ease-out;
 }
-
-/* ------------------------------------------------------------
-   GEOMETRIC EVOLVING & PARALLAX BACKGROUND
------------------------------------------------------------- */
-#bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: -1;
-  pointer-events: none;
-}
-/* Common for all shapes */
-.shape {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform-origin: center;
-  opacity: 0.04;
-  will-change: transform;
-}
-/* Triangle Layer */
-.shape1 {
-  width: 220vw;
-  height: 220vh;
-  background: #d0d0d0;
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  animation: rotateShape1 80s linear infinite;
-}
-@keyframes rotateShape1 {
-  from { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
-  to   { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
-}
-/* Rounded Rectangle Layer */
-.shape2 {
-  width: 200vw;
-  height: 200vh;
-  background: #b0b0b0;
-  border-radius: 20%;
-  animation: rotateShape2 100s linear infinite reverse;
-}
-@keyframes rotateShape2 {
-  from { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
-  to   { transform: translate(-50%, -50%) rotate(-360deg) scale(1); }
-}
-/* Heptagon Layer */
-.shape3 {
-  width: 240vw;
-  height: 240vh;
-  background: #f0f0f0;
-  clip-path: polygon(50% 0%, 85% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 15% 20%);
-  animation: rotateShape3 120s linear infinite;
-}
-@keyframes rotateShape3 {
-  0%  { transform: translate(-50%, -50%) rotate(0deg)   scale(1); }
-  50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.03); }
-  100%{ transform: translate(-50%, -50%) rotate(360deg) scale(1); }
-}
-/* Extra Circle Layer */
-.shape4 {
-  width: 180vw;
-  height: 180vh;
-  background: #e0e0e0;
-  border-radius: 50%;
-  animation: rotateShape4 90s linear infinite;
-}
-@keyframes rotateShape4 {
-  0%  { transform: translate(-50%, -50%) rotate(0deg)   scale(1); }
-  100%{ transform: translate(-50%, -50%) rotate(360deg) scale(1); }
-}
-
-/* Parallax effect (will be driven by JS) */
-.parallax-slow   { will-change: transform; }
-.parallax-medium { will-change: transform; }
-.parallax-fast   { will-change: transform; }
 
 /* ------------------------------------------------------------
    SECTION CONTAINERS

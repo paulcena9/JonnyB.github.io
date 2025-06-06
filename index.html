@@ -4,26 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jonny Bachman – Portfolio</title>
-  <!-- Link to the external CSS -->
-  <link
-    rel="stylesheet"
-    href="css/style.css"
-  />
+
+  <!-- Link to main Brutalist CSS -->
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- Scroll Progress Bar -->
-  <div id="progress-bar"></div>
+  <!-- 1) FULL-SCREEN CANVAS FOR FRACTAL BLOOMS -->
+  <canvas id="bg-canvas"></canvas>
 
-  <!-- Geometric Evolving & Parallax Background Layers -->
-  <div id="bg">
-    <div class="shape shape1 parallax-slow"></div>
-    <div class="shape shape2 parallax-medium"></div>
-    <div class="shape shape3 parallax-fast"></div>
-    <!-- Extra circle layer for complexity -->
-    <div class="shape shape4 parallax-medium"></div>
-  </div>
-
-  <!-- === Header / Hero Section === -->
+  <!-- 2) YOUR EXISTING CONTENT GOES HERE -->
   <header id="hero" class="section-container">
     <nav>
       <a href="#intro">Intro</a>
@@ -31,12 +20,10 @@
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </nav>
-    <div class="hero-content">
-      <h1>Jonny Bachman</h1>
-      <p class="subtitle">
-        MRI Support Specialist &amp; Computational Neuroscience Enthusiast
-      </p>
-    </div>
+    <h1>Jonny Bachman</h1>
+    <p class="subtitle">
+      MRI Support Specialist &amp; Computational Neuroscience Enthusiast
+    </p>
   </header>
 
   <!-- === Intro Section (Skewed, Two-Column) === -->
