@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
 
 /* ------------------------------------------------------------
@@ -23,7 +22,9 @@ body {
 }
 
 /* ------------------------------------------------------------
-   NEW: BACKGROUND CANVAS MUST SIT BEHIND EVERYTHING
+   ↑ END OF UNCHANGED BRUTALIST CSS ↑ */
+/* ------------------------------------------------------------
+   NEW: FULL-SCREEN CANVAS FOR FRACTALS
 ------------------------------------------------------------ */
 #bg-canvas {
   position: fixed;
@@ -31,9 +32,10 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;       /* behind all content */
-  pointer-events: none;   /* mouse events “pass through” */
+  z-index: -1;         /* sit behind all content */
+  pointer-events: none; /* mouse passes through */
 }
+
 
 /* ------------------------------------------------------------
    SCROLL PROGRESS BAR
