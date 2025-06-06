@@ -1,0 +1,419 @@
+/* ------------------------------------------------------------
+   IMPORT TYPEWRITER FONT
+------------------------------------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+
+/* ------------------------------------------------------------
+   RESET & BASE
+------------------------------------------------------------ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  width: 100%;
+}
+body {
+  font-family: 'Courier Prime', monospace;
+  background: #fff;
+  color: #000;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ------------------------------------------------------------
+   SCROLL PROGRESS BAR
+------------------------------------------------------------ */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: #000;
+  width: 0%;
+  z-index: 9999;
+  transition: width 0.1s ease-out;
+}
+
+/* ------------------------------------------------------------
+   GEOMETRIC EVOLVING & PARALLAX BACKGROUND
+------------------------------------------------------------ */
+#bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+/* Common for all shapes */
+.shape {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+  opacity: 0.04;
+  will-change: transform;
+}
+/* Triangle Layer */
+.shape1 {
+  width: 220vw;
+  height: 220vh;
+  background: #d0d0d0;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  animation: rotateShape1 80s linear infinite;
+}
+@keyframes rotateShape1 {
+  from { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  to   { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+}
+/* Rounded Rectangle Layer */
+.shape2 {
+  width: 200vw;
+  height: 200vh;
+  background: #b0b0b0;
+  border-radius: 20%;
+  animation: rotateShape2 100s linear infinite reverse;
+}
+@keyframes rotateShape2 {
+  from { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  to   { transform: translate(-50%, -50%) rotate(-360deg) scale(1); }
+}
+/* Heptagon Layer */
+.shape3 {
+  width: 240vw;
+  height: 240vh;
+  background: #f0f0f0;
+  clip-path: polygon(50% 0%, 85% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 15% 20%);
+  animation: rotateShape3 120s linear infinite;
+}
+@keyframes rotateShape3 {
+  0%  { transform: translate(-50%, -50%) rotate(0deg)   scale(1); }
+  50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.03); }
+  100%{ transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+}
+/* Extra Circle Layer */
+.shape4 {
+  width: 180vw;
+  height: 180vh;
+  background: #e0e0e0;
+  border-radius: 50%;
+  animation: rotateShape4 90s linear infinite;
+}
+@keyframes rotateShape4 {
+  0%  { transform: translate(-50%, -50%) rotate(0deg)   scale(1); }
+  100%{ transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+}
+
+/* Parallax effect (will be driven by JS) */
+.parallax-slow   { will-change: transform; }
+.parallax-medium { will-change: transform; }
+.parallax-fast   { will-change: transform; }
+
+/* ------------------------------------------------------------
+   SECTION CONTAINERS
+------------------------------------------------------------ */
+.section-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 4rem 1rem;
+  border-bottom: 6px solid #000;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.section-container.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+footer.section-container {
+  border: none;
+  padding-bottom: 2rem;
+  text-align: center;
+}
+
+/* ------------------------------------------------------------
+   HEADINGS & PARAGRAPHS
+------------------------------------------------------------ */
+h1, h2, h3 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+h1.in-view, h2.in-view, h3.in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+h1 { font-size: 3rem; }
+h2 { font-size: 2.2rem; margin-top: 2rem; }
+h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
+}
+p.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ------------------------------------------------------------
+   NAVIGATION (BRUTALIST STYLE)
+------------------------------------------------------------ */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+nav a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+  position: relative;
+  padding: 0.25rem 0;
+  transition: color 0.2s ease;
+}
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 3px;
+  background: #000;
+  transition: width 0.2s ease;
+}
+nav a:hover {
+  color: #fff;
+}
+nav a:hover::after {
+  width: 100%;
+  background: #000;
+}
+nav a.in-view {
+  color: #fff;
+}
+
+/* ------------------------------------------------------------
+   HERO CONTENT
+------------------------------------------------------------ */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 70vh;
+  position: relative;
+}
+.subtitle {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin-top: 1rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s;
+}
+.subtitle.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ------------------------------------------------------------
+   SKEWED SECTION (INTRO)
+------------------------------------------------------------ */
+.skewed-section {
+  transform: skewY(-2deg);
+  background: #fafafa;
+  border-top: 4px dashed #000;
+  border-bottom: 4px dashed #000;
+}
+.skewed-section .intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  transform: skewY(2deg);
+  margin-top: 2rem;
+}
+.intro-text h2 {
+  margin-bottom: 1rem;
+}
+.intro-text p,
+.intro-text ul {
+  margin-bottom: 1rem;
+}
+.intro-text ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out 0.4s, transform 0.6s ease-out 0.4s;
+}
+.intro-text ul.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+.intro-image .placeholder-box {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  border: 4px solid #000;
+  background: repeating-linear-gradient(
+    45deg,
+    #eaeaea,
+    #eaeaea 10px,
+    #f5f5f5 10px,
+    #f5f5f5 20px
+  );
+}
+
+/* ------------------------------------------------------------
+   WRITINGS SECTION (STAGGERED GRID)
+------------------------------------------------------------ */
+#writings {
+  background: #fff;
+}
+.writings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.writing-entry {
+  border: 4px solid #000;
+  padding: 1.5rem;
+  transition: background 0.2s ease, transform 0.4s ease-out;
+  opacity: 0;
+  transform: scale(0.95);
+}
+.writing-entry.in-view {
+  opacity: 1;
+  transform: scale(1);
+}
+.writing-entry:nth-child(odd) {
+  transform: translateY(20px);
+}
+.writing-entry:hover {
+  background: #f2f2f2;
+}
+
+/* ------------------------------------------------------------
+   PROJECTS SECTION (GRID-BORDER & ROTATED CARDS)
+------------------------------------------------------------ */
+#projects {
+  background: #fafafa;
+}
+.grid-border {
+  border-top: 4px dashed #000;
+  border-bottom: 4px dashed #000;
+}
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.project-card {
+  border: 4px solid #000;
+  padding: 1.5rem;
+  transition: transform 0.3s ease-out, background 0.2s ease;
+  opacity: 0;
+  transform: translateX(40px) rotate(-2deg);
+}
+.project-card.in-view {
+  opacity: 1;
+  transform: translateX(0) rotate(0deg);
+}
+.project-card:nth-child(even) {
+  transform: translateX(-40px) rotate(2deg);
+}
+.project-card:hover {
+  transform: scale(1.02) rotate(0deg);
+  background: #f2f2f2;
+}
+.project-card h3 {
+  margin-bottom: 0.7rem;
+  font-size: 1.2rem;
+}
+
+/* ------------------------------------------------------------
+   CONTACT SECTION
+------------------------------------------------------------ */
+#contact {
+  background: #fff;
+}
+.contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.contact-btn {
+  display: inline-block;
+  border: 3px solid #000;
+  padding: 0.6rem 1.2rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
+}
+.contact-btn.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+.contact-btn:hover {
+  background: #000;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* ------------------------------------------------------------
+   FOOTER
+------------------------------------------------------------ */
+footer p {
+  font-size: 0.9rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
+}
+footer p.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ------------------------------------------------------------
+   RESPONSIVE TWEAKS
+------------------------------------------------------------ */
+@media (max-width: 768px) {
+  .intro-grid {
+    grid-template-columns: 1fr;
+  }
+  .intro-image .placeholder-box {
+    display: none;
+  }
+  .project-card {
+    transform: none !important;
+  }
+  .writing-entry:nth-child(odd),
+  .writing-entry:nth-child(even) {
+    transform: none !important;
+  }
+}
