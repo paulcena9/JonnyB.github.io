@@ -4,137 +4,53 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jonny Bachman – Portfolio</title>
-
-  <!-- Link to your brutalist CSS -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- 1) FULL-SCREEN CANVAS FOR FRACTAL BLOOMS -->
+  <!-- fractal blooms canvas -->
   <canvas id="bg-canvas"></canvas>
 
-  <!-- 2) YOUR CONTENT (all sections now “straight”) -->
-  <header id="hero" class="section-container">
-    <nav>
-      <a href="#intro">Intro</a>
-      <a href="#writings">Writings</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <h1>Jonny Bachman</h1>
-    <p class="subtitle">
-      MRI Support Specialist &amp; Computational Neuroscience Enthusiast
-    </p>
-  </header>
+  <!-- all your page content lives in here -->
+  <div class="content-wrapper">
+    <!-- optional scroll-progress bar -->
+    <div id="progress-bar"></div>
 
-  <section id="intro" class="section-container">
-    <div class="intro-grid">
-      <div class="intro-text">
-        <h2>General Introduction</h2>
-        <p>
-          I’m Jonny Bachman, currently an MRI Support Specialist at UCSF’s Neuroscape Lab. With a background in physics and computer science, I help maintain and optimize our Siemens Prisma 3T scanner workflow—troubleshooting pulse sequences, refining trigger latencies, and ensuring reliable data acquisition for our research teams.
-        </p>
-        <p>
-          My experience spans:
-        </p>
-        <ul>
-          <li>
-            <strong>MRI Hardware &amp; Software Integration:</strong>
-            Designed microcontroller-based trigger interfaces, implemented TTL pulse conversion, and configured fiber-optic synchronization systems for fMRI experiments.
-          </li>
-          <li>
-            <strong>Neuroscience &amp; Machine Learning:</strong>
-            Contributed to computer vision–based Parkinsonian symptom quantification projects; developed Python pipelines for Arctic permafrost analysis and random forest models for geospatial classification.
-          </li>
-          <li>
-            <strong>Full-Stack Development:</strong>
-            Built Swift-based iPad apps for non-verbal communication, crafted web-scraping tools in Python to analyze used car listings, and prototyped AI dispatch tools for wildland firefighting.
-          </li>
-          <li>
-            <strong>OpenAI &amp; AI Integration:</strong>
-            Integrated large-language models into collaborative visualization platforms; designed predictive-text interfaces for RPM spelling communication.
-          </li>
-        </ul>
-        <p>
-          Outside the lab, I’m passionate about neurophilosophy, exploring questions of consciousness through AI and computational models, and I’m always on the lookout for new ways to blend technology with human well-being.
-        </p>
-      </div>
-      <div class="intro-image">
-        <!-- Placeholder box or eventual portrait -->
-        <div class="placeholder-box"></div>
-      </div>
-    </div>
-  </section>
+    <header id="hero" class="section-container hero-content">
+      <nav>
+        <a href="#intro">Intro</a>
+        <a href="#writings">Writings</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <h1>Jonny Bachman</h1>
+      <p class="subtitle">
+        MRI Support Specialist &amp; Computational Neuroscience Enthusiast
+      </p>
+    </header>
 
-  <section id="writings" class="section-container">
-    <h2>Writings</h2>
-    <div class="writings-grid">
-      <div class="writing-entry">
-        <h3>Title of Writing 1</h3>
-        <p>
-          Brief description or abstract of Writing 1 goes here. Replace this placeholder text with a summary of your article, blog post, or paper. You can later add a link or “Read more” button.
-        </p>
-      </div>
-      <div class="writing-entry">
-        <h3>Title of Writing 2</h3>
-        <p>
-          Brief description or abstract of Writing 2 goes here. Replace this with a summary of your second piece—could be a technical write-up, a philosophical essay, or any other writing.
-        </p>
-      </div>
-      <div class="writing-entry">
-        <h3>Title of Writing 3</h3>
-        <p>
-          Brief description or abstract of Writing 3 goes here. This third block is staggered below the first two, giving a layered, brutalist feel.
-        </p>
-      </div>
-    </div>
-  </section>
+    <section id="intro" class="section-container">
+      <!-- … your intro markup … -->
+    </section>
 
-  <section id="projects" class="section-container grid-border">
-    <h2>Projects</h2>
-    <div class="projects-grid">
-      <div class="project-card">
-        <h3>Project One: MRI Trigger Interface</h3>
-        <p>
-          Developed an Arduino-based TTL pulse conversion system to synchronize behavioral tasks with Siemens Prisma triggers. Refined timing accuracy to under 5 ms for fMRI event-related designs.
-        </p>
-      </div>
-      <div class="project-card">
-        <h3>Project Two: Permafrost ML Analysis</h3>
-        <p>
-          Created a Python pipeline using random forest classification and drone-based RGB imagery to monitor Arctic tundra polygon changes. Achieved 85 % accuracy in distinguishing high-centered vs. low-centered polygons.
-        </p>
-      </div>
-      <div class="project-card">
-        <h3>Project Three: RPM Predictive Text</h3>
-        <p>
-          Built a SwiftUI-based letterboard that integrates OpenAI’s API for predictive-text suggestions. Designed for rapid spelling communication (RPM) with customized prefix-matching and context awareness.
-        </p>
-      </div>
-      <div class="project-card">
-        <h3>Project Four: Wildfire Dispatch Model</h3>
-        <p>
-          Prototyped a real-time ML model integrating GIS, weather, and fuel data for wildland fire prediction. Designed a brutalist console UI for dispatchers to visualize risk layers.
-        </p>
-      </div>
-    </div>
-  </section>
+    <section id="writings" class="section-container">
+      <!-- … your writings markup … -->
+    </section>
 
-  <section id="contact" class="section-container">
-    <h2>Get in Touch</h2>
-    <p>
-      I’m always open to collaborating on neuroimaging tools, machine learning projects, or philosophical explorations of consciousness. Feel free to reach out via email or LinkedIn below:
-    </p>
-    <div class="contact-buttons">
-      <a class="contact-btn" href="mailto:jonny.bachman@example.com">Email Me</a>
-      <a class="contact-btn" href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
-    </div>
-  </section>
+    <section id="projects" class="section-container">
+      <!-- … your projects markup … -->
+    </section>
 
-  <footer class="section-container">
-    <p>© 2025 Jonny Bachman. All rights reserved.</p>
-  </footer>
+    <section id="contact" class="section-container">
+      <!-- … your contact markup … -->
+    </section>
 
-  <!-- Link to your fractal background JS (unchanged) -->
+    <footer class="section-container">
+      <p>© 2025 Jonny Bachman. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- your existing JS files (parallax, observer, fractal) -->
   <script src="js/fractal-bg.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
