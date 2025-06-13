@@ -33,8 +33,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;           /* sit behind all content */
-  pointer-events: none;  /* mouse passes through */
+  z-index: -999 !important;    /* deeper negative */
+  pointer-events: none;
 }
 
 /* ------------------------------------------------------------
@@ -55,9 +55,9 @@ body {
    SECTION CONTAINERS
 ------------------------------------------------------------ */
 .section-container {
-  position: relative;        /* lift above the canvas */
-  z-index: 1;
-  background-color: #fff;    /* opaque white so fractal doesn’t bleed through */
+  position: relative !important;           /* make sure it’s a stacking context */
+  z-index: 1000 !important;               /* way above the canvas */
+  background-color: #fff !important;      /* opaque white so fractal never shows through */
   max-width: 800px;
   margin: 0 auto;
   padding: 4rem 1rem;
