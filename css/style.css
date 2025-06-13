@@ -348,3 +348,14 @@ footer p.in-view {
     transform: none !important;
   }
 }
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* push it behind all your content */
+  z-index: -1;
+  /* let clicks/hover pass through to your real UI */
+  pointer-events: none;
+}
