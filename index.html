@@ -6,7 +6,7 @@
   <title>Jonathan Bachman – Portfolio</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    /* full-page two-column layout */
+    /* two-column layout */
     body, html {
       margin: 0;
       padding: 0;
@@ -16,23 +16,32 @@
       display: flex;
       height: 100%;
     }
-    /* left side: your content */
     .content-wrapper {
-      flex: 1;                /* takes remaining space */
-      overflow-y: auto;       /* scroll if content is tall */
+      flex: 1;
+      overflow-y: auto;
       position: relative;
       padding: 2rem;
       box-sizing: border-box;
     }
-    /* right side: fractal tree */
     .tree-container {
-      flex: 0 0 40vw;         /* fixed at 40% of viewport width */
+      flex: 0 0 40vw;
       height: 100%;
       position: relative;
-      border-left: 1px solid #ddd; /* optional separator */
-      overflow: hidden;       /* clip the P5 canvas */
+      border-left: 1px solid #ddd;
+      overflow: hidden;
     }
-    /* hide any fallback canvas */
+    /* season selector */
+    .season-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1000;
+      background: rgba(255,255,255,0.8);
+      padding: 0.4rem;
+      border-radius: 4px;
+      font-family: sans-serif;
+    }
+    /* hide fallback canvas */
     #tree-canvas {
       display: none;
     }
@@ -40,7 +49,7 @@
 </head>
 <body>
   <div class="page-container">
-    <!-- left column: page content -->
+    <!-- left column -->
     <div class="content-wrapper">
       <header id="hero" class="section-container hero-content">
         <nav>
@@ -51,7 +60,7 @@
         </nav>
         <h1>Jonny Bachman</h1>
         <p class="subtitle">
-          MRI Support Specialist @ Neuroscape|UCSF &amp; Problem Solver
+          MRI Support Specialist @ Neuroscape | UCSF &amp; Problem Solver
         </p>
       </header>
 
@@ -76,61 +85,139 @@
       </footer>
     </div>
 
-    <!-- right column: will host the P5 sketch -->
+    <!-- right column: P5 sketch + season UI -->
     <div class="tree-container" id="pine-container">
-      <!-- fallback canvas, now hidden -->
+      <div class="season-toggle">
+        <label for="season-select">Season:</label>
+        <select id="season-select">
+          <option value="spring">Spring</option>
+          <option value="summer">Summer</option>
+          <option value="fall">Fall</option>
+          <option value="winter">Winter</option>
+        </select>
+      </div>
       <canvas id="tree-canvas"></canvas>
     </div>
   </div>
 
-  <!-- P5.js & Simplex-Noise -->
+  <!-- p5.js & noise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
-
-  <!-- your other scripts -->
+  <!-- site main -->
   <script src="js/main.js"></script>
 
-  <!-- Breathing Fractal Pine Sketch -->
+  <!-- Breathing Fractal Pine with Seasons -->
   <script>
-    let noiseGen, t = 0;
+    let noiseGen, t = 0, season = 'spring';
+    const flakes = [], leaves = [];
+    const MAX_FLAKES = 200, MAX_LEAVES = 100;
+
+    // hill params
+    const hillYFactor = 0.85, hillAmp = 10, hillStep = 5;
+
+    document.getElementById('season-select')
+      .addEventListener('change', e => {
+        season = e.target.value;
+        // reset particles
+        flakes.length = 0; leaves.length = 0;
+      });
 
     function setup() {
-      // size to the tree-container
       const container = document.getElementById('pine-container');
-      const w = container.clientWidth;
-      const h = container.clientHeight;
+      const w = container.clientWidth, h = container.clientHeight;
       const cnv = createCanvas(w, h);
       cnv.parent('pine-container');
-
       noiseGen = new SimplexNoise();
       strokeCap(ROUND);
     }
 
     function windowResized() {
-      const container = document.getElementById('pine-container');
-      resizeCanvas(container.clientWidth, container.clientHeight);
+      const c = document.getElementById('pine-container');
+      resizeCanvas(c.clientWidth, c.clientHeight);
     }
 
     function draw() {
-      t += deltaTime * 0.001;  // seconds
+      t += deltaTime * 0.001;
+      clear();
 
-      // sky background
-      background(200, 225, 255);
+      // background by season
+      if (season === 'summer') drawSunset();
+      else background(200, 225, 255);
 
-      // hill
+      // hill (winter: snow-white)
+      if (season === 'winter') fill(240);
+      else fill(80, 170, 70);
       noStroke();
-      fill(80, 170, 70);
       beginShape();
       vertex(0, height);
-      for (let x = 0; x <= width; x += 10) {
-        const y = height * 0.75 + sin((x * 0.01) + t * 0.5) * 20;
-        vertex(x, y);
+      for (let x = 0; x <= width; x += hillStep) {
+        vertex(x, getHillY(x));
       }
       vertex(width, height);
       endShape(CLOSE);
 
-      // single pine
-      drawPine(width * 0.5, height * 0.75, height * 0.35, 6);
+      // particles
+      if (season === 'winter')   updateSnow();
+      else if (season === 'fall') updateLeaves();
+
+      // tree anchored to hill
+      const treeX = width * 0.5, treeY = getHillY(treeX);
+      drawPine(treeX, treeY, height * 0.3, 7);
+    }
+
+    function getHillY(x) {
+      return height * hillYFactor + sin((x*0.01)+t*0.5)*hillAmp;
+    }
+
+    function drawSunset() {
+      // simple gradient sky
+      for (let y = 0; y < height; y++) {
+        const inter = constrain(y/(height*0.6),0,1);
+        const c = lerpColor(color(255,94,77), color(255,212,128), inter);
+        stroke(c); line(0,y,width,y);
+      }
+    }
+
+    function updateSnow() {
+      // add flakes
+      if (flakes.length < MAX_FLAKES) {
+        flakes.push({ x: random(width), y: -10, size: random(2,6), speed: random(20,60) });
+      }
+      fill(255);
+      noStroke();
+      // draw & fall
+      for (let i = flakes.length -1; i >= 0; i--) {
+        const f = flakes[i];
+        f.y += f.speed * deltaTime * 0.001;
+        ellipse(f.x, f.y, f.size);
+        if (f.y > height) flakes.splice(i,1);
+      }
+    }
+
+    function updateLeaves() {
+      if (leaves.length < MAX_LEAVES) {
+        leaves.push({
+          x: random(width), y: -10,
+          size: random(8,16), 
+          speed: random(30,80),
+          angle: random(TWO_PI),
+          spin: random(-0.03,0.03),
+          col: color(200, random(100,50), 0)
+        });
+      }
+      noStroke();
+      // draw & fall
+      for (let i = leaves.length -1; i >= 0; i--) {
+        const L = leaves[i];
+        L.y += L.speed * deltaTime * 0.001;
+        L.x += cos(L.angle)*20*deltaTime*0.001;
+        L.angle += L.spin;
+        fill(L.col);
+        push(); translate(L.x,L.y); rotate(L.angle);
+        ellipse(0,0, L.size*0.6, L.size);
+        pop();
+        if (L.y > height) leaves.splice(i,1);
+      }
     }
 
     function drawPine(x, y, len, depth) {
@@ -138,30 +225,31 @@
       translate(x, y);
       // trunk
       stroke(80, 40, 20);
-      strokeWeight(map(depth, 0, 6, 2, 20));
+      strokeWeight(map(depth, 0, 7, 2, 24));
       line(0, 0, 0, -len);
       translate(0, -len);
 
       if (depth > 0) {
-        const baseAngle = PI / 8;
-        const sway = noiseGen.noise2D(depth, t * 0.5) * 0.3;
-        drawPine(0, 0, len * 0.7, depth - 1);
+        const baseAngle = PI/8;
+        const sway = noiseGen.noise2D(depth, t*0.3)*0.15;
+        drawPine(0,0,len*0.7,depth-1);
         rotate(-baseAngle + sway);
-        drawPine(0, 0, len * 0.7, depth - 1);
-        rotate(2 * (baseAngle - sway));
-        drawPine(0, 0, len * 0.7, depth - 1);
+        drawPine(0,0,len*0.7,depth-1);
+        rotate(2*(baseAngle - sway));
+        drawPine(0,0,len*0.7,depth-1);
       } else {
         // needles
-        const fanCount = 6;
-        const pulse    = map(noiseGen.noise2D(t, x * 0.001), -1, 1, -5, 5);
-        const size     = len * 0.5 + pulse;
-        for (let i = -fanCount; i <= fanCount; i++) {
-          const ang = map(i, -fanCount, fanCount, -PI / 3, PI / 3);
-          push();
-          rotate(ang);
-          strokeWeight(2);
-          stroke(30, 100, 30, 200);
-          line(0, 0, 0, -size);
+        const fanCount = 8;
+        const pulse = map(noiseGen.noise2D(t, x*0.001), -1,1, -2,2);
+        const size = len*0.5 + pulse;
+        for (let i=-fanCount; i<=fanCount; i++) {
+          const ang = map(i,-fanCount,fanCount,-PI/2,PI/2)*0.6;
+          push(); rotate(ang);
+          strokeWeight(1.5);
+          // winter needles white
+          if (season==='winter') stroke(255);
+          else stroke(30,100,30,200);
+          line(0,0,0,-size);
           pop();
         }
       }
