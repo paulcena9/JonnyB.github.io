@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Jonathan Bachman – Portfolio</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
@@ -30,11 +30,11 @@
       height: 100%;
       position: relative;
       border-left: 1px solid #ddd; /* optional separator */
+      overflow: hidden;       /* clip the P5 canvas */
     }
+    /* hide any fallback canvas */
     #tree-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
+      display: none;
     }
   </style>
 </head>
@@ -51,7 +51,7 @@
         </nav>
         <h1>Jonny Bachman</h1>
         <p class="subtitle">
-          MRI Support Specialist @ Neuroscape | UCSF &amp; Guy Who Enjoys Solving Problems
+          MRI Support Specialist @ Neuroscape|UCSF &amp; Problem Solver
         </p>
       </header>
 
@@ -76,19 +76,97 @@
       </footer>
     </div>
 
-    <!-- right column: fractal tree -->
-    <div class="tree-container">
+    <!-- right column: will host the P5 sketch -->
+    <div class="tree-container" id="pine-container">
+      <!-- fallback canvas, now hidden -->
       <canvas id="tree-canvas"></canvas>
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js" defer></script>
-  <!-- chroma for color scales -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js" defer></script>
-  <!-- GSAP for tweaking animations -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js" defer></script>
-  <!-- your enhanced fractal tree -->
-  <script src="js/fractal-tree.js" defer></script>
+  <!-- P5.js & Simplex-Noise -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+
+  <!-- your other scripts -->
   <script src="js/main.js"></script>
+
+  <!-- Breathing Fractal Pine Sketch -->
+  <script>
+    let noiseGen, t = 0;
+
+    function setup() {
+      // size to the tree-container
+      const container = document.getElementById('pine-container');
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      const cnv = createCanvas(w, h);
+      cnv.parent('pine-container');
+
+      noiseGen = new SimplexNoise();
+      strokeCap(ROUND);
+    }
+
+    function windowResized() {
+      const container = document.getElementById('pine-container');
+      resizeCanvas(container.clientWidth, container.clientHeight);
+    }
+
+    function draw() {
+      t += deltaTime * 0.001;  // seconds
+
+      // sky background
+      background(200, 225, 255);
+
+      // hill
+      noStroke();
+      fill(80, 170, 70);
+      beginShape();
+      vertex(0, height);
+      for (let x = 0; x <= width; x += 10) {
+        const y = height * 0.75 + sin((x * 0.01) + t * 0.5) * 20;
+        vertex(x, y);
+      }
+      vertex(width, height);
+      endShape(CLOSE);
+
+      // single pine
+      drawPine(width * 0.5, height * 0.75, height * 0.35, 6);
+    }
+
+    function drawPine(x, y, len, depth) {
+      push();
+      translate(x, y);
+      // trunk
+      stroke(80, 40, 20);
+      strokeWeight(map(depth, 0, 6, 2, 20));
+      line(0, 0, 0, -len);
+      translate(0, -len);
+
+      if (depth > 0) {
+        const baseAngle = PI / 8;
+        const sway = noiseGen.noise2D(depth, t * 0.5) * 0.3;
+        drawPine(0, 0, len * 0.7, depth - 1);
+        rotate(-baseAngle + sway);
+        drawPine(0, 0, len * 0.7, depth - 1);
+        rotate(2 * (baseAngle - sway));
+        drawPine(0, 0, len * 0.7, depth - 1);
+      } else {
+        // needles
+        const fanCount = 6;
+        const pulse    = map(noiseGen.noise2D(t, x * 0.001), -1, 1, -5, 5);
+        const size     = len * 0.5 + pulse;
+        for (let i = -fanCount; i <= fanCount; i++) {
+          const ang = map(i, -fanCount, fanCount, -PI / 3, PI / 3);
+          push();
+          rotate(ang);
+          strokeWeight(2);
+          stroke(30, 100, 30, 200);
+          line(0, 0, 0, -size);
+          pop();
+        }
+      }
+      pop();
+    }
+  </script>
 </body>
 </html>
