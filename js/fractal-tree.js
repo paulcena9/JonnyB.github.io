@@ -1,100 +1,101 @@
 // js/fractal-tree.js
 window.addEventListener('DOMContentLoaded', () => {
+  // —————————————————————————————————————————————
+  // 0) SETUP + OFFSCREEN TRUNK CACHE
+  // —————————————————————————————————————————————
   const canvas = document.getElementById('tree-canvas');
   const ctx    = canvas.getContext('2d');
-  let   t      = 0;
+  const noise  = new SimplexNoise();
+  let width, height, midX, baseY, trunkLen;
 
-  // 1) Resize to container
-  function resize() {
-    canvas.width  = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
+  // offscreen canvas for static trunk
+  const off = document.createElement('canvas');
+  const offCtx = off.getContext('2d');
+
+  function init() {
+    // match sizes
+    width  = canvas.clientWidth;
+    height = canvas.clientHeight;
+    canvas.width  = width;
+    canvas.height = height;
+    off.width  = width;
+    off.height = height;
+
+    midX     = width / 2;
+    baseY    = height - 2;
+    trunkLen = height * 0.5;   // 50% height
+
+    // draw one fat trunk with a gradient
+    offCtx.clearRect(0, 0, width, height);
+    const g = offCtx.createLinearGradient(midX, baseY, midX, baseY - trunkLen);
+    g.addColorStop(0, '#4b2e11');
+    g.addColorStop(1, '#8b4513');
+    offCtx.strokeStyle = g;
+    offCtx.lineWidth = 16;
+    offCtx.beginPath();
+    offCtx.moveTo(midX, baseY);
+    offCtx.lineTo(midX, baseY - trunkLen);
+    offCtx.stroke();
   }
-  window.addEventListener('resize', resize);
-  resize();
+  window.addEventListener('resize', init);
+  init();
 
   console.log('🔧 fractal-tree.js loaded');
 
-  // 2) Recursive branch + leaf logic (same as before)
-  function drawBranch(x, y, len, angle, depth) {
-    if (depth < 0) return;
+  // —————————————————————————————————————————————
+  // 1) LEAF-DRAWING (NOISE + RECURSION + GLOW)
+  // —————————————————————————————————————————————
+  function drawLeaf(x, y, len, angle, depth, hue) {
+    if (depth < 0 || len < 2) return;
     ctx.save();
     ctx.translate(x, y);
-    ctx.rotate(angle * Math.PI/180);
+    ctx.rotate(angle);
 
-    // trunk gradient
-    const grad = ctx.createLinearGradient(0, 0, 0, -len);
-    grad.addColorStop(0, '#4b2e11');
-    grad.addColorStop(1, '#8b4513');
-    ctx.strokeStyle = grad;
-    ctx.lineWidth   = depth * 1.8;
+    // glowing leaf stroke
+    ctx.strokeStyle = `hsl(${hue}, 60%, 50%)`;
+    ctx.lineWidth   = depth + 1;
+    ctx.shadowColor = `hsla(${hue}, 60%, 70%, 0.6)`;
+    ctx.shadowBlur  = 4;
+
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(0, -len);
     ctx.stroke();
-
-    ctx.translate(0, -len);
-    if (depth > 0) {
-      const sway = Math.sin(t + depth) * 15;
-      const spread = 20 + sway;
-      const nextLen = len * 0.75;
-      drawBranch(0, 0, nextLen, -spread, depth - 1);
-      drawBranch(0, 0, nextLen,  spread, depth - 1);
-    } else {
-      drawLeaves(0, 0);
-    }
     ctx.restore();
+
+    // two smaller sub-leaves
+    const nx = x + Math.cos(angle) * len;
+    const ny = y + Math.sin(angle) * len * -1; // canvas Y downwards
+
+    const nlen = len * 0.6;
+    const sway = noise.noise2D(t + depth, depth) * 0.4; // ±0.4 rad
+    drawLeaf(nx, ny, nlen, angle - 0.6 + sway, depth - 1, hue);
+    drawLeaf(nx, ny, nlen, angle + 0.6 + sway, depth - 1, hue);
   }
 
-  function drawLeaves(x, y) {
-    const count    = 8;
-    const baseSize = 12 + Math.sin(t * 3) * 4;
-    for (let i = 0; i < count; i++) {
-      const ang = (360 / count) * i + (Math.random() * 20 - 10);
-      const hue = 120 + Math.random() * 40;  // green-yellow
-      drawLeafFractal(x, y, baseSize, ang, 3, `hsl(${hue}, 70%, 50%)`);
-    }
-  }
+  // —————————————————————————————————————————————
+  // 2) MAIN LOOP (ONLY LEAVES EACH FRAME)
+  // —————————————————————————————————————————————
+  let t = 0;
+  function render(now) {
+    t = now * 0.001; // seconds
 
-  function drawLeafFractal(x, y, len, angle, depth, color) {
-    if (depth === 0 || len < 2) return;
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle * Math.PI/180);
-    ctx.strokeStyle = color;
-    ctx.lineWidth   = depth;
-    ctx.filter      = 'blur(1px)';
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, -len);
-    ctx.stroke();
-    ctx.filter = 'none';
-    ctx.translate(0, -len);
-    const next = len * 0.6;
-    drawLeafFractal(0, 0, next, -25 + Math.random()*10, depth-1, color);
-    drawLeafFractal(0, 0, next,  25 + Math.random()*10, depth-1, color);
-    ctx.restore();
-  }
+    // clear and copy trunk
+    ctx.clearRect(0, 0, width, height);
+    ctx.drawImage(off, 0, 0);
 
-  // 3) Animation & clipping
-  function render(timeMs) {
-    t = timeMs * 0.001;
+    // compute dynamic leaf parameters
+    const pulse    = noise.noise2D(t, t * 0.5) * 5;        // ±5px
+    const baseSize = trunkLen * 0.15 + pulse;             // ~75px ±
+    const hueShift = (noise.noise2D(t * 1.2, t * 0.7) +1)/2 * 40 + 100;
 
-    // clear & clip
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, 0, canvas.width, canvas.height);
-    ctx.clip();
+    // bloom a radial fan of 5 leaves at the top
+    const angles = [-1.2, -0.6, 0, 0.6, 1.2]; // in radians
+    angles.forEach(a => {
+      drawLeaf(midX, baseY - trunkLen, baseSize, a, 3, hueShift);
+    });
 
-    // center trunk at 50% width, bottom of canvas
-    const sx = canvas.width  * 0.5;
-    const sy = canvas.height;
-    const trunkLen = canvas.height * 0.3;
-    drawBranch(sx, sy, trunkLen, 0, 9);
-
-    ctx.restore();
     requestAnimationFrame(render);
   }
-
   requestAnimationFrame(render);
 });
