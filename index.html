@@ -208,7 +208,7 @@
       line(0,0,0,-len);
       translate(0,-len);
       if (depth>0) {
-        const baseA=PI/8, sway=noiseGen.noise2D(depth,t*0.3)*0.15;
+        const baseA=PI/8, sway=noiseGen.noise2D(depth,t*0.1)*0.15;
         drawPine(0,0,len*0.7,depth-1);
         rotate(-baseA+sway);
         drawPine(0,0,len*0.7,depth-1);
