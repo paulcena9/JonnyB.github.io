@@ -5,52 +5,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jonny Bachman – Portfolio</title>
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* full-page two-column layout */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    .page-container {
+      display: flex;
+      height: 100%;
+    }
+    /* left side: your content */
+    .content-wrapper {
+      flex: 1;                /* takes remaining space */
+      overflow-y: auto;       /* scroll if content is tall */
+      position: relative;
+      padding: 2rem;
+      box-sizing: border-box;
+    }
+    /* right side: fractal tree */
+    .tree-container {
+      flex: 0 0 40vw;         /* fixed at 40% of viewport width */
+      height: 100%;
+      position: relative;
+      border-left: 1px solid #ddd; /* optional separator */
+    }
+    #tree-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
 </head>
 <body>
-  <!-- fractal blooms canvas -->
-  <canvas id="bg-canvas"></canvas>
+  <div class="page-container">
+    <!-- left column: page content -->
+    <div class="content-wrapper">
+      <header id="hero" class="section-container hero-content">
+        <nav>
+          <a href="#intro">Intro</a>
+          <a href="#writings">Writings</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <h1>Jonny Bachman</h1>
+        <p class="subtitle">
+          MRI Support Specialist &amp; Computational Neuroscience Enthusiast
+        </p>
+      </header>
 
-  <!-- all your page content lives in here -->
-  <div class="content-wrapper">
-    <!-- optional scroll-progress bar -->
-    <div id="progress-bar"></div>
+      <section id="intro" class="section-container">
+        <!-- … your intro markup … -->
+      </section>
 
-    <header id="hero" class="section-container hero-content">
-      <nav>
-        <a href="#intro">Intro</a>
-        <a href="#writings">Writings</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <h1>Jonny Bachman</h1>
-      <p class="subtitle">
-        MRI Support Specialist &amp; Computational Neuroscience Enthusiast
-      </p>
-    </header>
+      <section id="writings" class="section-container">
+        <!-- … your writings markup … -->
+      </section>
 
-    <section id="intro" class="section-container">
-      <!-- … your intro markup … -->
-    </section>
+      <section id="projects" class="section-container">
+        <!-- … your projects markup … -->
+      </section>
 
-    <section id="writings" class="section-container">
-      <!-- … your writings markup … -->
-    </section>
+      <section id="contact" class="section-container">
+        <!-- … your contact markup … -->
+      </section>
 
-    <section id="projects" class="section-container">
-      <!-- … your projects markup … -->
-    </section>
+      <footer class="section-container">
+        <p>© 2025 Jonny Bachman. All rights reserved.</p>
+      </footer>
+    </div>
 
-    <section id="contact" class="section-container">
-      <!-- … your contact markup … -->
-    </section>
-
-    <footer class="section-container">
-      <p>© 2025 Jonny Bachman. All rights reserved.</p>
-    </footer>
+    <!-- right column: fractal tree -->
+    <div class="tree-container">
+      <canvas id="tree-canvas"></canvas>
+    </div>
   </div>
 
-  <!-- your existing JS files (parallax, observer, fractal) -->
-  <script src="js/fractal-bg.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js" defer></script>
+<!-- chroma for color scales -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js" defer></script>
+<!-- GSAP for tweaking animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js" defer></script>
+<!-- your enhanced fractal tree -->
+<script src="js/fractal-tree.js" defer></script>
   <script src="js/main.js"></script>
 </body>
 </html>
