@@ -7,18 +7,22 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // configuration
   const SECTION_IDS         = ['intro','writings','projects','contact'];
-  const MAX_SKELETON_DEPTH  = 8;        // super-complex trunk
+  const MAX_SKELETON_DEPTH  = 4;        // super-complex trunk
   const SKELETON_SPREAD     = 25;       // branch angle base
-  const LEAF_DEPTH          = 2;        // recursive leaf depth
+  const LEAF_DEPTH          = 8;        // recursive leaf depth
   const FAN_ANGLES          = [-0.8, 0, 0.8]; // leaf-fan spread (rad)
   const BREATHE_SPEED       = 1.5;      // leaf pulsing speed
   const FRAME_INTERVAL      = 1000 / 30; // cap ~30fps
+
+
 
   // state
   const trees            = [];        // array of {off,offCtx,midX,depth,tipPoints}
   const seenSections     = new Set(); // to avoid dup trees
   let   lastFrameTime    = 0;
   let   t                 = 0;
+
+  
 
   // ——————————————————————————————————————————————————
   // 1) CANVAS/RESIZE SETUP
@@ -41,31 +45,52 @@ window.addEventListener('DOMContentLoaded', () => {
   // 2) BUILD A TREE’S OFFSCREEN SKELETON & RECORD TIPS
   // ——————————————————————————————————————————————————
   function buildSkeleton(tree) {
-    const { offCtx, midX, depth } = tree;
-    tree.tipPoints = [];
-    offCtx.clearRect(0, 0, width, height);
-    offCtx.strokeStyle = '#4b2e11';
+  const { offCtx, midX, depth } = tree;
+  tree.tipPoints = [];
+  // clear the offscreen canvas
+  offCtx.clearRect(0, 0, width, height);
+
+  // recursive draw function
+  (function drawNode(x, y, len, angle, d) {
+    // if we’ve recursed past the desired depth, record the tip and stop
+    if (d > depth) {
+      tree.tipPoints.push({ x, y });
+      return;
+    }
+
+    // compute the end point of this branch segment
+    const rad = (angle * Math.PI) / 180;
+    const x2  = x + Math.cos(rad) * len;
+    const y2  = y - Math.sin(rad) * len;
+
+    // 1) draw a slightly thicker, lighter border
+    offCtx.beginPath();
+    offCtx.moveTo(x, y);
+    offCtx.lineTo(x2, y2);
+    offCtx.strokeStyle = '#3a2a1a';  // dark‐brown/gray outline
+    offCtx.lineWidth   = 14;         // 2px thicker than the inner
+    offCtx.stroke();
+
+    // 2) draw the normal branch on top
+    offCtx.beginPath();
+    offCtx.moveTo(x, y);
+    offCtx.lineTo(x2, y2);
+    offCtx.strokeStyle = '#4b2e11';  // your original branch color
     offCtx.lineWidth   = 12;
+    offCtx.stroke();
 
-    (function drawNode(x, y, len, angle, d) {
-      if (d > depth) {
-        tree.tipPoints.push({ x, y });
-        return;
-      }
-      const rad = (angle * Math.PI) / 180;
-      const x2  = x + Math.cos(rad) * len;
-      const y2  = y - Math.sin(rad) * len;
-
-      offCtx.beginPath();
-      offCtx.moveTo(x, y);
-      offCtx.lineTo(x2, y2);
-      offCtx.stroke();
-
-      const nextLen = len * 0.7;
-      const spread  = SKELETON_SPREAD + (Math.random() * 10 - 5);
-      drawNode(x2, y2, nextLen, angle - spread, d + 1);
-      drawNode(x2, y2, nextLen, angle + spread, d + 1);
-    })(tree.midX, baseY, trunkLen, 90, 0);
+    // recurse: two child branches
+    const nextLen = len * 0.7;
+    const spread  = SKELETON_SPREAD + (Math.random() * 10 - 5);
+    drawNode(x2, y2, nextLen, angle - spread, d + 1);
+    drawNode(x2, y2, nextLen, angle + spread, d + 1);
+  })(
+    tree.midX,   // start x
+    baseY,       // start y (bottom of canvas)
+    trunkLen,    // initial branch length
+    90,          // angle = up
+    0            // start depth
+  );
   }
 
   function addTree() {

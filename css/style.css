@@ -270,9 +270,23 @@ nav a.in-view {
   transform: scale(1.05);
 }
 
-/* ------------------------------------------------------------
-   RESPONSIVE TWEAKS
------------------------------------------------------------- */
 @media (max-width: 768px) {
-  .intro-grid { grid-template-columns: 1fr; }
+  .page-container {
+    flex-direction: column;  /* stack vertically */
+    height: auto;            /* let it grow */
+  }
+  .content-wrapper,
+  .tree-container {
+    flex: none;              /* override the 40vw/flex:1 */
+    width: 100%;             /* full-width panels */
+  }
+  .tree-container {
+    height: 50vh;            /* show the tree at half the viewport height */
+    border-left: none;       /* remove the left border now that it's below */
+    border-top: 1px solid #ddd; /* optional separator */
+  }
+  .season-orbs {
+    top: 0.5rem;
+    right: 0.5rem;           /* shrink the season buttons a bit */
+  }
 }
