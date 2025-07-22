@@ -105,6 +105,11 @@
         MAX_BEES      = 20;
   let windPhase = 0;
 
+  let fireworks      = [];
+  let summerStart    = 0;         // time when summer was activated
+  const MAX_FIREWORKS = 10;
+  const FIREWORK_DELAY = 5;
+
   // hill & tree sizing
   const hillYFactor  = 0.85, hillAmp = 10, hillStep = 5;
   const treeLenFactor= 0.25; // 25% of height
@@ -118,6 +123,10 @@
       // clear all particles/animations
       [flakes, leaves, fireflies, buds, bees, leafPile].forEach(arr => arr.length = 0);
       windPhase = 0;
+      fireworks.length = 0;
+      if (season === 'summer') {
+      summerStart = t;
+      }
     });
   });
 
@@ -134,6 +143,88 @@
     const c = document.getElementById('pine-container');
     resizeCanvas(c.clientWidth, c.clientHeight);
   }
+
+  class Firework {
+  constructor() {
+    this.x = random(width);
+    this.y = height;
+    this.targetY = random(height * 0.2, height * 0.5);
+    this.exploded = false;
+    this.particles = [];
+    this.color = color(
+      random(150, 255),
+      random(100, 255),
+      random(150, 255)
+    );
+  }
+  update() {
+    if (!this.exploded) {
+      // rocket flies up
+      this.y -= 300 * deltaTime * 0.001;
+      if (this.y <= this.targetY) {
+        this.exploded = true;
+        // spawn explosion particles
+        for (let i = 0; i < 50; i++) {
+          const angle = random(TWO_PI);
+          const speed = random(50, 200);
+          this.particles.push({
+            x: this.x,
+            y: this.y,
+            vx: cos(angle) * speed,
+            vy: sin(angle) * speed,
+            alpha: 255
+          });
+        }
+      }
+    } else {
+      // animate particles
+      this.particles.forEach(p => {
+        p.x += p.vx * deltaTime * 0.001;
+        p.y += p.vy * deltaTime * 0.001;
+        p.vy += 100 * deltaTime * 0.001;    // gravity
+        p.alpha -= 255 * deltaTime * 0.001; // fade
+      });
+      // remove dead particles
+      this.particles = this.particles.filter(p => p.alpha > 0);
+    }
+  }
+  draw() {
+    if (!this.exploded) {
+      stroke(this.color);
+      strokeWeight(4);
+      point(this.x, this.y);
+    } else {
+      this.particles.forEach(p => {
+        stroke(
+          red(this.color),
+          green(this.color),
+          blue(this.color),
+          p.alpha
+        );
+        strokeWeight(2);
+        point(p.x, p.y);
+      });
+    }
+  }
+}
+
+function updateFireworks() {
+  // spawn a new rocket occasionally
+  if (random() < 0.02 && fireworks.length < MAX_FIREWORKS) {
+    fireworks.push(new Firework());
+  }
+  // update them, culling finished ones
+  for (let i = fireworks.length - 1; i >= 0; i--) {
+    fireworks[i].update();
+    if (fireworks[i].exploded && fireworks[i].particles.length === 0) {
+      fireworks.splice(i, 1);
+    }
+  }
+}
+
+function drawFireworks() {
+  fireworks.forEach(fw => fw.draw());
+}
 
   // —— MAIN DRAW LOOP —— 
   function draw() {
@@ -168,12 +259,17 @@
      if (season === 'winter') { updateSnow(); updateSnowmen();}
     if (season === 'summer') updateFireflies();
     if (season === 'fall')   drawWind();
+
+    if (season === 'summer' && t > summerStart + FIREWORK_DELAY) {
+    updateFireworks();
+    drawFireworks();
+    }
     
 
     // draw the tree
     const tx = width * 0.5,
           ty = getHillY(tx);
-    drawPine(tx, ty, height * treeLenFactor, 5);
+    drawPine(tx, ty, height * treeLenFactor, 6);
 
     // seasonal post-tree effects
     if (season === 'spring') { drawFlowers(); drawBees(); }
