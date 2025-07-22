@@ -164,7 +164,7 @@
     else if (season === 'fall')   updateLeaves();
 
     // seasonal pre-tree effects
-    if (season === 'spring') { updateBuds(); updateBees(); }
+    if (season === 'spring') { updateFlowers(); updateBees(); }
     if (season === 'summer') updateFireflies();
     if (season === 'fall')   drawWind();
 
@@ -174,7 +174,7 @@
     drawPine(tx, ty, height * treeLenFactor, 7);
 
     // seasonal post-tree effects
-    if (season === 'spring') { drawBuds(); drawBees(); }
+    if (season === 'spring') { drawFlowers(); drawBees(); }
     if (season === 'summer') { drawSunbeam(); drawFireflies(); }
     if (season === 'fall')   drawLeafPile();
     if (season === 'winter') { drawFrost(); drawAurora(); }
@@ -210,29 +210,57 @@
 
   // — Falling leaves & ground pile (fall) — 
   function updateLeaves() {
-    if (leaves.length < MAX_LEAVES)
-      leaves.push({
-        x: random(width), y: -10,
-        sz: random(8,16), sp: random(30,80),
-        ang: random(TWO_PI), spn: random(-0.03,0.03),
-        col: color(200, random(100,50), 0)
+  // 1) spawn a few new leaves each frame (up to MAX_LEAVES on‐screen)
+  if (random() < 0.05 && leaves.length < MAX_LEAVES) {
+    leaves.push({
+      x: random(width),
+      y: -10,
+      sz: random(8, 16),
+      sp: random(30, 80),
+      ang: random(TWO_PI),
+      spn: random(-0.03, 0.03),
+      col: color(200, random(100, 50), 0)
+    });
+  }
+
+  // 2) move them, draw them, and when they hit the bottom, pop them into the pile
+  noStroke();
+  for (let i = leaves.length - 1; i >= 0; i--) {
+    const L = leaves[i];
+    L.y += L.sp * deltaTime * 0.001;
+    L.x += cos(L.ang) * 20 * deltaTime * 0.001;
+    L.ang += L.spn;
+    fill(L.col);
+    push();
+      translate(L.x, L.y);
+      rotate(L.ang);
+      ellipse(0, 0, L.sz * 0.6, L.sz);
+    pop();
+
+    if (L.y > height) {
+      // remove from active leaves
+      leaves.splice(i, 1);
+      // add to the ground‐pile, with a bit of horizontal jitter for randomness
+      leafPile.push({
+        x: L.x + random(-20, 20),
+        sz: L.sz,
+        col: L.col
       });
-    noStroke();
-    for (let i = leaves.length - 1; i >= 0; i--) {
-      const L = leaves[i];
-      L.y += L.sp * deltaTime * 0.001;
-      L.x += cos(L.ang) * 20 * deltaTime * 0.001;
-      L.ang += L.spn;
-      fill(L.col);
-      push(); translate(L.x, L.y); rotate(L.ang);
-        ellipse(0, 0, L.sz*0.6, L.sz);
-      pop();
-      if (L.y > height) {
-        leafPile.push(L);
-        leaves.splice(i,1);
-      }
     }
   }
+  }
+
+// ——————————————————————————————————————————————————
+// DRAW ACCUMULATED PILE
+// ——————————————————————————————————————————————————
+function drawLeafPile() {
+  noStroke();
+  leafPile.forEach(L => {
+    fill(L.col);
+    // stack them at the very bottom
+    ellipse(L.x, height - L.sz * 0.5, L.sz, L.sz * 0.6);
+  });
+}
 
   function drawLeafPile() {
     noStroke();
@@ -242,57 +270,100 @@
     });
   }
 
-  // — Spring: buds & bees — 
-  function updateBuds() {
-    if (buds.length < MAX_BUDS && random() < 0.02) {
-      // spawn on trunk area
-      buds.push({ x: width*0.5 + random(-50,50), y: getHillY(width*0.5) - random(50,150), age: 0 });
-    }
-    for (let i = buds.length - 1; i >= 0; i--) {
-      buds[i].age++;
-      if (buds[i].age > 120) buds.splice(i,1);
-    }
+
+const flowers = [];
+const MAX_FLOWERS = 15;
+
+// —— replace updateBuds() with updateFlowers() —— 
+function updateFlowers() {
+  // spawn a new flower at the hill up to MAX_FLOWERS
+  if (flowers.length < MAX_FLOWERS && random() < 0.01) {
+    let x = random(width);
+    let y = getHillY(x);
+    flowers.push({ x, y, age: 0, maxSize: random(20, 40) });
   }
-  function drawBuds() {
-    noStroke(); fill(255,180,220,200);
-    buds.forEach(b => {
-      const r = map(sin((b.age/120)*PI), 0,1, 0,6);
-      circle(b.x, b.y, r);
+  // age them (cap growth at 60 frames)
+  flowers.forEach(f => {
+    if (f.age < 60) f.age++;
+  });
+}
+
+// —— replace drawBuds() with drawFlowers() —— 
+function drawFlowers() {
+  flowers.forEach(f => {
+    const pct  = constrain(f.age / 60, 0, 1);
+    const size = f.maxSize * pct;
+
+    // stem
+    stroke(60, 180, 60);
+    strokeWeight(2);
+    line(f.x, f.y, f.x, f.y - size);
+
+    // petals + center
+    push();
+      translate(f.x, f.y - size);
+      noStroke();
+      fill(255);
+      for (let i = 0; i < 6; i++) {
+        let ang = TWO_PI * i / 6;
+        ellipse(cos(ang) * size * 0.3, sin(ang) * size * 0.3, size * 0.3);
+      }
+      fill(255, 200, 0);
+      ellipse(0, 0, size * 0.4);
+    pop();
+  });
+}
+
+// —— updateBees(): spawn them around flowers, not random buds —— 
+function updateBees() {
+  if (flowers.length > 0 && bees.length < MAX_BEES && random() < 0.005) {
+    let f  = random(flowers);
+    let fx = f.x, fy = f.y - f.maxSize;
+    bees.push({
+      x:    fx + random(-20, 20),
+      y:    fy + random(-20, 20),
+      vx:   random(-30, 30),
+      vy:   random(-30, 30),
+      size: random(8, 12),
+      wing: 0
     });
   }
 
-  function updateBees() {
-    if (bees.length < MAX_BEES && random() < 0.005) {
-      bees.push({
-        x: width*0.5 + random(-50,50),
-        y: getHillY(width*0.5) - random(20,100),
-        vx: random(-30,30), vy: random(-30,30),
-        size: random(4,6), wing: 0
-      });
-    }
-    for (let i = bees.length - 1; i >= 0; i--) {
-      const b = bees[i];
-      b.x += b.vx * deltaTime * 0.001;
-      b.y += b.vy * deltaTime * 0.001;
-      b.vx += random(-5,5) * deltaTime * 0.001;
-      b.vy += random(-5,5) * deltaTime * 0.001;
-      b.wing += deltaTime * 0.01;
-      if (b.x<0||b.x>width||b.y<0||b.y>height) bees.splice(i,1);
-    }
+  for (let i = bees.length - 1; i >= 0; i--) {
+    let b = bees[i];
+    b.x    += b.vx * deltaTime * 0.001;
+    b.y    += b.vy * deltaTime * 0.001;
+    b.vx   += random(-5, 5) * deltaTime * 0.001;
+    b.vy   += random(-5, 5) * deltaTime * 0.001;
+    b.wing += deltaTime * 0.01;
+    if (b.x < 0 || b.x > width || b.y < 0 || b.y > height) bees.splice(i, 1);
   }
-  function drawBees() {
-    noStroke(); fill(255,200,0);
-    bees.forEach(b => {
-      push();
-        translate(b.x,b.y);
-        rotate(sin(b.wing)*0.5);
-        ellipse(0,0, b.size*2, b.size);
-        fill(255);
-        ellipse(-b.size/2,0, b.size/2, b.size/4);
-        ellipse( b.size/2,0, b.size/2, b.size/4);
-      pop();
-    });
-  }
+}
+
+// —— drawBees(): black & yellow stripes + white wings —— 
+function drawBees() {
+  noStroke();
+  bees.forEach(b => {
+    push();
+      translate(b.x, b.y);
+      rotate(sin(b.wing) * 0.5);
+
+      // yellow body
+      fill(255, 204, 0);
+      ellipse(0, 0, b.size, b.size * 0.6);
+
+      // black stripes
+      fill(0);
+      ellipse(0, 0, b.size * 0.6, b.size * 0.3);
+      ellipse(0, 0, b.size * 0.3, b.size * 0.2);
+
+      // translucent wings
+      fill(255, 255, 255, 150);
+      ellipse(-b.size * 0.3, -b.size * 0.3, b.size * 0.6, b.size * 0.3);
+      ellipse( b.size * 0.3, -b.size * 0.3, b.size * 0.6, b.size * 0.3);
+    pop();
+  });
+}
 
   // — Summer: fireflies & sunbeams — 
   function updateFireflies() {
