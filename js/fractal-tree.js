@@ -14,26 +14,32 @@ window.addEventListener('DOMContentLoaded', () => {
   const BREATHE_SPEED       = 1.5;      // leaf pulsing speed
   const FRAME_INTERVAL      = 1000 / 30; // cap ~30fps
 
-
+  // ————————————————————————————————————————————
+  // SEASON DETECTION
+  // ————————————————————————————————————————————
+  const month = new Date().getMonth();  // 0 = Jan … 11 = Dec
+  let season;
+  if (month === 11 || month <= 1) season = 'winter';
+  else if (month <= 4)           season = 'spring';
+  else if (month <= 7)           season = 'summer';
+  else                            season = 'fall';
 
   // state
   const trees            = [];        // array of {off,offCtx,midX,depth,tipPoints}
   const seenSections     = new Set(); // to avoid dup trees
   let   lastFrameTime    = 0;
-  let   t                 = 0;
-
-  
+  let   t                = 0;
 
   // ——————————————————————————————————————————————————
   // 1) CANVAS/RESIZE SETUP
   // ——————————————————————————————————————————————————
   function resize() {
-    width   = canvas.clientWidth;
-    height  = canvas.clientHeight;
+    width    = canvas.clientWidth;
+    height   = canvas.clientHeight;
     canvas.width  = width;
     canvas.height = height;
-    baseY   = height - 2;
-    trunkLen= height * 0.4;
+    baseY    = height - 2;
+    trunkLen = height * 0.4;
 
     // rebuild each tree’s skeleton (sizes changed)
     trees.forEach(buildSkeleton);
@@ -45,52 +51,51 @@ window.addEventListener('DOMContentLoaded', () => {
   // 2) BUILD A TREE’S OFFSCREEN SKELETON & RECORD TIPS
   // ——————————————————————————————————————————————————
   function buildSkeleton(tree) {
-  const { offCtx, midX, depth } = tree;
-  tree.tipPoints = [];
-  // clear the offscreen canvas
-  offCtx.clearRect(0, 0, width, height);
+    const { offCtx, midX, depth } = tree;
+    tree.tipPoints = [];
 
-  // recursive draw function
-  (function drawNode(x, y, len, angle, d) {
-    // if we’ve recursed past the desired depth, record the tip and stop
-    if (d > depth) {
-      tree.tipPoints.push({ x, y });
-      return;
-    }
+    // clear the offscreen canvas
+    offCtx.clearRect(0, 0, width, height);
 
-    // compute the end point of this branch segment
-    const rad = (angle * Math.PI) / 180;
-    const x2  = x + Math.cos(rad) * len;
-    const y2  = y - Math.sin(rad) * len;
+    // recursive draw function
+    (function drawNode(x, y, len, angle, d) {
+      if (d > depth) {
+        tree.tipPoints.push({ x, y });
+        return;
+      }
 
-    // 1) draw a slightly thicker, lighter border
-    offCtx.beginPath();
-    offCtx.moveTo(x, y);
-    offCtx.lineTo(x2, y2);
-    offCtx.strokeStyle = '#3a2a1a';  // dark‐brown/gray outline
-    offCtx.lineWidth   = 14;         // 2px thicker than the inner
-    offCtx.stroke();
+      const rad = (angle * Math.PI) / 180;
+      const x2  = x + Math.cos(rad) * len;
+      const y2  = y - Math.sin(rad) * len;
 
-    // 2) draw the normal branch on top
-    offCtx.beginPath();
-    offCtx.moveTo(x, y);
-    offCtx.lineTo(x2, y2);
-    offCtx.strokeStyle = '#4b2e11';  // your original branch color
-    offCtx.lineWidth   = 12;
-    offCtx.stroke();
+      // 1) draw a slightly thicker, lighter border
+      offCtx.beginPath();
+      offCtx.moveTo(x, y);
+      offCtx.lineTo(x2, y2);
+      offCtx.strokeStyle = '#3a2a1a';
+      offCtx.lineWidth   = 14;
+      offCtx.stroke();
 
-    // recurse: two child branches
-    const nextLen = len * 0.7;
-    const spread  = SKELETON_SPREAD + (Math.random() * 10 - 5);
-    drawNode(x2, y2, nextLen, angle - spread, d + 1);
-    drawNode(x2, y2, nextLen, angle + spread, d + 1);
-  })(
-    tree.midX,   // start x
-    baseY,       // start y (bottom of canvas)
-    trunkLen,    // initial branch length
-    90,          // angle = up
-    0            // start depth
-  );
+      // 2) draw the normal branch on top
+      offCtx.beginPath();
+      offCtx.moveTo(x, y);
+      offCtx.lineTo(x2, y2);
+      offCtx.strokeStyle = '#4b2e11';
+      offCtx.lineWidth   = 12;
+      offCtx.stroke();
+
+      // recurse
+      const nextLen = len * 0.7;
+      const spread  = SKELETON_SPREAD + (Math.random() * 10 - 5);
+      drawNode(x2, y2, nextLen, angle - spread, d + 1);
+      drawNode(x2, y2, nextLen, angle + spread, d + 1);
+    })(
+      tree.midX,   // start x
+      baseY,       // start y (bottom)
+      trunkLen,    // initial length
+      90,          // straight up
+      0            // depth = 0
+    );
   }
 
   function addTree() {
@@ -104,7 +109,7 @@ window.addEventListener('DOMContentLoaded', () => {
     trees.push(tree);
   }
 
-  // spawn the first tree immediately
+  // initial tree
   addTree();
 
   // ——————————————————————————————————————————————————
@@ -130,16 +135,16 @@ window.addEventListener('DOMContentLoaded', () => {
   function drawLeaf(x, y, len, angle, depth, hue) {
     if (depth < 0 || len < 2) return;
     ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle);
-    ctx.strokeStyle = `hsl(${hue},70%,50%)`;
-    ctx.lineWidth   = depth + 1;
-    ctx.shadowColor = `hsla(${hue},70%,60%,0.4)`;
-    ctx.shadowBlur  = 4;
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, -len);
-    ctx.stroke();
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+      ctx.strokeStyle = `hsl(${hue},70%,50%)`;
+      ctx.lineWidth   = depth + 1;
+      ctx.shadowColor = `hsla(${hue},70%,60%,0.4)`;
+      ctx.shadowBlur  = 4;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, -len);
+      ctx.stroke();
     ctx.restore();
 
     const rad  = angle;
@@ -150,6 +155,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
     drawLeaf(nx, ny, next, angle - 0.5 + sway, depth - 1, hue);
     drawLeaf(nx, ny, next, angle + 0.5 + sway, depth - 1, hue);
+  }
+
+  // ————————————————————————————————————————————
+  // PICK LEAF HUE FOR SPRING/SUMMER vs FALL
+  // ————————————————————————————————————————————
+  function getLeafHue(timeOffset) {
+    if (season === 'fall') {
+      // reds → golds
+      return ((noise.noise2D(timeOffset * 0.7, timeOffset * 1.3) + 1) / 2) * 40 + 10;
+    }
+    // spring/summer greens
+    return ((noise.noise2D(timeOffset * 0.7, timeOffset * 1.3) + 1) / 2) * 60 + 80;
   }
 
   // ——————————————————————————————————————————————————
@@ -164,25 +181,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
     ctx.clearRect(0, 0, width, height);
 
-    // draw all skeletons
+    // draw all branch skeletons
     trees.forEach(tree => {
       ctx.drawImage(tree.off, 0, 0);
     });
 
-    // draw leaves on every tip in every tree
-    const pulse   = Math.sin(t * BREATHE_SPEED) * 5;
-    const hueBase = ((noise.noise2D(t * 0.7, t * 1.3) + 1) / 2) * 60 + 80;
+    // draw leaves on every tip, unless it's winter
+    const pulse = Math.sin(t * BREATHE_SPEED) * 5;
 
     trees.forEach(tree => {
       tree.tipPoints.forEach(pt => {
+        if (season === 'winter') return;
         FAN_ANGLES.forEach(a => {
+          const hue = getLeafHue(t + pt.x * 0.001);
           drawLeaf(
-            pt.x, 
-            pt.y, 
-            trunkLen * 0.1 + pulse, 
-            a + Math.sin(t + pt.x * 0.001) * 0.3, 
-            LEAF_DEPTH, 
-            hueBase
+            pt.x,
+            pt.y,
+            trunkLen * 0.1 + pulse,
+            a + Math.sin(t + pt.x * 0.001) * 0.3,
+            LEAF_DEPTH,
+            hue
           );
         });
       });
