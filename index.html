@@ -255,21 +255,17 @@ function drawFireworks() {
     else if (season === 'fall')   updateLeaves();
 
     // seasonal pre-tree effects
-    if (season === 'spring') { updateFlowers(); updateBees(); }
+    if (season === 'spring') { updateFlowers(); updateBees();updateFireworks();
+    drawFireworks(); }
      if (season === 'winter') { updateSnow(); updateSnowmen();}
     if (season === 'summer') updateFireflies();
     if (season === 'fall')   drawWind();
-
-    if (season === 'summer' && t > summerStart + FIREWORK_DELAY) {
-    updateFireworks();
-    drawFireworks();
-    }
     
 
     // draw the tree
     const tx = width * 0.5,
           ty = getHillY(tx);
-    drawPine(tx, ty, height * treeLenFactor, 6);
+    drawPine(tx, ty, height * treeLenFactor, 7);
 
     // seasonal post-tree effects
     if (season === 'spring') { drawFlowers(); drawBees(); }
