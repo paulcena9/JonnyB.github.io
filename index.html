@@ -165,19 +165,21 @@
 
     // seasonal pre-tree effects
     if (season === 'spring') { updateFlowers(); updateBees(); }
+     if (season === 'winter') { updateSnow(); updateSnowmen();}
     if (season === 'summer') updateFireflies();
     if (season === 'fall')   drawWind();
+    
 
     // draw the tree
     const tx = width * 0.5,
           ty = getHillY(tx);
-    drawPine(tx, ty, height * treeLenFactor, 7);
+    drawPine(tx, ty, height * treeLenFactor, 5);
 
     // seasonal post-tree effects
     if (season === 'spring') { drawFlowers(); drawBees(); }
     if (season === 'summer') { drawSunbeam(); drawFireflies(); }
     if (season === 'fall')   drawLeafPile();
-    if (season === 'winter') { drawFrost(); drawAurora(); }
+    if (season === 'winter') {drawSnowmen(); }
   }
 
   // —— HELPERS & EFFECTS —— 
@@ -405,22 +407,82 @@ function drawBees() {
   }
 
   // — Winter: frost sparkles & aurora — 
-  function drawFrost() {
-    noStroke(); fill(255,255,255, random(50,150));
-    for (let i=0; i<20; i++) {
-      const x = random(width),
-            y = getHillY(x) - random(5,50);
-      ellipse(x,y, random(1,3));
+ const snowmen = [];
+const MAX_SNOWMEN = 5;
+const SNOWMAN_STAGE_TIME = 1000; // ms per snow-ball stage
+
+// … your existing globals (flakes, leaves, fireflies, bees, etc.) …
+
+// —— replace your drawFrost() function with these two: —— 
+function updateSnowmen() {
+  // spawn new snowmen slowly (up to MAX_SNOWMEN)
+  if (snowmen.length < MAX_SNOWMEN && random() < 0.002) {
+    const bottomR = random(30, 50);
+    snowmen.push({
+      x:    random(width * 0.1, width * 0.9),
+      y:    height,
+      bottomR,
+      midR:  bottomR * 0.7,
+      headR: bottomR * 0.5,
+      stage: 0,
+      timer: 0
+    });
+  }
+  // advance build-stage over time
+  for (let i = snowmen.length - 1; i >= 0; i--) {
+    const s = snowmen[i];
+    s.timer += deltaTime;
+    if (s.stage < 3 && s.timer > SNOWMAN_STAGE_TIME) {
+      s.stage++;
+      s.timer = 0;
     }
   }
-  function drawAurora() {
+}
+
+function drawSnowmen() {
+  snowmen.forEach(s => {
+    const { x, y, bottomR, midR, headR, stage } = s;
     noStroke();
-    for (let y=0; y<height*0.3; y+=2) {
-      const a = map(noiseGen.noise2D(y*0.02, t*0.1), -1,1, 10,50);
-      fill(150,200,255, a);
-      rect(0,y, width, 2);
+    fill(255);
+    // 1) bottom sphere
+    if (stage >= 1) {
+      ellipse(x, y, bottomR * 2, bottomR * 2);
     }
-  }
+    // 2) middle sphere + stick arms
+    if (stage >= 2) {
+      ellipse(x, y - bottomR * 2, midR * 2, midR * 2);
+      // arms
+      stroke(100, 50, 0);
+      strokeWeight(2);
+      const ay = y - bottomR * 2;
+      line(x - midR, ay, x - midR * 1.8, ay - midR * 0.5);
+      line(x + midR, ay, x + midR * 1.8, ay - midR * 0.5);
+      noStroke();
+    }
+    // 3) head sphere + face
+    if (stage >= 3) {
+      const hy = y - bottomR * 2 - midR * 2;
+      ellipse(x, hy, headR * 2, headR * 2);
+      // eyes
+      fill(0);
+      ellipse(x - headR * 0.3, hy - headR * 0.2, headR * 0.2, headR * 0.2);
+      ellipse(x + headR * 0.3, hy - headR * 0.2, headR * 0.2, headR * 0.2);
+      // carrot nose
+      fill(255, 165, 0);
+      triangle(
+        x, hy,
+        x, hy + headR * 0.1,
+        x + headR * 0.6, hy
+      );
+      // smile
+      noFill();
+      stroke(0);
+      strokeWeight(1);
+      arc(x, hy + headR * 0.2, headR * 0.6, headR * 0.4, 0, PI);
+      noStroke();
+    }
+  });
+}
 
   // —— Fractal Pine —— 
   function drawPine(x, y, len, depth) {
