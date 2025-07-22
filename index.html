@@ -251,10 +251,9 @@ function drawFireworks() {
     else if (season === 'fall')   updateLeaves();
 
     // seasonal pre-tree effects
-    if (season === 'spring') { updateFlowers(); updateBees();updateFireworks();
-    drawFireworks(); }
+    if (season === 'spring') { updateFlowers(); updateBees(); }
      if (season === 'winter') { updateSnow(); updateSnowmen();}
-    if (season === 'summer') updateFireflies();
+    if (season === 'summer'){ updateFireflies(), updateFireworks()};
     if (season === 'fall')   drawWind();
     
 
@@ -265,7 +264,7 @@ function drawFireworks() {
 
     // seasonal post-tree effects
     if (season === 'spring') { drawFlowers(); drawBees(); }
-    if (season === 'summer') { drawSunbeam(); drawFireflies(); }
+    if (season === 'summer') { drawFireworks; drawFireflies(); }
     if (season === 'fall')   drawLeafPile();
     if (season === 'winter') {drawSnowmen(); }
   }
