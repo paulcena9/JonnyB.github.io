@@ -25,8 +25,8 @@ window.addEventListener('DOMContentLoaded', () => {
   else                            season = 'fall';
 
   // state
-  const trees            = [];        // array of {off,offCtx,midX,depth,tipPoints}
-  const seenSections     = new Set(); // to avoid dup trees
+  const trees            = [];        
+  const seenSections     = new Set(); 
   let   lastFrameTime    = 0;
   let   t                = 0;
 
@@ -40,8 +40,6 @@ window.addEventListener('DOMContentLoaded', () => {
     canvas.height = height;
     baseY    = height - 2;
     trunkLen = height * 0.4;
-
-    // rebuild each tree’s skeleton (sizes changed)
     trees.forEach(buildSkeleton);
   }
   window.addEventListener('resize', resize);
@@ -53,22 +51,17 @@ window.addEventListener('DOMContentLoaded', () => {
   function buildSkeleton(tree) {
     const { offCtx, midX, depth } = tree;
     tree.tipPoints = [];
-
-    // clear the offscreen canvas
     offCtx.clearRect(0, 0, width, height);
 
-    // recursive draw function
     (function drawNode(x, y, len, angle, d) {
       if (d > depth) {
         tree.tipPoints.push({ x, y });
         return;
       }
-
       const rad = (angle * Math.PI) / 180;
       const x2  = x + Math.cos(rad) * len;
       const y2  = y - Math.sin(rad) * len;
 
-      // 1) draw a slightly thicker, lighter border
       offCtx.beginPath();
       offCtx.moveTo(x, y);
       offCtx.lineTo(x2, y2);
@@ -76,7 +69,6 @@ window.addEventListener('DOMContentLoaded', () => {
       offCtx.lineWidth   = 14;
       offCtx.stroke();
 
-      // 2) draw the normal branch on top
       offCtx.beginPath();
       offCtx.moveTo(x, y);
       offCtx.lineTo(x2, y2);
@@ -84,17 +76,16 @@ window.addEventListener('DOMContentLoaded', () => {
       offCtx.lineWidth   = 12;
       offCtx.stroke();
 
-      // recurse
       const nextLen = len * 0.7;
       const spread  = SKELETON_SPREAD + (Math.random() * 10 - 5);
       drawNode(x2, y2, nextLen, angle - spread, d + 1);
       drawNode(x2, y2, nextLen, angle + spread, d + 1);
     })(
-      tree.midX,   // start x
-      baseY,       // start y (bottom)
-      trunkLen,    // initial length
-      90,          // straight up
-      0            // depth = 0
+      tree.midX,
+      baseY,
+      trunkLen,
+      90,
+      0
     );
   }
 
@@ -108,8 +99,6 @@ window.addEventListener('DOMContentLoaded', () => {
     buildSkeleton(tree);
     trees.push(tree);
   }
-
-  // initial tree
   addTree();
 
   // ——————————————————————————————————————————————————
@@ -157,18 +146,6 @@ window.addEventListener('DOMContentLoaded', () => {
     drawLeaf(nx, ny, next, angle + 0.5 + sway, depth - 1, hue);
   }
 
-  // ————————————————————————————————————————————
-  // PICK LEAF HUE FOR SPRING/SUMMER vs FALL
-  // ————————————————————————————————————————————
-  function getLeafHue(timeOffset) {
-    if (season === 'fall') {
-      // reds → golds
-      return ((noise.noise2D(timeOffset * 0.7, timeOffset * 1.3) + 1) / 2) * 40 + 10;
-    }
-    // spring/summer greens
-    return ((noise.noise2D(timeOffset * 0.7, timeOffset * 1.3) + 1) / 2) * 60 + 80;
-  }
-
   // ——————————————————————————————————————————————————
   // 5) MAIN RENDER LOOP (~30 FPS)
   // ——————————————————————————————————————————————————
@@ -187,13 +164,21 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     // draw leaves on every tip, unless it's winter
-    const pulse = Math.sin(t * BREATHE_SPEED) * 5;
+    const pulse   = Math.sin(t * BREATHE_SPEED) * 5;
+    // hueBase is exactly what your falling leaves use
+    const hueBase = ((noise.noise2D(t * 0.7, t * 1.3) + 1) / 2) * 60 + 80;
 
     trees.forEach(tree => {
       tree.tipPoints.forEach(pt => {
         if (season === 'winter') return;
+
         FAN_ANGLES.forEach(a => {
-          const hue = getLeafHue(t + pt.x * 0.001);
+          // fall: use the same hueBase as falling leaves
+          // spring/summer: compute new greenish hue
+          const hue = (season === 'fall')
+            ? hueBase
+            : ((noise.noise2D((t + pt.x * 0.001) * 0.7, (t + pt.x * 0.001) * 1.3) + 1) / 2) * 60 + 80;
+
           drawLeaf(
             pt.x,
             pt.y,
