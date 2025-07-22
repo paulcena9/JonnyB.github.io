@@ -109,6 +109,7 @@
   let summerStart    = 0;         // time when summer was activated
   const MAX_FIREWORKS = 10;
   const FIREWORK_DELAY = 5;
+  const FIREWORK_SPAWN_CHANCE = 0.01;
 
   // hill & tree sizing
   const hillYFactor  = 0.85, hillAmp = 10, hillStep = 5;
@@ -151,27 +152,25 @@
     this.targetY = random(height * 0.2, height * 0.5);
     this.exploded = false;
     this.particles = [];
-    this.color = color(
-      random(150, 255),
-      random(100, 255),
-      random(150, 255)
-    );
+    // pick a random HSB hue, full saturation/brightness
+    const h = random(360), s = 100, b = 100;
+    this.color = color(h, s, b);
   }
   update() {
     if (!this.exploded) {
-      // rocket flies up
-      this.y -= 300 * deltaTime * 0.001;
+      // slower rocket climb
+      this.y -= 150 * deltaTime * 0.001;
       if (this.y <= this.targetY) {
         this.exploded = true;
-        // spawn explosion particles
-        for (let i = 0; i < 50; i++) {
+        // rainbow burst: many particles
+        for (let i = 0; i < 60; i++) {
           const angle = random(TWO_PI);
-          const speed = random(50, 200);
+          const speed = random(30, 150);  // slower spread
           this.particles.push({
-            x: this.x,
-            y: this.y,
+            x: this.x, y: this.y,
             vx: cos(angle) * speed,
             vy: sin(angle) * speed,
+            hue: random(360),
             alpha: 255
           });
         }
@@ -181,30 +180,27 @@
       this.particles.forEach(p => {
         p.x += p.vx * deltaTime * 0.001;
         p.y += p.vy * deltaTime * 0.001;
-        p.vy += 100 * deltaTime * 0.001;    // gravity
-        p.alpha -= 255 * deltaTime * 0.001; // fade
+        p.vy += 50 * deltaTime * 0.001;       // gentle gravity
+        p.alpha -= 255 * deltaTime * 0.0005;  // slower fade
       });
-      // remove dead particles
+      // remove dead
       this.particles = this.particles.filter(p => p.alpha > 0);
     }
   }
   draw() {
+    colorMode(HSB, 360, 100, 100, 255);
     if (!this.exploded) {
       stroke(this.color);
-      strokeWeight(4);
+      strokeWeight(3);
       point(this.x, this.y);
     } else {
       this.particles.forEach(p => {
-        stroke(
-          red(this.color),
-          green(this.color),
-          blue(this.color),
-          p.alpha
-        );
+        stroke(p.hue, 100, 100, p.alpha);
         strokeWeight(2);
         point(p.x, p.y);
       });
     }
+    colorMode(RGB, 255); // back to default
   }
 }
 
