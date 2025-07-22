@@ -94,139 +94,306 @@
 
   <!-- Breathing Fractal Pine with Season Orbs -->
   <script>
-    let noiseGen, t = 0, season = 'spring';
-    const flakes = [], leaves = [];
-    const MAX_FLAKES = 200, MAX_LEAVES = 100;
+  // —— GLOBAL STATE —— 
+  let noiseGen, t = 0, season = 'spring';
+  const flakes     = [], leaves     = [], fireflies  = [],
+        buds      = [], bees       = [], leafPile   = [];
+  const MAX_FLAKES    = 200,
+        MAX_LEAVES    = 100,
+        MAX_FIREFLIES = 200,
+        MAX_BUDS      = 50,
+        MAX_BEES      = 20;
+  let windPhase = 0;
 
-    // hill params
-    const hillYFactor = 0.85, hillAmp = 10, hillStep = 5;
-    const treeLenFactor = 0.25; // 25% height
+  // hill & tree sizing
+  const hillYFactor  = 0.85, hillAmp = 10, hillStep = 5;
+  const treeLenFactor= 0.25; // 25% of height
 
-    // wire up orbs
-    document.querySelectorAll('.season-orb').forEach(orb => {
-      orb.addEventListener('click', () => {
-        // set active class
-        document.querySelector('.season-orb.active')?.classList.remove('active');
-        orb.classList.add('active');
-        // update season & reset particles
-        season = orb.dataset.season;
-        flakes.length = leaves.length = 0;
-      });
+  // —— SEASON ORBS —— 
+  document.querySelectorAll('.season-orb').forEach(orb => {
+    orb.addEventListener('click', () => {
+      document.querySelector('.season-orb.active')?.classList.remove('active');
+      orb.classList.add('active');
+      season = orb.dataset.season;
+      // clear all particles/animations
+      [flakes, leaves, fireflies, buds, bees, leafPile].forEach(arr => arr.length = 0);
+      windPhase = 0;
     });
+  });
 
-    function setup() {
-      const container = document.getElementById('pine-container');
-      const cnv = createCanvas(container.clientWidth, container.clientHeight);
-      cnv.parent('pine-container');
-      noiseGen = new SimplexNoise();
-      strokeCap(ROUND);
-    }
+  // —— P5 SETUP & RESIZE —— 
+  function setup() {
+    const container = document.getElementById('pine-container');
+    const cnv = createCanvas(container.clientWidth, container.clientHeight);
+    cnv.parent('pine-container');
+    noiseGen = new SimplexNoise();
+    strokeCap(ROUND);
+  }
 
-    function windowResized() {
-      const c = document.getElementById('pine-container');
-      resizeCanvas(c.clientWidth, c.clientHeight);
-    }
+  function windowResized() {
+    const c = document.getElementById('pine-container');
+    resizeCanvas(c.clientWidth, c.clientHeight);
+  }
 
-    function draw() {
-      t += deltaTime * 0.001;
-      clear();
+  // —— MAIN DRAW LOOP —— 
+  function draw() {
+    t += deltaTime * 0.001;
+    clear();
 
-      // background
-      if (season === 'summer') drawSunset();
-      else background(200, 225, 255);
+    // background
+    if (season === 'summer') drawSunset();
+    else background(200, 225, 255);
 
-      // hill
-      noStroke();
-      fill(season === 'winter' ? 240 : 80, season==='winter'?240:170, season==='winter'?240:70);
-      beginShape();
+    // hill
+    noStroke();
+    fill(
+      season === 'winter' ? 240 : 80,
+      season === 'winter' ? 240 : 170,
+      season === 'winter' ? 240 : 70
+    );
+    beginShape();
       vertex(0, height);
       for (let x = 0; x <= width; x += hillStep) {
         vertex(x, getHillY(x));
       }
       vertex(width, height);
-      endShape(CLOSE);
+    endShape(CLOSE);
 
-      // particles
-      if (season === 'winter')   updateSnow();
-      else if (season === 'fall') updateLeaves();
+    // particles
+    if      (season === 'winter') updateSnow();
+    else if (season === 'fall')   updateLeaves();
 
-      // draw tree anchored on hill
-      const tx = width * 0.5, ty = getHillY(tx);
-      drawPine(tx, ty, height * treeLenFactor, 7);
+    // seasonal pre-tree effects
+    if (season === 'spring') { updateBuds(); updateBees(); }
+    if (season === 'summer') updateFireflies();
+    if (season === 'fall')   drawWind();
+
+    // draw the tree
+    const tx = width * 0.5,
+          ty = getHillY(tx);
+    drawPine(tx, ty, height * treeLenFactor, 7);
+
+    // seasonal post-tree effects
+    if (season === 'spring') { drawBuds(); drawBees(); }
+    if (season === 'summer') { drawSunbeam(); drawFireflies(); }
+    if (season === 'fall')   drawLeafPile();
+    if (season === 'winter') { drawFrost(); drawAurora(); }
+  }
+
+  // —— HELPERS & EFFECTS —— 
+  function getHillY(x) {
+    return height * hillYFactor + sin((x * 0.01) + t * 0.5) * hillAmp;
+  }
+
+  function drawSunset() {
+    for (let y = 0; y < height; y++) {
+      const pct = constrain(y / (height * 0.6), 0, 1);
+      const c = lerpColor(color(255, 94, 77), color(255, 212, 128), pct);
+      stroke(c);
+      line(0, y, width, y);
     }
+  }
 
-    function getHillY(x) {
-      return height * hillYFactor + sin((x*0.01)+t*0.5) * hillAmp;
+  // — Snow (winter) — 
+  function updateSnow() {
+    if (flakes.length < MAX_FLAKES)
+      flakes.push({ x: random(width), y: -10, sz: random(2,6), sp: random(20,60) });
+    noStroke();
+    fill(255);
+    for (let i = flakes.length - 1; i >= 0; i--) {
+      const f = flakes[i];
+      f.y += f.sp * deltaTime * 0.001;
+      ellipse(f.x, f.y, f.sz);
+      if (f.y > height) flakes.splice(i,1);
     }
+  }
 
-    function drawSunset() {
-      for (let y=0; y<height; y++) {
-        const pct = constrain(y/(height*0.6),0,1);
-        const c = lerpColor(color(255,94,77), color(255,212,128), pct);
-        stroke(c); line(0,y,width,y);
+  // — Falling leaves & ground pile (fall) — 
+  function updateLeaves() {
+    if (leaves.length < MAX_LEAVES)
+      leaves.push({
+        x: random(width), y: -10,
+        sz: random(8,16), sp: random(30,80),
+        ang: random(TWO_PI), spn: random(-0.03,0.03),
+        col: color(200, random(100,50), 0)
+      });
+    noStroke();
+    for (let i = leaves.length - 1; i >= 0; i--) {
+      const L = leaves[i];
+      L.y += L.sp * deltaTime * 0.001;
+      L.x += cos(L.ang) * 20 * deltaTime * 0.001;
+      L.ang += L.spn;
+      fill(L.col);
+      push(); translate(L.x, L.y); rotate(L.ang);
+        ellipse(0, 0, L.sz*0.6, L.sz);
+      pop();
+      if (L.y > height) {
+        leafPile.push(L);
+        leaves.splice(i,1);
       }
     }
+  }
 
-    function updateSnow() {
-      if (flakes.length < MAX_FLAKES)
-        flakes.push({ x:random(width), y:-10, sz:random(2,6), sp:random(20,60) });
-      noStroke(); fill(255);
-      for (let i=flakes.length-1;i>=0;i--) {
-        const f=flakes[i];
-        f.y += f.sp*deltaTime*0.001;
-        ellipse(f.x,f.y,f.sz);
-        if (f.y>height) flakes.splice(i,1);
-      }
+  function drawLeafPile() {
+    noStroke();
+    leafPile.forEach(L => {
+      fill(L.col);
+      ellipse(L.x, height - L.sz*0.5, L.sz, L.sz*0.6);
+    });
+  }
+
+  // — Spring: buds & bees — 
+  function updateBuds() {
+    if (buds.length < MAX_BUDS && random() < 0.02) {
+      // spawn on trunk area
+      buds.push({ x: width*0.5 + random(-50,50), y: getHillY(width*0.5) - random(50,150), age: 0 });
     }
-
-    function updateLeaves() {
-      if (leaves.length < MAX_LEAVES)
-        leaves.push({
-          x:random(width), y:-10,
-          sz:random(8,16), sp:random(30,80),
-          ang:random(TWO_PI), spn:random(-0.03,0.03),
-          col: color(200,random(100,50),0)
-        });
-      noStroke();
-      for (let i=leaves.length-1;i>=0;i--) {
-        const L=leaves[i];
-        L.y += L.sp*deltaTime*0.001;
-        L.x += cos(L.ang)*20*deltaTime*0.001;
-        L.ang+=L.spn;
-        fill(L.col);
-        push(); translate(L.x,L.y); rotate(L.ang);
-        ellipse(0,0,L.sz*0.6,L.sz); pop();
-        if (L.y>height) leaves.splice(i,1);
-      }
+    for (let i = buds.length - 1; i >= 0; i--) {
+      buds[i].age++;
+      if (buds[i].age > 120) buds.splice(i,1);
     }
+  }
+  function drawBuds() {
+    noStroke(); fill(255,180,220,200);
+    buds.forEach(b => {
+      const r = map(sin((b.age/120)*PI), 0,1, 0,6);
+      circle(b.x, b.y, r);
+    });
+  }
 
-    function drawPine(x,y,len,depth) {
+  function updateBees() {
+    if (bees.length < MAX_BEES && random() < 0.005) {
+      bees.push({
+        x: width*0.5 + random(-50,50),
+        y: getHillY(width*0.5) - random(20,100),
+        vx: random(-30,30), vy: random(-30,30),
+        size: random(4,6), wing: 0
+      });
+    }
+    for (let i = bees.length - 1; i >= 0; i--) {
+      const b = bees[i];
+      b.x += b.vx * deltaTime * 0.001;
+      b.y += b.vy * deltaTime * 0.001;
+      b.vx += random(-5,5) * deltaTime * 0.001;
+      b.vy += random(-5,5) * deltaTime * 0.001;
+      b.wing += deltaTime * 0.01;
+      if (b.x<0||b.x>width||b.y<0||b.y>height) bees.splice(i,1);
+    }
+  }
+  function drawBees() {
+    noStroke(); fill(255,200,0);
+    bees.forEach(b => {
       push();
+        translate(b.x,b.y);
+        rotate(sin(b.wing)*0.5);
+        ellipse(0,0, b.size*2, b.size);
+        fill(255);
+        ellipse(-b.size/2,0, b.size/2, b.size/4);
+        ellipse( b.size/2,0, b.size/2, b.size/4);
+      pop();
+    });
+  }
+
+  // — Summer: fireflies & sunbeams — 
+  function updateFireflies() {
+    if (fireflies.length < MAX_FIREFLIES && random() < 0.01) {
+      fireflies.push({ x: random(width), y: random(height*0.5), life: random(1,3) });
+    }
+    for (let i = fireflies.length - 1; i >= 0; i--) {
+      const f = fireflies[i];
+      f.life -= deltaTime * 0.001;
+      if (f.life <= 0) fireflies.splice(i,1);
+    }
+  }
+  function drawFireflies() {
+    noStroke();
+    fireflies.forEach(f => {
+      const alpha = map(sin(f.life*PI), 0,1, 0,255);
+      fill(255,255,150, alpha);
+      ellipse(f.x, f.y, 4,4);
+    });
+  }
+  function drawSunbeam() {
+    push();
+      blendMode(SOFT_LIGHT);
+      for (let r=width; r>0; r-=50) {
+        noFill();
+        stroke(255,255,200,10);
+        circle(width/2 + sin(t*0.2)*50, height/3, r);
+      }
+    pop();
+    blendMode(BLEND);
+  }
+
+  // — Fall: wind gust — 
+  function drawWind() {
+    windPhase += 0.01;
+    const offset = sin(windPhase) * 0.4;
+    // you could apply this to branch angles if you record them—
+    // but here we just leave it ready for future tweaks.
+  }
+
+  // — Winter: frost sparkles & aurora — 
+  function drawFrost() {
+    noStroke(); fill(255,255,255, random(50,150));
+    for (let i=0; i<20; i++) {
+      const x = random(width),
+            y = getHillY(x) - random(5,50);
+      ellipse(x,y, random(1,3));
+    }
+  }
+  function drawAurora() {
+    noStroke();
+    for (let y=0; y<height*0.3; y+=2) {
+      const a = map(noiseGen.noise2D(y*0.02, t*0.1), -1,1, 10,50);
+      fill(150,200,255, a);
+      rect(0,y, width, 2);
+    }
+  }
+
+  // —— Fractal Pine —— 
+  function drawPine(x, y, len, depth) {
+    push();
       translate(x,y);
       stroke(80,40,20);
-      strokeWeight(map(depth,0,7,2,24));
-      line(0,0,0,-len);
+      strokeWeight(map(depth, 0,7, 2,24));
+      line(0,0, 0,-len);
       translate(0,-len);
-      if (depth>0) {
-        const baseA=PI/8, sway=noiseGen.noise2D(depth,t*0.1)*0.15;
-        drawPine(0,0,len*0.7,depth-1);
-        rotate(-baseA+sway);
-        drawPine(0,0,len*0.7,depth-1);
-        rotate(2*(baseA-sway));
-        drawPine(0,0,len*0.7,depth-1);
+
+      if (depth > 0) {
+        const baseA = PI/8,
+              sway  = noiseGen.noise2D(depth, t*0.1)*0.15;
+        drawPine(0,0, len*0.7, depth-1);
+        rotate(-baseA + sway);
+        drawPine(0,0, len*0.7, depth-1);
+        rotate(2*(baseA - sway));
+        drawPine(0,0, len*0.7, depth-1);
+
       } else {
-        const fc=8, pulse=map(noiseGen.noise2D(t,x*0.001),-1,1,-2,2),
-              sz=len*0.5+pulse;
-        for (let i=-fc;i<=fc;i++){
-          const ang=map(i,-fc,fc,-PI/2,PI/2)*0.6;
-          push(); rotate(ang);
-          strokeWeight(1.5);
-          stroke(season==='winter'?255:30,100,30,200);
-          line(0,0,0,-sz); pop();
+        // on-tree leaves (skip in winter; match fall‐leaf colors)
+        if (season !== 'winter') {
+          const fc    = 8,
+                pulse = map(noiseGen.noise2D(t, x*0.001), -1,1, -2,2),
+                sz    = len*0.5 + pulse;
+          for (let i=-fc; i<=fc; i++) {
+            const ang = map(i, -fc, fc, -PI/2, PI/2)*0.6;
+            push();
+              rotate(ang);
+              strokeWeight(1.5);
+              if (season === 'fall') {
+                // same col as falling leaves
+                const c = color(200, random(100,50), 0);
+                stroke(c);
+              } else {
+                stroke(30,100,30,200);
+              }
+              line(0,0, 0,-sz);
+            pop();
+          }
         }
       }
-      pop();
-    }
-  </script>
+    pop();
+  }
+</script>
 </body>
 </html>
