@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Brain Layers Viewer</title>
+  <style>
+    html,body{margin:0;height:100%;background:#ffffff;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,sans-serif;color:#111}
+    #app{position:relative;width:100%;height:100%}
+    canvas{display:block;outline:none}
+    /* Arrow buttons */
+    .arrow{position:absolute;width:48px;height:48px;border-radius:50%;border:1px solid #bbb;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;cursor:pointer;user-select:none;opacity:.85;transition:background .15s}
+    .arrow:hover{background:#dfe8ff}
+    /* positions */
+    #left {left:16px;top:50%;transform:translateY(-50%)}
+    #right{right:16px;top:50%;transform:translateY(-50%)}
+    #up   {top:16px;left:50%;transform:translateX(-50%);display:none}
+    #down {bottom:16px;left:50%;transform:translateX(-50%);display:none}
+  </style>
+  <script type="importmap">
+    {"imports":{ "three":"https://unpkg.com/three@0.165.0/build/three.module.js", "three/addons/":"https://unpkg.com/three@0.165.0/examples/jsm/"}}
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+  <!-- Arrow controls -->
+  <div id="left"  class="arrow">&#x2190;</div>
+  <div id="right" class="arrow">&#x2192;</div>
+  <div id="up"    class="arrow">&#x2191;</div>
+  <div id="down"  class="arrow">&#x2193;</div>
+
+  <script type="module" src="/js/brain.js"></script>
+</body>
+</html>

@@ -290,3 +290,14 @@ nav a.in-view {
     right: 0.5rem;           /* shrink the season buttons a bit */
   }
 }
+.brain-card { display:inline-block; text-decoration:none; }
+.brain-card__inner {
+  width:min(420px, 90%);
+  aspect-ratio:16/9;
+  background:#f4f4f6;
+  border:2px dashed #999;
+  color:#222; font:600 1.6rem/1 ui-sans-serif, system-ui;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .25s, color .25s;
+}
+.brain-card__inner:hover { background:#dfe8ff; color:#0e3da8; }
