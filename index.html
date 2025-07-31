@@ -5,53 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Jonathan Bachman – Portfolio</title>
   <link rel="stylesheet" href="css/style.css" />
-
-  <!-- 🔽 quick inline overrides / additions -->
   <style>
-    /*————— Layout (existing) —————*/
-    body,html{margin:0;padding:0;height:100%}
-    .page-container{display:flex;height:100%}
-    .content-wrapper{flex:1;overflow-y:auto;padding:2rem;box-sizing:border-box}
-    .tree-container{flex:0 0 40vw;position:relative;border-left:1px solid #ddd;overflow:hidden}
-
-    /*————— NEW: Brain-card styles —————*/
-    .brain-card{
-      position:fixed;            /* pin to viewport */
-      top:1.5rem; left:1.5rem;
-      text-decoration:none;
-      z-index:200;               /* above canvas & nav */
+    /* two-column layout */
+    body, html {
+      margin: 0; padding: 0; height: 100%;
     }
-    .brain-card__inner{
-      min-width:220px;
-      padding:1.4rem 1.2rem;
-      border:2px dashed #333;
-      background:#fff;
-      box-shadow:0 4px 8px rgba(0,0,0,.08);
-      color:#111;
-      font:600 1.2rem/1.3 system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,sans-serif;
-      text-align:center;
-      transition:background .25s,color .25s,box-shadow .25s;
+    .page-container {
+      display: flex; height: 100%;
     }
-    .brain-card__inner:hover{
-      background:#dfe8ff;
-      color:#0e3da8;
-      box-shadow:0 6px 14px rgba(0,0,0,.12);
+    .content-wrapper {
+      flex: 1; overflow-y: auto;
+      padding: 2rem; box-sizing: border-box;
     }
-
-    /*————— Season-orb styles (existing, left as-is) —————*/
-    .season-orbs{position:absolute;top:1rem;right:1rem;display:flex;gap:.5rem;z-index:1000}
-    /* … rest of your existing CSS … */
+    .tree-container {
+      flex: 0 0 40vw; position: relative;
+      border-left: 1px solid #ddd; overflow: hidden;
+    }
+    /* season orb container */
+    .season-orbs {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      display: flex; gap: 0.5rem;
+      z-index: 1000;
+    }
+    .season-orb {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform .2s, border-color .2s;
+    }
+    .season-orb:hover {
+      transform: scale(1.2);
+    }
+    .season-orb.active {
+      border-color: #fff;
+    }
+    .season-orb[data-season="spring"] { background: #6abe6a; }
+    .season-orb[data-season="summer"] { background: #ff8c42; }
+    .season-orb[data-season="fall"]   { background: #d9534f; }
+    .season-orb[data-season="winter"] { background: #5dade2; }
+    /* hide fallback canvas */
+    #tree-canvas { display: none; }
   </style>
 </head>
-
 <body>
-  <!-- 🔽 Brain card sits outside the flex columns -->
-  <a href="brain.html" class="brain-card" aria-label="Interactive 3-D brain viewer">
-    <div class="brain-card__inner">Check&nbsp;out&nbsp;my&nbsp;brain !</div>
-  </a>
-
   <div class="page-container">
-    <!-- left column (scrollable content) -->
+    <!-- left column -->
     <div class="content-wrapper">
       <header id="hero" class="section-container hero-content">
         <nav>
@@ -62,15 +62,15 @@
         </nav>
         <h1>Jonny Bachman</h1>
         <p class="subtitle">
-          MRI Support Specialist @ Neuroscape&nbsp;| UCSF &amp; Problem Solver
+          MRI Support Specialist @ Neuroscape | UCSF &amp; Problem Solver
         </p>
       </header>
-
       <section id="intro" class="section-container"><!-- … --></section>
-
       <section id="writings" class="section-container">
         <h2>Writings</h2>
+
         <div class="writings-grid">
+          <!-- Featured Paper Card -->
           <div class="writing-entry">
             <h3>Decadal Changes Across an Arctic Coastal Site</h3>
             <p>
@@ -79,19 +79,25 @@
             </p>
             <a href="paper.html" class="contact-btn">Explore Paper →</a>
           </div>
-          <!-- add more .writing-entry blocks here -->
+
+          <!-- You can add more .writing-entry blocks here in the same grid -->
         </div>
       </section>
-
       <section id="projects" class="section-container"><!-- … --></section>
-      <section id="contact"  class="section-container"><!-- … --></section>
-
+       <div class="writing-entry">
+            <h3>Check Out My BRAIN!!!</h3>
+            <p>
+              Apologies for the horrors you may see....
+            </p>
+            <a href="brain.html" class="contact-btn">Explore Paper →</a>
+          </div>
+      <section id="contact" class="section-container"><!-- … --></section>
       <footer class="section-container">
         <p>© 2025 Jonny Bachman. All rights reserved.</p>
       </footer>
     </div>
 
-    <!-- right column: animated pine tree -->
+    <!-- right column: P5 sketch + season orbs -->
     <div class="tree-container" id="pine-container">
       <div class="season-orbs">
         <div class="season-orb active" data-season="spring" title="Spring"></div>
@@ -103,12 +109,534 @@
     </div>
   </div>
 
-  <!-- scripts (unchanged) -->
+  <!-- p5.js & Simplex-Noise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+  <!-- your site’s main JS -->
   <script src="js/main.js"></script>
+
+  <!-- Breathing Fractal Pine with Season Orbs -->
   <script>
-    /* your existing p5 + seasonal animation code … */
-  </script>
+  // —— GLOBAL STATE —— 
+  let noiseGen, t = 0, season = 'spring';
+  const flakes     = [], leaves     = [], fireflies  = [],
+        buds      = [], bees       = [], leafPile   = [];
+  const MAX_FLAKES    = 200,
+        MAX_LEAVES    = 100,
+        MAX_FIREFLIES = 200,
+        MAX_BUDS      = 50,
+        MAX_BEES      = 20;
+  let windPhase = 0;
+
+  let fireworks      = [];
+  let summerStart    = 0;         // time when summer was activated
+  const MAX_FIREWORKS = 10;
+  const FIREWORK_DELAY = 5;
+  const FIREWORK_SPAWN_CHANCE = 0.5;
+
+  // hill & tree sizing
+  const hillYFactor  = 0.85, hillAmp = 10, hillStep = 5;
+  const treeLenFactor= 0.25; // 25% of height
+
+  // —— SEASON ORBS —— 
+  document.querySelectorAll('.season-orb').forEach(orb => {
+    orb.addEventListener('click', () => {
+      document.querySelector('.season-orb.active')?.classList.remove('active');
+      orb.classList.add('active');
+      season = orb.dataset.season;
+      // clear all particles/animations
+      [flakes, leaves, fireflies, buds, bees, leafPile].forEach(arr => arr.length = 0);
+      windPhase = 0;
+      fireworks.length = 0;
+      if (season === 'summer') {
+      summerStart = t;
+      }
+    });
+  });
+
+  // —— P5 SETUP & RESIZE —— 
+  function setup() {
+    const container = document.getElementById('pine-container');
+    const cnv = createCanvas(container.clientWidth, container.clientHeight);
+    cnv.parent('pine-container');
+    noiseGen = new SimplexNoise();
+    strokeCap(ROUND);
+  }
+
+  function windowResized() {
+    const c = document.getElementById('pine-container');
+    resizeCanvas(c.clientWidth, c.clientHeight);
+  }
+
+  class Firework {
+  constructor() {
+    this.x = random(width);
+    this.y = height;
+    this.targetY = random(height * 0.2, height * 0.5);
+    this.exploded = false;
+    this.particles = [];
+    // pick a random HSB hue, full saturation/brightness
+    const h = random(360), s = 100, b = 100;
+    this.color = color(h, s, b);
+  }
+  update() {
+    if (!this.exploded) {
+      // slower rocket climb
+      this.y -= 150 * deltaTime * 0.001;
+      if (this.y <= this.targetY) {
+        this.exploded = true;
+        // rainbow burst: many particles
+        for (let i = 0; i < 60; i++) {
+          const angle = random(TWO_PI);
+          const speed = random(30, 150);  // slower spread
+          this.particles.push({
+            x: this.x, y: this.y,
+            vx: cos(angle) * speed,
+            vy: sin(angle) * speed,
+            hue: random(360),
+            alpha: 255
+          });
+        }
+      }
+    } else {
+      // animate particles
+      this.particles.forEach(p => {
+        p.x += p.vx * deltaTime * 0.001;
+        p.y += p.vy * deltaTime * 0.001;
+        p.vy += 50 * deltaTime * 0.001;       // gentle gravity
+        p.alpha -= 255 * deltaTime * 0.0005;  // slower fade
+      });
+      // remove dead
+      this.particles = this.particles.filter(p => p.alpha > 0);
+    }
+  }
+  draw() {
+    colorMode(HSB, 360, 100, 100, 255);
+    if (!this.exploded) {
+      stroke(this.color);
+      strokeWeight(3);
+      point(this.x, this.y);
+    } else {
+      this.particles.forEach(p => {
+        stroke(p.hue, 100, 100, p.alpha);
+        strokeWeight(2);
+        point(p.x, p.y);
+      });
+    }
+    colorMode(RGB, 255); // back to default
+  }
+}
+
+function updateFireworks() {
+  // spawn a new rocket occasionally
+  if (random() < 0.02 && fireworks.length < MAX_FIREWORKS) {
+    fireworks.push(new Firework());
+  }
+  // update them, culling finished ones
+  for (let i = fireworks.length - 1; i >= 0; i--) {
+    fireworks[i].update();
+    if (fireworks[i].exploded && fireworks[i].particles.length === 0) {
+      fireworks.splice(i, 1);
+    }
+  }
+}
+
+function drawFireworks() {
+  fireworks.forEach(fw => fw.draw());
+}
+
+  // —— MAIN DRAW LOOP —— 
+  function draw() {
+    t += deltaTime * 0.001;
+    clear();
+
+    // background
+    if (season === 'summer') drawSunset();
+    else background(200, 225, 255);
+
+    // hill
+    noStroke();
+    fill(
+      season === 'winter' ? 240 : 80,
+      season === 'winter' ? 240 : 170,
+      season === 'winter' ? 240 : 70
+    );
+    beginShape();
+      vertex(0, height);
+      for (let x = 0; x <= width; x += hillStep) {
+        vertex(x, getHillY(x));
+      }
+      vertex(width, height);
+    endShape(CLOSE);
+
+    // particles
+    if      (season === 'winter') updateSnow();
+    else if (season === 'fall')   updateLeaves();
+
+    // seasonal pre-tree effects
+    if (season === 'spring') { updateFlowers(); updateBees(); }
+     if (season === 'winter') { updateSnow(); updateSnowmen();}
+    if (season === 'summer'){ updateFireflies(), updateFireworks()};
+    if (season === 'fall')   drawWind();
+    
+
+    // draw the tree
+    const tx = width * 0.5,
+          ty = getHillY(tx);
+    drawPine(tx, ty, height * treeLenFactor, 7);
+
+    // seasonal post-tree effects
+    if (season === 'spring') { drawFlowers(); drawBees(); }
+    if (season === 'summer') { drawFireworks; drawFireflies(); }
+    if (season === 'fall')   drawLeafPile();
+    if (season === 'winter') {drawSnowmen(); }
+  }
+
+  // —— HELPERS & EFFECTS —— 
+  function getHillY(x) {
+    return height * hillYFactor + sin((x * 0.01) + t * 0.5) * hillAmp;
+  }
+
+  function drawSunset() {
+    for (let y = 0; y < height; y++) {
+      const pct = constrain(y / (height * 0.6), 0, 1);
+      const c = lerpColor(color(255, 94, 77), color(255, 212, 128), pct);
+      stroke(c);
+      line(0, y, width, y);
+    }
+  }
+
+  // — Snow (winter) — 
+  function updateSnow() {
+    if (flakes.length < MAX_FLAKES)
+      flakes.push({ x: random(width), y: -10, sz: random(2,6), sp: random(20,60) });
+    noStroke();
+    fill(255);
+    for (let i = flakes.length - 1; i >= 0; i--) {
+      const f = flakes[i];
+      f.y += f.sp * deltaTime * 0.001;
+      ellipse(f.x, f.y, f.sz);
+      if (f.y > height) flakes.splice(i,1);
+    }
+  }
+
+  // — Falling leaves & ground pile (fall) — 
+  function updateLeaves() {
+  // 1) spawn a few new leaves each frame (up to MAX_LEAVES on‐screen)
+  if (random() < 0.05 && leaves.length < MAX_LEAVES) {
+    leaves.push({
+      x: random(width),
+      y: -10,
+      sz: random(8, 16),
+      sp: random(30, 80),
+      ang: random(TWO_PI),
+      spn: random(-0.03, 0.03),
+      col: color(200, random(100, 50), 0)
+    });
+  }
+
+  // 2) move them, draw them, and when they hit the bottom, pop them into the pile
+  noStroke();
+  for (let i = leaves.length - 1; i >= 0; i--) {
+    const L = leaves[i];
+    L.y += L.sp * deltaTime * 0.001;
+    L.x += cos(L.ang) * 20 * deltaTime * 0.001;
+    L.ang += L.spn;
+    fill(L.col);
+    push();
+      translate(L.x, L.y);
+      rotate(L.ang);
+      ellipse(0, 0, L.sz * 0.6, L.sz);
+    pop();
+
+    if (L.y > height) {
+      // remove from active leaves
+      leaves.splice(i, 1);
+      // add to the ground‐pile, with a bit of horizontal jitter for randomness
+      leafPile.push({
+        x: L.x + random(-20, 20),
+        sz: L.sz,
+        col: L.col
+      });
+    }
+  }
+  }
+
+// ——————————————————————————————————————————————————
+// DRAW ACCUMULATED PILE
+// ——————————————————————————————————————————————————
+function drawLeafPile() {
+  noStroke();
+  leafPile.forEach(L => {
+    fill(L.col);
+    // stack them at the very bottom
+    ellipse(L.x, height - L.sz * 0.5, L.sz, L.sz * 0.6);
+  });
+}
+
+  function drawLeafPile() {
+    noStroke();
+    leafPile.forEach(L => {
+      fill(L.col);
+      ellipse(L.x, height - L.sz*0.5, L.sz, L.sz*0.6);
+    });
+  }
+
+
+const flowers = [];
+const MAX_FLOWERS = 15;
+
+// —— replace updateBuds() with updateFlowers() —— 
+function updateFlowers() {
+  // spawn a new flower at the hill up to MAX_FLOWERS
+  if (flowers.length < MAX_FLOWERS && random() < 0.01) {
+    let x = random(width);
+    let y = getHillY(x);
+    flowers.push({ x, y, age: 0, maxSize: random(20, 40) });
+  }
+  // age them (cap growth at 60 frames)
+  flowers.forEach(f => {
+    if (f.age < 60) f.age++;
+  });
+}
+
+// —— replace drawBuds() with drawFlowers() —— 
+function drawFlowers() {
+  flowers.forEach(f => {
+    const pct  = constrain(f.age / 60, 0, 1);
+    const size = f.maxSize * pct;
+
+    // stem
+    stroke(60, 180, 60);
+    strokeWeight(2);
+    line(f.x, f.y, f.x, f.y - size);
+
+    // petals + center
+    push();
+      translate(f.x, f.y - size);
+      noStroke();
+      fill(255);
+      for (let i = 0; i < 6; i++) {
+        let ang = TWO_PI * i / 6;
+        ellipse(cos(ang) * size * 0.3, sin(ang) * size * 0.3, size * 0.3);
+      }
+      fill(255, 200, 0);
+      ellipse(0, 0, size * 0.4);
+    pop();
+  });
+}
+
+// —— updateBees(): spawn them around flowers, not random buds —— 
+function updateBees() {
+  if (flowers.length > 0 && bees.length < MAX_BEES && random() < 0.005) {
+    let f  = random(flowers);
+    let fx = f.x, fy = f.y - f.maxSize;
+    bees.push({
+      x:    fx + random(-20, 20),
+      y:    fy + random(-20, 20),
+      vx:   random(-30, 30),
+      vy:   random(-30, 30),
+      size: random(8, 12),
+      wing: 0
+    });
+  }
+
+  for (let i = bees.length - 1; i >= 0; i--) {
+    let b = bees[i];
+    b.x    += b.vx * deltaTime * 0.001;
+    b.y    += b.vy * deltaTime * 0.001;
+    b.vx   += random(-5, 5) * deltaTime * 0.001;
+    b.vy   += random(-5, 5) * deltaTime * 0.001;
+    b.wing += deltaTime * 0.01;
+    if (b.x < 0 || b.x > width || b.y < 0 || b.y > height) bees.splice(i, 1);
+  }
+}
+
+// —— drawBees(): black & yellow stripes + white wings —— 
+function drawBees() {
+  noStroke();
+  bees.forEach(b => {
+    push();
+      translate(b.x, b.y);
+      rotate(sin(b.wing) * 0.5);
+
+      // yellow body
+      fill(255, 204, 0);
+      ellipse(0, 0, b.size, b.size * 0.6);
+
+      // black stripes
+      fill(0);
+      ellipse(0, 0, b.size * 0.6, b.size * 0.3);
+      ellipse(0, 0, b.size * 0.3, b.size * 0.2);
+
+      // translucent wings
+      fill(255, 255, 255, 150);
+      ellipse(-b.size * 0.3, -b.size * 0.3, b.size * 0.6, b.size * 0.3);
+      ellipse( b.size * 0.3, -b.size * 0.3, b.size * 0.6, b.size * 0.3);
+    pop();
+  });
+}
+
+  // — Summer: fireflies & sunbeams — 
+  function updateFireflies() {
+    if (fireflies.length < MAX_FIREFLIES && random() < 0.01) {
+      fireflies.push({ x: random(width), y: random(height*0.5), life: random(1,3) });
+    }
+    for (let i = fireflies.length - 1; i >= 0; i--) {
+      const f = fireflies[i];
+      f.life -= deltaTime * 0.001;
+      if (f.life <= 0) fireflies.splice(i,1);
+    }
+  }
+  function drawFireflies() {
+    noStroke();
+    fireflies.forEach(f => {
+      const alpha = map(sin(f.life*PI), 0,1, 0,255);
+      fill(255,255,150, alpha);
+      ellipse(f.x, f.y, 4,4);
+    });
+  }
+  function drawSunbeam() {
+    push();
+      blendMode(SOFT_LIGHT);
+      for (let r=width; r>0; r-=50) {
+        noFill();
+        stroke(255,255,200,10);
+        circle(width/2 + sin(t*0.2)*50, height/3, r);
+      }
+    pop();
+    blendMode(BLEND);
+  }
+
+  // — Fall: wind gust — 
+  function drawWind() {
+    windPhase += 0.01;
+    const offset = sin(windPhase) * 0.4;
+    // you could apply this to branch angles if you record them—
+    // but here we just leave it ready for future tweaks.
+  }
+
+  // — Winter: frost sparkles & aurora — 
+ const snowmen = [];
+const MAX_SNOWMEN = 5;
+const SNOWMAN_STAGE_TIME = 1000; // ms per snow-ball stage
+
+// … your existing globals (flakes, leaves, fireflies, bees, etc.) …
+
+// —— replace your drawFrost() function with these two: —— 
+function updateSnowmen() {
+  // spawn new snowmen slowly (up to MAX_SNOWMEN)
+  if (snowmen.length < MAX_SNOWMEN && random() < 0.002) {
+    const bottomR = random(30, 50);
+    snowmen.push({
+      x:    random(width * 0.1, width * 0.9),
+      y:    height,
+      bottomR,
+      midR:  bottomR * 0.7,
+      headR: bottomR * 0.5,
+      stage: 0,
+      timer: 0
+    });
+  }
+  // advance build-stage over time
+  for (let i = snowmen.length - 1; i >= 0; i--) {
+    const s = snowmen[i];
+    s.timer += deltaTime;
+    if (s.stage < 3 && s.timer > SNOWMAN_STAGE_TIME) {
+      s.stage++;
+      s.timer = 0;
+    }
+  }
+}
+
+function drawSnowmen() {
+  snowmen.forEach(s => {
+    const { x, y, bottomR, midR, headR, stage } = s;
+    noStroke();
+    fill(255);
+    // 1) bottom sphere
+    if (stage >= 1) {
+      ellipse(x, y, bottomR * 2, bottomR * 2);
+    }
+    // 2) middle sphere + stick arms
+    if (stage >= 2) {
+      ellipse(x, y - bottomR * 2, midR * 2, midR * 2);
+      // arms
+      stroke(100, 50, 0);
+      strokeWeight(2);
+      const ay = y - bottomR * 2;
+      line(x - midR, ay, x - midR * 1.8, ay - midR * 0.5);
+      line(x + midR, ay, x + midR * 1.8, ay - midR * 0.5);
+      noStroke();
+    }
+    // 3) head sphere + face
+    if (stage >= 3) {
+      const hy = y - bottomR * 2 - midR * 2;
+      ellipse(x, hy, headR * 2, headR * 2);
+      // eyes
+      fill(0);
+      ellipse(x - headR * 0.3, hy - headR * 0.2, headR * 0.2, headR * 0.2);
+      ellipse(x + headR * 0.3, hy - headR * 0.2, headR * 0.2, headR * 0.2);
+      // carrot nose
+      fill(255, 165, 0);
+      triangle(
+        x, hy,
+        x, hy + headR * 0.1,
+        x + headR * 0.6, hy
+      );
+      // smile
+      noFill();
+      stroke(0);
+      strokeWeight(1);
+      arc(x, hy + headR * 0.2, headR * 0.6, headR * 0.4, 0, PI);
+      noStroke();
+    }
+  });
+}
+
+  // —— Fractal Pine —— 
+  function drawPine(x, y, len, depth) {
+    push();
+      translate(x,y);
+      stroke(80,40,20);
+      strokeWeight(map(depth, 0,7, 2,24));
+      line(0,0, 0,-len);
+      translate(0,-len);
+
+      if (depth > 0) {
+        const baseA = PI/8,
+              sway  = noiseGen.noise2D(depth, t*0.1)*0.15;
+        drawPine(0,0, len*0.7, depth-1);
+        rotate(-baseA + sway);
+        drawPine(0,0, len*0.7, depth-1);
+        rotate(2*(baseA - sway));
+        drawPine(0,0, len*0.7, depth-1);
+
+      } else {
+        // on-tree leaves (skip in winter; match fall‐leaf colors)
+        if (season !== 'winter') {
+          const fc    = 8,
+                pulse = map(noiseGen.noise2D(t, x*0.001), -1,1, -2,2),
+                sz    = len*0.5 + pulse;
+          for (let i=-fc; i<=fc; i++) {
+            const ang = map(i, -fc, fc, -PI/2, PI/2)*0.6;
+            push();
+              rotate(ang);
+              strokeWeight(1.5);
+              if (season === 'fall') {
+                // same col as falling leaves
+                const c = color(200, random(100,50), 0);
+                stroke(c);
+              } else {
+                stroke(30,100,30,200);
+              }
+              line(0,0, 0,-sz);
+            pop();
+          }
+        }
+      }
+    pop();
+  }
+</script>
 </body>
 </html>
