@@ -5,7 +5,7 @@ import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 // Paths & constants
-const MODEL_URL = '/assets/model.glb';
+const MODEL_URL = 'assets/model.glb';
 const BG_COLOR  = 0xffffff;   // paper white
 const canvasContainer = document.getElementById('app');
 
