@@ -6,35 +6,65 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 // Paths & constants
 const MODEL_URL = 'assets/model.glb';
-const BG_COLOR  = 0xffffff;   // paper white
+const BG_COLOR  = 0xf0f0f0;   // light grey backdrop
 const canvasContainer = document.getElementById('app');
 
-// Three.js boilerplate
-const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:false });
+// Renderer
+const renderer = new THREE.WebGLRenderer({ antialias:true });
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 canvasContainer.appendChild(renderer.domElement);
 
+// Scene
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(BG_COLOR);
+const bgLoader = new THREE.TextureLoader();
+bgLoader.load(
+  'assets/background.png',      // path to your PNG in /assets
+  (texture) => {
+    scene.background = texture;
+  },
+  undefined,
+  (err) => {
+    console.warn('Could not load background texture:', err);
+  }
+);
 
-const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, 0.01, 100);
-camera.position.set(0, 0.45, 1.2);
+// Camera (portrait framing)
+const camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.01, 100);
+camera.position.set(0, 0.6, 1.8);   // slightly above & back
+camera.lookAt(0, 0.2, 0);
+
+// Controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
+controls.target.set(0, 0.2, 0);
 
-// Lighting (neutral, looks good on white bg)
-const hemi = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.9);
-scene.add(hemi);
+// Lighting
+// 1. Ambient fill so no totally black shadows
+scene.add(new THREE.AmbientLight(0x606060, 0.6));
+
+// 2. Key light (front-right)
+const keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+keyLight.position.set(1, 1, 0.5);
+scene.add(keyLight);
+
+// 3. Fill light (front-left, softer)
+const fillLight = new THREE.DirectionalLight(0xffeedd, 0.4);
+fillLight.position.set(-1, 0.5, 1);
+scene.add(fillLight);
+
+// 4. Rim light (behind, to highlight silhouette)
+const rimLight = new THREE.DirectionalLight(0xffffff, 0.3);
+rimLight.position.set(-0.5, 1, -1);
+scene.add(rimLight);
 
 // GLTF + compression loaders
 const loader = new GLTFLoader();
 const draco = new DRACOLoader();
 draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 loader.setDRACOLoader(draco);
-GLTFLoader.setMeshoptDecoder(MeshoptDecoder);
-
+loader.setMeshoptDecoder(MeshoptDecoder);
 // State vars
 let meshes = {};                // map: key→mesh
 let layerIndex = 0;             // 0: face, 1: pial, 2: white
