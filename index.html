@@ -53,6 +53,16 @@
   <div class="page-container">
     <!-- left column -->
     <div class="content-wrapper">
+      <!-- Brain CTA Button in content column -->
+      <div class="brain-cta-fixed">
+        <button id="open-brain" class="brain-cta-button">
+          <div class="brain-cta-content">
+            <h3>Explore My Actual Brain</h3>
+            <p>3D MPRAGE scan of my brain<br>Navigate through face, cortical surface, and white matter</p>
+            <div class="brain-cta-icon">🧠</div>
+          </div>
+        </button>
+      </div>
       <header id="hero" class="section-container hero-content">
         <nav>
           <a href="#intro">Intro</a>
@@ -84,13 +94,8 @@
         </div>
       </section>
       <section id="projects" class="section-container">
-        <div class="projects-entry">
-            <h3>Check Out My BRAIN!!!</h3>
-            <p>
-              Apologies for the horrors you may see....
-            </p>
-            <a href="brain.html" class="contact-btn">BRAINS →</a>
-          </div>
+        <h2>Projects</h2>
+        <p>Various projects and experiments I've worked on.</p>
       </section>
 
       <section id="contact" class="section-container"><!-- … --></section>
@@ -111,10 +116,33 @@
     </div>
   </div>
 
+  <!-- Three.js import map for brain viewer -->
+  <script type="importmap">
+    {"imports":{ "three":"https://unpkg.com/three@0.165.0/build/three.module.js", "three/addons/":"https://unpkg.com/three@0.165.0/examples/jsm/"}}
+  </script>
+
+  <!-- Brain Modal -->
+  <div id="brain-modal" class="brain-modal">
+    <div class="brain-modal-backdrop"></div>
+    <div class="brain-modal-content">
+      <button id="brain-close" class="brain-close">&times;</button>
+      <div id="brain-loading" class="brain-loading">
+        <div class="brain-spinner"></div>
+        <p>Loading Brain Model...</p>
+      </div>
+      <div id="brain-container"></div>
+      <!-- Brain navigation arrows -->
+      <div id="brain-left" class="brain-arrow brain-arrow-left">&#x2190;</div>
+      <div id="brain-right" class="brain-arrow brain-arrow-right">&#x2192;</div>
+      <div id="brain-up" class="brain-arrow brain-arrow-up">&#x2191;</div>
+      <div id="brain-down" class="brain-arrow brain-arrow-down">&#x2193;</div>
+    </div>
+  </div>
+
   <!-- p5.js & Simplex-Noise -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
-  <!-- your site’s main JS -->
+  <!-- your site's main JS -->
   <script src="js/main.js"></script>
 
   <!-- Breathing Fractal Pine with Season Orbs -->
@@ -163,6 +191,8 @@
     cnv.parent('pine-container');
     noiseGen = new SimplexNoise();
     strokeCap(ROUND);
+    // Expose p5 instance globally for brain modal integration
+    window.p5Instance = this;
   }
 
   function windowResized() {
