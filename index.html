@@ -68,6 +68,7 @@
           <a href="#intro">Intro</a>
           <a href="#writings">Writings</a>
           <a href="#projects">Projects</a>
+          <a href="#wildland-firefighting">Firefighting</a>
           <a href="#contact">Contact</a>
         </nav>
         <h1>Jonny Bachman</h1>
@@ -96,6 +97,83 @@
       <section id="projects" class="section-container">
         <h2>Projects</h2>
         <p>Various projects and experiments I've worked on.</p>
+      </section>
+
+      <section id="wildland-firefighting" class="section-container">
+        <h2>Wildland Firefighting</h2>
+        <p>My experiences as a wildland firefighter, captured in moments across various deployments.</p>
+
+        <div class="scrapbook-gallery">
+          <!-- Videos prominently displayed -->
+          <div class="gallery-item video-item large">
+            <video src="assets/firephotos/burnlight.MOV" muted loop preload="metadata">
+              Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay">
+              <span>Night Burn Operations</span>
+            </div>
+          </div>
+
+          <div class="gallery-item video-item medium">
+            <video src="assets/firephotos/coolfire.MOV" muted loop preload="metadata">
+              Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay">
+              <span>Controlled Burn</span>
+            </div>
+          </div>
+
+          <div class="gallery-item photo-item small">
+            <img src="assets/firephotos/IMG_0341.JPG" alt="Firefighting scene" loading="lazy">
+          </div>
+
+          <div class="gallery-item photo-item medium">
+            <img src="assets/firephotos/IMG_2219.JPG" alt="Fire crew" loading="lazy">
+          </div>
+
+          <div class="gallery-item video-item small">
+            <video src="assets/firephotos/IMG_0148.MOV" muted loop preload="metadata">
+              Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay">
+              <span>Field Operations</span>
+            </div>
+          </div>
+
+          <div class="gallery-item photo-item small">
+            <img src="assets/firephotos/IMG_2268.JPG" alt="Equipment preparation" loading="lazy">
+          </div>
+
+          <div class="gallery-item video-item medium">
+            <video src="assets/firephotos/plane.MOV" muted loop preload="metadata">
+              Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay">
+              <span>Air Support</span>
+            </div>
+          </div>
+
+          <div class="gallery-item photo-item large">
+            <img src="assets/firephotos/IMG_2587.JPG" alt="Fire line" loading="lazy">
+          </div>
+
+          <div class="gallery-item photo-item small">
+            <img src="assets/firephotos/IMG_2589.JPG" alt="Crew work" loading="lazy">
+          </div>
+
+          <div class="gallery-item video-item medium">
+            <video src="assets/firephotos/IMG_0170.MOV" muted loop preload="metadata">
+              Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay">
+              <span>Active Fire</span>
+            </div>
+          </div>
+
+          <div class="gallery-item photo-item small">
+            <img src="assets/firephotos/IMG_2625.JPG" alt="Fire operations" loading="lazy">
+          </div>
+        </div>
       </section>
 
       <section id="contact" class="section-container"><!-- … --></section>
@@ -144,6 +222,34 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
   <!-- your site's main JS -->
   <script src="js/main.js"></script>
+
+  <!-- Video Hover Autoplay for Firefighting Gallery -->
+  <script>
+    // Auto-play videos on hover
+    document.addEventListener('DOMContentLoaded', function() {
+      const galleryVideos = document.querySelectorAll('.scrapbook-gallery video');
+
+      galleryVideos.forEach(video => {
+        video.addEventListener('mouseenter', function() {
+          this.play();
+        });
+
+        video.addEventListener('mouseleave', function() {
+          this.pause();
+          this.currentTime = 0; // Reset to beginning
+        });
+
+        // Mobile touch support
+        video.addEventListener('touchstart', function() {
+          if (this.paused) {
+            this.play();
+          } else {
+            this.pause();
+          }
+        });
+      });
+    });
+  </script>
 
   <!-- Breathing Fractal Pine with Season Orbs -->
   <script>
