@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wildland Firefighting - Jonathan Bachman</title>
+
+  <!-- Import Courier Prime font to match site style -->
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Courier Prime', monospace;
+      background: #1a1a1a;
+      color: #fff;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Navigation Back */
+    .nav-link {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      text-decoration: none;
+      color: #fff;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.5rem 1rem;
+      background: rgba(0,0,0,0.5);
+      border: 2px solid #fff;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-link:hover {
+      background: #fff;
+      color: #000;
+      transform: translateY(-2px);
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      background: linear-gradient(180deg, rgba(255,94,77,0.3) 0%, rgba(0,0,0,0) 100%);
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .header p {
+      font-size: 1rem;
+      color: #ccc;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Full Page Scrapbook Gallery */
+    .scrapbook-container {
+      padding: 2rem;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .scrapbook-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      grid-auto-flow: dense;
+    }
+
+    /* Gallery Items */
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      border: 3px solid #fff;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.03) translateY(-5px);
+      box-shadow: 0 12px 30px rgba(255,94,77,0.4);
+      z-index: 10;
+    }
+
+    /* Size Variations for Visual Interest */
+    .gallery-item.hero {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .gallery-item.wide {
+      grid-column: span 2;
+    }
+
+    .gallery-item.tall {
+      grid-row: span 2;
+    }
+
+    /* Standard aspect ratio for regular items */
+    .gallery-item:not(.hero):not(.wide):not(.tall) {
+      aspect-ratio: 4/3;
+    }
+
+    .gallery-item.hero {
+      aspect-ratio: 16/9;
+    }
+
+    .gallery-item.wide {
+      aspect-ratio: 2/1;
+    }
+
+    .gallery-item.tall {
+      aspect-ratio: 3/4;
+    }
+
+    /* Images and Videos */
+    .gallery-item img,
+    .gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Video Overlay */
+    .video-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+      color: white;
+      padding: 1rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .gallery-item:hover .video-overlay {
+      opacity: 1;
+    }
+
+    .video-overlay span {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: block;
+    }
+
+    .video-overlay .subtitle {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: #ccc;
+      margin-top: 0.25rem;
+    }
+
+    /* Photo labels (subtle) */
+    .photo-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      color: white;
+      padding: 0.75rem;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover .photo-label {
+      opacity: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .scrapbook-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+
+      .gallery-item.hero {
+        grid-column: span 2;
+        grid-row: span 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .scrapbook-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+      }
+
+      .gallery-item.hero,
+      .gallery-item.wide {
+        grid-column: span 1;
+      }
+
+      .gallery-item.tall {
+        grid-row: span 1;
+      }
+
+      .nav-link {
+        top: 1rem;
+        left: 1rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .scrapbook-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Navigation -->
+  <a href="index.html" class="nav-link">← Back</a>
+
+  <!-- Header -->
+  <header class="header">
+    <h1>Wildland Firefighting</h1>
+    <p>Moments captured across various deployments, from controlled burns to active fire suppression operations</p>
+  </header>
+
+  <!-- Gallery -->
+  <div class="scrapbook-container">
+    <div class="scrapbook-grid">
+
+      <!-- Hero Video - Night Burn Operations -->
+      <div class="gallery-item video-item hero">
+        <video src="assets/firephotos/burnlight.MOV" muted loop preload="metadata">
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay">
+          <span>Night Burn Operations</span>
+          <div class="subtitle">Controlled burn under cover of darkness</div>
+        </div>
+      </div>
+
+      <!-- Air Support Video -->
+      <div class="gallery-item video-item wide">
+        <video src="assets/firephotos/plane.MOV" muted loop preload="metadata">
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay">
+          <span>Air Support</span>
+          <div class="subtitle">Aerial fire suppression operations</div>
+        </div>
+      </div>
+
+      <!-- Fire Line Photo -->
+      <div class="gallery-item photo-item tall">
+        <img src="assets/firephotos/IMG_2587.JPG" alt="Fire line operations" loading="lazy">
+        <div class="photo-label">Creating fire breaks</div>
+      </div>
+
+      <!-- Controlled Burn Video -->
+      <div class="gallery-item video-item">
+        <video src="assets/firephotos/coolfire.MOV" muted loop preload="metadata">
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay">
+          <span>Controlled Burn</span>
+        </div>
+      </div>
+
+      <!-- Crew Photo -->
+      <div class="gallery-item photo-item">
+        <img src="assets/firephotos/IMG_2219.JPG" alt="Fire crew" loading="lazy">
+        <div class="photo-label">Fire crew briefing</div>
+      </div>
+
+      <!-- Field Operations Video -->
+      <div class="gallery-item video-item">
+        <video src="assets/firephotos/IMG_0148.MOV" muted loop preload="metadata">
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay">
+          <span>Field Operations</span>
+        </div>
+      </div>
+
+      <!-- Firefighting Scene -->
+      <div class="gallery-item photo-item wide">
+        <img src="assets/firephotos/IMG_0341.JPG" alt="Active firefighting" loading="lazy">
+        <div class="photo-label">Active suppression</div>
+      </div>
+
+      <!-- Equipment Prep -->
+      <div class="gallery-item photo-item">
+        <img src="assets/firephotos/IMG_2268.JPG" alt="Equipment preparation" loading="lazy">
+        <div class="photo-label">Equipment staging</div>
+      </div>
+
+      <!-- Active Fire Video -->
+      <div class="gallery-item video-item tall">
+        <video src="assets/firephotos/IMG_0170.MOV" muted loop preload="metadata">
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay">
+          <span>Active Fire</span>
+          <div class="subtitle">Fire behavior monitoring</div>
+        </div>
+      </div>
+
+      <!-- Crew Work -->
+      <div class="gallery-item photo-item">
+        <img src="assets/firephotos/IMG_2589.JPG" alt="Crew operations" loading="lazy">
+        <div class="photo-label">Hand crew operations</div>
+      </div>
+
+      <!-- Fire Operations -->
+      <div class="gallery-item photo-item">
+        <img src="assets/firephotos/IMG_2625.JPG" alt="Fire operations" loading="lazy">
+        <div class="photo-label">Tactical operations</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Video Hover Autoplay Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const videos = document.querySelectorAll('.gallery-item video');
+
+      videos.forEach(video => {
+        video.addEventListener('mouseenter', function() {
+          this.play();
+        });
+
+        video.addEventListener('mouseleave', function() {
+          this.pause();
+          this.currentTime = 0;
+        });
+
+        // Mobile touch support
+        video.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          if (this.paused) {
+            this.play();
+          } else {
+            this.pause();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

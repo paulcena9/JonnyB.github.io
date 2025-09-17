@@ -615,10 +615,9 @@ nav a.in-view {
 ------------------------------------------------------------ */
 .scrapbook-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
   margin-top: 2rem;
-  grid-auto-flow: dense;
 }
 
 .gallery-item {
@@ -628,32 +627,13 @@ nav a.in-view {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   background: #f0f0f0;
+  aspect-ratio: 4/3;
 }
 
 .gallery-item:hover {
-  transform: rotate(-1deg) scale(1.05);
+  transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   z-index: 10;
-}
-
-.gallery-item:nth-child(even):hover {
-  transform: rotate(1deg) scale(1.05);
-}
-
-/* Size variations for scrapbook effect */
-.gallery-item.small {
-  grid-row: span 1;
-  grid-column: span 1;
-}
-
-.gallery-item.medium {
-  grid-row: span 2;
-  grid-column: span 2;
-}
-
-.gallery-item.large {
-  grid-row: span 2;
-  grid-column: span 3;
 }
 
 /* Images */
@@ -705,27 +685,14 @@ nav a.in-view {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .scrapbook-gallery {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.75rem;
-  }
-
-  .gallery-item.large {
-    grid-column: span 2;
-  }
-
-  .gallery-item.medium {
-    grid-column: span 1;
-    grid-row: span 1;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
   }
 }
 
 @media (max-width: 480px) {
   .scrapbook-gallery {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .gallery-item.large,
-  .gallery-item.medium {
-    grid-column: span 2;
+    gap: 0.75rem;
   }
 }
