@@ -117,82 +117,15 @@
       grid-row: span 2;
     }
 
-    /* Standard aspect ratio for regular items */
-    .gallery-item:not(.hero):not(.wide):not(.tall) {
-      aspect-ratio: 4/3;
-    }
-
-    .gallery-item.hero {
-      aspect-ratio: 16/9;
-    }
-
-    .gallery-item.wide {
-      aspect-ratio: 2/1;
-    }
-
-    .gallery-item.tall {
-      aspect-ratio: 3/4;
-    }
-
-    /* Images and Videos */
+    /* No cropping - natural aspect ratios */
     .gallery-item img,
     .gallery-item video {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
       display: block;
     }
 
-    /* Video Overlay */
-    .video-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-      color: white;
-      padding: 1rem;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
 
-    .gallery-item:hover .video-overlay {
-      opacity: 1;
-    }
-
-    .video-overlay span {
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      display: block;
-    }
-
-    .video-overlay .subtitle {
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: #ccc;
-      margin-top: 0.25rem;
-    }
-
-    /* Photo labels (subtle) */
-    .photo-label {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-      color: white;
-      padding: 0.75rem;
-      font-size: 0.8rem;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .gallery-item:hover .photo-label {
-      opacity: 1;
-    }
 
     /* Responsive */
     @media (max-width: 1200px) {
@@ -254,15 +187,16 @@
   <div class="scrapbook-container">
     <div class="scrapbook-grid">
 
-      <!-- Hero Video - Night Burn Operations -->
-      <div class="gallery-item video-item hero">
+      <!-- Hand Crew Operations - Front and Center -->
+      <div class="gallery-item photo-item hero">
+        <img src="assets/firephotos/IMG_2589.JPG" alt="Hand crew operations" loading="lazy">
+      </div>
+
+      <!-- Night Burn Video -->
+      <div class="gallery-item video-item wide">
         <video src="assets/firephotos/burnlight.MOV" muted loop preload="metadata">
           Your browser does not support the video tag.
         </video>
-        <div class="video-overlay">
-          <span>Night Burn Operations</span>
-          <div class="subtitle">Controlled burn under cover of darkness</div>
-        </div>
       </div>
 
       <!-- Air Support Video -->
@@ -270,16 +204,11 @@
         <video src="assets/firephotos/plane.MOV" muted loop preload="metadata">
           Your browser does not support the video tag.
         </video>
-        <div class="video-overlay">
-          <span>Air Support</span>
-          <div class="subtitle">Aerial fire suppression operations</div>
-        </div>
       </div>
 
       <!-- Fire Line Photo -->
       <div class="gallery-item photo-item tall">
         <img src="assets/firephotos/IMG_2587.JPG" alt="Fire line operations" loading="lazy">
-        <div class="photo-label">Creating fire breaks</div>
       </div>
 
       <!-- Controlled Burn Video -->
@@ -287,15 +216,11 @@
         <video src="assets/firephotos/coolfire.MOV" muted loop preload="metadata">
           Your browser does not support the video tag.
         </video>
-        <div class="video-overlay">
-          <span>Controlled Burn</span>
-        </div>
       </div>
 
       <!-- Crew Photo -->
       <div class="gallery-item photo-item">
         <img src="assets/firephotos/IMG_2219.JPG" alt="Fire crew" loading="lazy">
-        <div class="photo-label">Fire crew briefing</div>
       </div>
 
       <!-- Field Operations Video -->
@@ -303,21 +228,16 @@
         <video src="assets/firephotos/IMG_0148.MOV" muted loop preload="metadata">
           Your browser does not support the video tag.
         </video>
-        <div class="video-overlay">
-          <span>Field Operations</span>
-        </div>
       </div>
 
       <!-- Firefighting Scene -->
       <div class="gallery-item photo-item wide">
         <img src="assets/firephotos/IMG_0341.JPG" alt="Active firefighting" loading="lazy">
-        <div class="photo-label">Active suppression</div>
       </div>
 
       <!-- Equipment Prep -->
       <div class="gallery-item photo-item">
         <img src="assets/firephotos/IMG_2268.JPG" alt="Equipment preparation" loading="lazy">
-        <div class="photo-label">Equipment staging</div>
       </div>
 
       <!-- Active Fire Video -->
@@ -325,22 +245,12 @@
         <video src="assets/firephotos/IMG_0170.MOV" muted loop preload="metadata">
           Your browser does not support the video tag.
         </video>
-        <div class="video-overlay">
-          <span>Active Fire</span>
-          <div class="subtitle">Fire behavior monitoring</div>
-        </div>
       </div>
 
-      <!-- Crew Work -->
-      <div class="gallery-item photo-item">
-        <img src="assets/firephotos/IMG_2589.JPG" alt="Crew operations" loading="lazy">
-        <div class="photo-label">Hand crew operations</div>
-      </div>
 
       <!-- Fire Operations -->
       <div class="gallery-item photo-item">
         <img src="assets/firephotos/IMG_2625.JPG" alt="Fire operations" loading="lazy">
-        <div class="photo-label">Tactical operations</div>
       </div>
 
     </div>
