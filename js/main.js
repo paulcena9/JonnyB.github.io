@@ -70,6 +70,7 @@
   let brainViewer = null;
   let brainModal = null;
   let isP5Paused = false;
+  let brainPreloadPromise = null; // Store the preload promise
 
   async function initBrainModal() {
     brainModal = document.getElementById('brain-modal');
@@ -87,6 +88,12 @@
       console.warn('Brain modal elements not found');
       return;
     }
+
+    // Start preloading the brain model in the background
+    // Delay slightly to prioritize initial page render
+    setTimeout(() => {
+      preloadBrainModel();
+    }, 1000);
 
     // Open modal handler
     openBtn.addEventListener('click', async (e) => {
@@ -113,6 +120,45 @@
     });
   }
 
+  async function preloadBrainModel() {
+    // Start loading the brain model in the background
+    if (!brainPreloadPromise) {
+      brainPreloadPromise = (async () => {
+        try {
+          console.log('Starting background preload of brain model...');
+
+          // Create a hidden container for preloading
+          const preloadContainer = document.createElement('div');
+          preloadContainer.style.cssText = `
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+          `;
+          document.body.appendChild(preloadContainer);
+
+          // Dynamic import and initialize the brain viewer
+          const { default: BrainViewer } = await import('./brain-modal.js');
+          brainViewer = new BrainViewer(preloadContainer);
+          await brainViewer.init();
+
+          // Clean up the preload container but keep the viewer instance
+          document.body.removeChild(preloadContainer);
+          brainViewer.stopAnimation(); // Stop rendering while hidden
+
+          console.log('Brain model preloaded successfully');
+        } catch (error) {
+          console.error('Error preloading brain model:', error);
+          // Reset so it can be attempted again on click
+          brainPreloadPromise = null;
+          brainViewer = null;
+        }
+      })();
+    }
+    return brainPreloadPromise;
+  }
+
   async function openBrainModal() {
     if (!brainModal) return;
 
@@ -123,24 +169,37 @@
       // Show modal and loading indicator
       brainModal.classList.add('active');
       document.body.style.overflow = 'hidden';
-      
-      const loadingEl = document.getElementById('brain-loading');
-      if (loadingEl) loadingEl.classList.add('active');
 
-      // Initialize brain viewer if not already done
-      if (!brainViewer) {
-        // Dynamic import to load brain viewer only when needed
-        const { default: BrainViewer } = await import('./brain-modal.js');
-        const container = document.getElementById('brain-container');
-        brainViewer = new BrainViewer(container);
-        await brainViewer.init();
-        
-        // Hide loading indicator
+      const loadingEl = document.getElementById('brain-loading');
+      const container = document.getElementById('brain-container');
+
+      // Check if brain viewer is already loaded or being loaded
+      if (brainViewer) {
+        // Brain is already fully loaded, just move it to the modal container
+        moveViewerToContainer(container);
+        brainViewer.startAnimation();
+        if (loadingEl) loadingEl.classList.remove('active');
+      } else if (brainPreloadPromise) {
+        // Brain is still loading in the background, show loading and wait
+        if (loadingEl) loadingEl.classList.add('active');
+        await brainPreloadPromise;
+
+        if (brainViewer) {
+          moveViewerToContainer(container);
+          brainViewer.startAnimation();
+        } else {
+          // Preload failed, try loading directly
+          const { default: BrainViewer } = await import('./brain-modal.js');
+          brainViewer = new BrainViewer(container);
+          await brainViewer.init();
+        }
         if (loadingEl) loadingEl.classList.remove('active');
       } else {
-        // Resume animation if viewer already exists
-        brainViewer.startAnimation();
-        // Hide loading indicator immediately since model is already loaded
+        // No preload started (shouldn't happen), load directly
+        if (loadingEl) loadingEl.classList.add('active');
+        const { default: BrainViewer } = await import('./brain-modal.js');
+        brainViewer = new BrainViewer(container);
+        await brainViewer.init();
         if (loadingEl) loadingEl.classList.remove('active');
       }
 
@@ -167,6 +226,15 @@
 
     // Resume p5.js animation
     resumeP5();
+  }
+
+  function moveViewerToContainer(container) {
+    // Move the renderer canvas to the new container
+    if (brainViewer && brainViewer.renderer && brainViewer.renderer.domElement) {
+      container.appendChild(brainViewer.renderer.domElement);
+      brainViewer.container = container;
+      brainViewer.onWindowResize(); // Update size for new container
+    }
   }
 
   function pauseP5() {
