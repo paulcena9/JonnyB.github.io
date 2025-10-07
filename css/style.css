@@ -438,6 +438,26 @@ nav a.in-view {
   display: none;
 }
 
+/* Hemisphere labels for up/down arrows */
+.brain-arrow .arrow-label {
+  font-size: 10px;
+  font-weight: bold;
+  color: #666;
+  position: absolute;
+}
+
+.brain-arrow-up .arrow-label {
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.brain-arrow-down .arrow-label {
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 /* ------------------------------------------------------------
    FIXED BRAIN CTA BUTTON
 ------------------------------------------------------------ */

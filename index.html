@@ -69,7 +69,6 @@
           MRI Support Specialist @ Neuroscape | UCSF &amp; Problem Solver
         </p>
       </header>
-      <section id="intro" class="section-container"><!-- … --></section>
       <section id="writings" class="section-container">
         <h2>Writings</h2>
 
@@ -87,12 +86,6 @@
           <!-- You can add more .writing-entry blocks here in the same grid -->
         </div>
       </section>
-      <section id="projects" class="section-container">
-        <h2>Projects</h2>
-        <p>Various projects and experiments I've worked on.</p>
-      </section>
-
-      <section id="contact" class="section-container"><!-- … --></section>
 
       <section id="wildland-firefighting" class="section-container">
         <h2>Wildland Firefighting</h2>
@@ -132,10 +125,16 @@
       </div>
       <div id="brain-container"></div>
       <!-- Brain navigation arrows -->
-      <div id="brain-left" class="brain-arrow brain-arrow-left">&#x2190;</div>
-      <div id="brain-right" class="brain-arrow brain-arrow-right">&#x2192;</div>
-      <div id="brain-up" class="brain-arrow brain-arrow-up">&#x2191;</div>
-      <div id="brain-down" class="brain-arrow brain-arrow-down">&#x2193;</div>
+      <div id="brain-left" class="brain-arrow brain-arrow-left" title="Previous layer">&#x2190;</div>
+      <div id="brain-right" class="brain-arrow brain-arrow-right" title="Next layer">&#x2192;</div>
+      <div id="brain-up" class="brain-arrow brain-arrow-up" title="Toggle left hemisphere">
+        <span class="arrow-label">L</span>
+        &#x2191;
+      </div>
+      <div id="brain-down" class="brain-arrow brain-arrow-down" title="Toggle right hemisphere">
+        &#x2193;
+        <span class="arrow-label">R</span>
+      </div>
     </div>
   </div>
 

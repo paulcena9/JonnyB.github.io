@@ -179,9 +179,9 @@ class BrainViewer {
 
   applyLayerVisibility() {
     const layer = this.layers[this.layerIndex];
-    
-    // Reset hemisphere toggles when layer changes
-    if (layer !== 'white') {
+
+    // Reset hemisphere toggles when changing to face layer
+    if (layer === 'face') {
       this.lhEnabled = this.rhEnabled = true;
     }
 
@@ -196,8 +196,8 @@ class BrainViewer {
       case 'pial':
         // Only show if pial surfaces are loaded
         if (this.loadingPhase >= 1) {
-          if (this.meshes.lh_pial) this.meshes.lh_pial.visible = true;
-          if (this.meshes.rh_pial) this.meshes.rh_pial.visible = true;
+          if (this.lhEnabled && this.meshes.lh_pial) this.meshes.lh_pial.visible = true;
+          if (this.rhEnabled && this.meshes.rh_pial) this.meshes.rh_pial.visible = true;
         } else {
           // Fall back to face if pial not ready
           if (this.meshes.face) this.meshes.face.visible = true;
@@ -222,12 +222,13 @@ class BrainViewer {
         break;
     }
 
-    // Update UI visibility for hemisphere controls
+    // Update UI visibility for hemisphere controls - show for both pial and white layers
     const upArrow = document.getElementById('brain-up');
     const downArrow = document.getElementById('brain-down');
     if (upArrow && downArrow) {
-      upArrow.style.display = layer === 'white' ? 'flex' : 'none';
-      downArrow.style.display = layer === 'white' ? 'flex' : 'none';
+      const showArrows = (layer === 'white' || layer === 'pial');
+      upArrow.style.display = showArrows ? 'flex' : 'none';
+      downArrow.style.display = showArrows ? 'flex' : 'none';
     }
   }
 
@@ -301,13 +302,13 @@ class BrainViewer {
         this.changeLayer(1);
         break;
       case 'ArrowUp':
-        if (this.layerIndex === 2) {
+        if (this.layerIndex === 1 || this.layerIndex === 2) { // pial or white
           event.preventDefault();
           this.toggleHemisphere('lh');
         }
         break;
       case 'ArrowDown':
-        if (this.layerIndex === 2) {
+        if (this.layerIndex === 1 || this.layerIndex === 2) { // pial or white
           event.preventDefault();
           this.toggleHemisphere('rh');
         }

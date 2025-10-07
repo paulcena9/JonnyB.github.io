@@ -90,11 +90,13 @@
     .gallery-item {
       position: relative;
       overflow: hidden;
-      background: #000;
+      background: transparent;
       border: 3px solid #fff;
       box-shadow: 0 8px 20px rgba(0,0,0,0.5);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
+      align-self: start;  /* Prevents grid from stretching items vertically */
+      line-height: 0;  /* Remove any line-height spacing */
     }
 
     .gallery-item:hover {
@@ -194,14 +196,14 @@
 
       <!-- Night Burn Video -->
       <div class="gallery-item video-item wide">
-        <video src="assets/firephotos/burnlight.MOV" muted loop preload="metadata">
+        <video src="assets/firephotos/burnlight.MOV" muted loop autoplay playsinline>
           Your browser does not support the video tag.
         </video>
       </div>
 
-      <!-- Air Support Video -->
-      <div class="gallery-item video-item wide">
-        <video src="assets/firephotos/plane.MOV" muted loop preload="metadata">
+      <!-- Air Support Video - CENTERED -->
+      <div class="gallery-item video-item hero">
+        <video src="assets/firephotos/plane.MOV" muted loop autoplay playsinline>
           Your browser does not support the video tag.
         </video>
       </div>
@@ -211,9 +213,9 @@
         <img src="assets/firephotos/IMG_2587.JPG" alt="Fire line operations" loading="lazy">
       </div>
 
-      <!-- Controlled Burn Video -->
-      <div class="gallery-item video-item">
-        <video src="assets/firephotos/coolfire.MOV" muted loop preload="metadata">
+      <!-- Controlled Burn Video - CENTERED -->
+      <div class="gallery-item video-item hero">
+        <video src="assets/firephotos/coolfire.MOV" muted loop autoplay playsinline>
           Your browser does not support the video tag.
         </video>
       </div>
@@ -225,7 +227,7 @@
 
       <!-- Field Operations Video -->
       <div class="gallery-item video-item">
-        <video src="assets/firephotos/IMG_0148.MOV" muted loop preload="metadata">
+        <video src="assets/firephotos/IMG_0148.MOV" muted loop autoplay playsinline>
           Your browser does not support the video tag.
         </video>
       </div>
@@ -235,14 +237,14 @@
         <img src="assets/firephotos/IMG_0341.JPG" alt="Active firefighting" loading="lazy">
       </div>
 
-      <!-- Equipment Prep -->
-      <div class="gallery-item photo-item">
+      <!-- Equipment Prep - CENTERED -->
+      <div class="gallery-item photo-item hero">
         <img src="assets/firephotos/IMG_2268.JPG" alt="Equipment preparation" loading="lazy">
       </div>
 
       <!-- Active Fire Video -->
       <div class="gallery-item video-item tall">
-        <video src="assets/firephotos/IMG_0170.MOV" muted loop preload="metadata">
+        <video src="assets/firephotos/IMG_0170.MOV" muted loop autoplay playsinline>
           Your browser does not support the video tag.
         </video>
       </div>
@@ -256,29 +258,18 @@
     </div>
   </div>
 
-  <!-- Video Hover Autoplay Script -->
+  <!-- Ensure videos play on load -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const videos = document.querySelectorAll('.gallery-item video');
 
       videos.forEach(video => {
-        video.addEventListener('mouseenter', function() {
-          this.play();
-        });
-
-        video.addEventListener('mouseleave', function() {
-          this.pause();
-          this.currentTime = 0;
-        });
-
-        // Mobile touch support
-        video.addEventListener('touchstart', function(e) {
-          e.preventDefault();
-          if (this.paused) {
-            this.play();
-          } else {
-            this.pause();
-          }
+        // Ensure videos start playing
+        video.play().catch(e => {
+          // Auto-play was prevented, try again on user interaction
+          document.addEventListener('click', () => {
+            video.play();
+          }, { once: true });
         });
       });
     });
