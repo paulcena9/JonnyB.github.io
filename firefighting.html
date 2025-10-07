@@ -91,12 +91,13 @@
     .gallery-item {
       position: relative;
       overflow: hidden;
-      background: transparent;
+      background: #1a1a1a;  /* Match page background */
       border: 3px solid #fff;
       box-shadow: 0 8px 20px rgba(0,0,0,0.5);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
       line-height: 0;  /* Remove any line-height spacing */
+      font-size: 0;  /* Remove any font-size spacing */
     }
 
     .gallery-item:hover {
@@ -110,12 +111,13 @@
       grid-column: span 2;
     }
 
-    /* No cropping - natural aspect ratios */
+    /* Images/videos fill container completely */
     .gallery-item img,
     .gallery-item video {
       width: 100%;
       height: auto;
       display: block;
+      vertical-align: bottom;  /* Eliminate bottom gap */
     }
 
 
