@@ -53,7 +53,7 @@
     .header {
       text-align: center;
       padding: 4rem 2rem 2rem;
-      border-bottom: 6px solid #000;
+      border-bottom: 6px solid #1a2332;
     }
 
     .header h1 {
@@ -62,6 +62,7 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       margin-bottom: 0.5rem;
+      color: #1a2332;
     }
 
     .header p {
@@ -83,29 +84,30 @@
     /* NOODLES Overview Section */
     .noodles-overview {
       background: #fff;
-      border: 4px solid #000;
+      border: 4px solid #1a2332;
+      border-left: 8px solid #2c4a6e;
       padding: 2rem;
       margin-bottom: 3rem;
     }
 
     .noodles-overview h2 {
       font-size: 1.8rem;
-      color: #000;
+      color: #1a2332;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       margin-bottom: 1rem;
-      border-bottom: 4px solid #000;
+      border-bottom: 4px solid #2c4a6e;
       padding-bottom: 0.5rem;
     }
 
     .noodles-overview h3 {
       font-size: 1.3rem;
-      color: #000;
+      color: #1a2332;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin-top: 2rem;
       margin-bottom: 1rem;
-      border-bottom: 3px solid #000;
+      border-bottom: 3px solid #2c4a6e;
       padding-bottom: 0.5rem;
     }
 
@@ -117,14 +119,16 @@
     }
 
     .noodles-overview a {
-      color: #000;
+      color: #2c4a6e;
       text-decoration: none;
-      border-bottom: 2px solid #000;
+      border-bottom: 2px solid #2c4a6e;
       transition: all 0.3s ease;
+      font-weight: 700;
     }
 
     .noodles-overview a:hover {
-      background: #f2f2f2;
+      background: #e8eef5;
+      color: #1a2332;
     }
 
     /* README Section */
@@ -133,15 +137,16 @@
     }
 
     .readme-header {
-      background: #fff;
-      border: 4px solid #000;
+      background: #f8f9fb;
+      border: 4px solid #1a2332;
       border-bottom: none;
+      border-left: 8px solid #2c4a6e;
       padding: 1.5rem;
     }
 
     .readme-header h2 {
       font-size: 1.5rem;
-      color: #000;
+      color: #1a2332;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin-bottom: 0.5rem;
@@ -149,7 +154,7 @@
 
     .readme-header .project-note {
       font-size: 0.9rem;
-      color: #000;
+      color: #2c4a6e;
       font-style: italic;
     }
 
@@ -157,7 +162,8 @@
       background: #fff;
       color: #000;
       padding: 2rem;
-      border: 4px solid #000;
+      border: 4px solid #1a2332;
+      border-left: 8px solid #2c4a6e;
       font-family: 'Courier Prime', monospace;
       overflow-x: auto;
     }
@@ -175,10 +181,10 @@
     .readme-content h2,
     .readme-content h3,
     .readme-content h4 {
-      color: #000;
+      color: #1a2332;
       margin-top: 1.5rem;
       margin-bottom: 0.75rem;
-      border-bottom: 3px solid #000;
+      border-bottom: 3px solid #2c4a6e;
       padding-bottom: 0.5rem;
       font-weight: 700;
     }
@@ -207,13 +213,16 @@
     }
 
     .readme-content a {
-      color: #000;
-      text-decoration: underline;
+      color: #2c4a6e;
+      text-decoration: none;
+      border-bottom: 2px solid #2c4a6e;
       transition: all 0.2s ease;
+      font-weight: 600;
     }
 
     .readme-content a:hover {
-      background: #f2f2f2;
+      background: #e8eef5;
+      color: #1a2332;
     }
 
     .readme-content code {
@@ -290,9 +299,22 @@
     .readme-content video {
       max-width: 100%;
       height: auto;
-      border: 3px solid #000;
-      margin: 1rem 0;
+      border: 4px solid #2c4a6e;
+      margin: 1.5rem 0;
       display: block;
+      background: #000;
+    }
+
+    .readme-content video::-webkit-media-controls-panel {
+      background-color: #1a2332;
+    }
+
+    /* Video container for better presentation */
+    .readme-content p:has(> video) {
+      background: #f8f9fb;
+      padding: 1rem;
+      border: 2px solid #e8eef5;
+      margin: 1.5rem 0;
     }
 
     .readme-content hr {
@@ -376,9 +398,12 @@
         Data visualization is difficult to do, and researchers often invest large amounts of time developing a skillset using one or two tools. Collaboration between researchers is difficult because there is no centralized platform where a wide variety of processed data can exist in the same 3D scene.
       </p>
 
-      <h3>The Solution: NOODLES</h3>
+      <h3>The Solution:</h3>
       <p>
-        <strong>NREL Object Orientated Data layout and exploration system.</strong> Most of my work involved creating a filter for NOODLES to allow the exports of VTK/Paraview software to be introduced in a Noodles Scene. Orzo-OpenAI leveraged the existing Orzo, Noodles Rendering Client built in Python, and incorporated the OpenAI API into the client, allowing users to invoke visualizations with natural language and custom parameters.
+        <strong>NOODLES (NREL Object Orientated Data layout and exploration system)</strong>
+      </p>
+      <p>
+        Most of my work involved creating a filter for NOODLES to allow the exports of VTK/Paraview software to be introduced in a Noodles Scene. Orzo-OpenAI leveraged the existing Orzo, Noodles Rendering Client built in Python, and incorporated the OpenAI API into the client, allowing users to invoke visualizations with natural language and custom parameters.
       </p>
 
       <p>
@@ -432,17 +457,22 @@
         return `<img${attrs}src="${absoluteUrl}"`;
       });
 
-      // Fix video src attributes
-      html = html.replace(/<video([^>]*)src="([^"]+)"/g, (match, attrs, src) => {
+      // Fix video src attributes and ensure controls/autoplay
+      html = html.replace(/<video([^>]*)src="([^"]+)"([^>]*)>/g, (match, attrsBefore, src, attrsAfter) => {
+        let videoSrc = src;
         // Skip if already absolute URL
-        if (src.startsWith('http://') || src.startsWith('https://')) {
-          return match;
+        if (!src.startsWith('http://') && !src.startsWith('https://')) {
+          // Remove leading ./ or /
+          const cleanPath = src.replace(/^\.?\//, '');
+          // Construct absolute GitHub raw URL
+          videoSrc = `${repoBaseUrl}/${cleanPath}`;
         }
-        // Remove leading ./ or /
-        const cleanPath = src.replace(/^\.?\//, '');
-        // Construct absolute GitHub raw URL
-        const absoluteUrl = `${repoBaseUrl}/${cleanPath}`;
-        return `<video${attrs}src="${absoluteUrl}" controls`;
+
+        // Ensure controls and other attributes
+        const hasControls = match.includes('controls');
+        const controlsAttr = hasControls ? '' : ' controls';
+
+        return `<video${attrsBefore}src="${videoSrc}"${attrsAfter}${controlsAttr} playsinline preload="metadata">`;
       });
 
       // Fix source tags within video elements
@@ -456,6 +486,22 @@
         // Construct absolute GitHub raw URL
         const absoluteUrl = `${repoBaseUrl}/${cleanPath}`;
         return `<source${attrs}src="${absoluteUrl}"`;
+      });
+
+      // Convert GitHub video links to embedded video players
+      // GitHub often uses links like: https://github.com/user/repo/assets/...mp4
+      // or https://user-images.githubusercontent.com/...mp4
+      html = html.replace(/<a[^>]*href="([^"]*\.(mp4|webm|mov|avi))"[^>]*>([^<]*)<\/a>/gi, (match, videoUrl, ext, text) => {
+        return `<video src="${videoUrl}" controls playsinline preload="metadata" style="max-width: 100%; border: 4px solid #2c4a6e; margin: 1.5rem 0; display: block; background: #000;">
+          Your browser does not support the video tag. <a href="${videoUrl}">Download video</a>
+        </video>`;
+      });
+
+      // Also handle markdown video syntax if present
+      html = html.replace(/!\[([^\]]*)\]\(([^)]*\.(mp4|webm|mov|avi))\)/gi, (match, alt, videoUrl, ext) => {
+        return `<video src="${videoUrl}" controls playsinline preload="metadata" style="max-width: 100%; border: 4px solid #2c4a6e; margin: 1.5rem 0; display: block; background: #000;">
+          ${alt || 'Video'}
+        </video>`;
       });
 
       return html;
