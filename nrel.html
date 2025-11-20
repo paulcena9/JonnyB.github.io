@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NREL Software Development Internship - Jonathan Bachman</title>
+
+  <!-- Import Courier Prime font to match site style -->
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Marked.js for Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.0.0/marked.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Courier Prime', monospace;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      color: #fff;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Navigation Back */
+    .nav-link {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      text-decoration: none;
+      color: #fff;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.5rem 1rem;
+      background: rgba(0,0,0,0.5);
+      border: 2px solid #00d4aa;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-link:hover {
+      background: #00d4aa;
+      color: #000;
+      transform: translateY(-2px);
+      border-color: #00d4aa;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      background: linear-gradient(180deg, rgba(0,102,204,0.3) 0%, rgba(0,0,0,0) 100%);
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: #e0e0e0;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    /* Content Container */
+    .content-container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* NOODLES Overview Section */
+    .noodles-overview {
+      background: rgba(0,102,204,0.1);
+      border: 4px solid #0066cc;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 8px 30px rgba(0,102,204,0.3);
+    }
+
+    .noodles-overview h2 {
+      font-size: 1.8rem;
+      color: #00d4aa;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      border-bottom: 3px solid #00d4aa;
+      padding-bottom: 0.5rem;
+    }
+
+    .noodles-overview p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      color: #e0e0e0;
+    }
+
+    .noodles-overview a {
+      color: #00d4aa;
+      text-decoration: none;
+      border-bottom: 2px solid #00d4aa;
+      transition: all 0.3s ease;
+    }
+
+    .noodles-overview a:hover {
+      color: #fff;
+      border-bottom-color: #fff;
+    }
+
+    /* README Section */
+    .readme-section {
+      margin-bottom: 3rem;
+    }
+
+    .readme-header {
+      background: rgba(0,212,170,0.2);
+      border: 4px solid #00d4aa;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .readme-header h2 {
+      font-size: 1.5rem;
+      color: #00d4aa;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    .readme-header .project-note {
+      font-size: 0.9rem;
+      color: #fff;
+      font-style: italic;
+    }
+
+    .readme-content {
+      background: #fff;
+      color: #1a1a1a;
+      padding: 2rem;
+      border: 4px solid #0066cc;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      font-family: 'Courier Prime', monospace;
+      overflow-x: auto;
+    }
+
+    /* Loading state */
+    .readme-content.loading {
+      text-align: center;
+      color: #0066cc;
+      font-size: 1.2rem;
+      padding: 4rem 2rem;
+    }
+
+    /* Markdown Styling */
+    .readme-content h1,
+    .readme-content h2,
+    .readme-content h3,
+    .readme-content h4 {
+      color: #0066cc;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      border-bottom: 3px solid #0066cc;
+      padding-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .readme-content h1 {
+      font-size: 2rem;
+    }
+
+    .readme-content h2 {
+      font-size: 1.5rem;
+    }
+
+    .readme-content h3 {
+      font-size: 1.2rem;
+      border-bottom-width: 2px;
+    }
+
+    .readme-content h4 {
+      font-size: 1rem;
+      border-bottom-width: 1px;
+    }
+
+    .readme-content p {
+      margin-bottom: 1rem;
+      line-height: 1.7;
+    }
+
+    .readme-content a {
+      color: #0066cc;
+      text-decoration: none;
+      border-bottom: 2px solid #00d4aa;
+      transition: all 0.2s ease;
+    }
+
+    .readme-content a:hover {
+      color: #00d4aa;
+      border-bottom-color: #0066cc;
+    }
+
+    .readme-content code {
+      background: #f0f8ff;
+      color: #0066cc;
+      padding: 0.2rem 0.4rem;
+      border: 1px solid #0066cc;
+      border-radius: 3px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.9em;
+    }
+
+    .readme-content pre {
+      background: #1a1a1a;
+      color: #00d4aa;
+      padding: 1rem;
+      border: 3px solid #0066cc;
+      border-radius: 4px;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .readme-content pre code {
+      background: transparent;
+      border: none;
+      color: #00d4aa;
+      padding: 0;
+    }
+
+    .readme-content ul,
+    .readme-content ol {
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .readme-content li {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .readme-content blockquote {
+      border-left: 4px solid #0066cc;
+      padding-left: 1rem;
+      margin: 1rem 0;
+      color: #555;
+      font-style: italic;
+    }
+
+    .readme-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .readme-content table th,
+    .readme-content table td {
+      border: 2px solid #0066cc;
+      padding: 0.75rem;
+      text-align: left;
+    }
+
+    .readme-content table th {
+      background: #0066cc;
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .readme-content img {
+      max-width: 100%;
+      height: auto;
+      border: 3px solid #0066cc;
+      margin: 1rem 0;
+    }
+
+    .readme-content hr {
+      border: none;
+      border-top: 3px solid #0066cc;
+      margin: 2rem 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .header p {
+        font-size: 1rem;
+      }
+
+      .noodles-overview h2 {
+        font-size: 1.4rem;
+      }
+
+      .readme-header h2 {
+        font-size: 1.2rem;
+      }
+
+      .readme-content {
+        padding: 1.5rem;
+      }
+
+      .nav-link {
+        top: 1rem;
+        left: 1rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .content-container {
+        padding: 1rem;
+      }
+
+      .noodles-overview,
+      .readme-header {
+        padding: 1rem;
+      }
+
+      .readme-content {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Navigation -->
+  <a href="index.html" class="nav-link">← Back</a>
+
+  <!-- Header -->
+  <header class="header">
+    <h1>NREL Software Development Internship</h1>
+    <p>Year-long SULI undergraduate internship (June 2023 - May 2024) with the Data, Analysis & Visualization group at the National Renewable Energy Laboratory</p>
+  </header>
+
+  <!-- Content -->
+  <div class="content-container">
+
+    <!-- NOODLES Overview -->
+    <div class="noodles-overview">
+      <h2>About NOODLES</h2>
+      <p>
+        <strong>NOODLES is a cross-platform/device/tool protocol for collaborative visualization.</strong>
+      </p>
+      <p>
+        NOODLES was developed at the National Renewable Energy Laboratory (NREL), as a capability of the
+        <a href="https://www.nrel.gov/computational-science/insight-center.html" target="_blank">Insight Center</a>.
+      </p>
+
+      <h3 style="color: #00d4aa; margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 0.08em;">The Problem: Collaborative Visualization</h3>
+      <p>
+        Data visualization is difficult to do, and researchers often invest large amounts of time developing a skillset using one or two tools. Collaboration between researchers is difficult because there is no centralized platform where a wide variety of processed data can exist in the same 3D scene.
+      </p>
+
+      <h3 style="color: #00d4aa; margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 0.08em;">The Solution: NOODLES</h3>
+      <p>
+        <strong>NREL Object Orientated Data layout and exploration system.</strong> Most of my work involved creating a filter for NOODLES to allow the exports of VTK/Paraview software to be introduced in a Noodles Scene. Orzo-OpenAI leveraged the existing Orzo, Noodles Rendering Client built in Python, and incorporated the OpenAI API into the client, allowing users to invoke visualizations with natural language and custom parameters.
+      </p>
+
+      <p style="margin-top: 1.5rem;">
+        <a href="https://github.com/InsightCenterNoodles" target="_blank">View NOODLES Organization on GitHub →</a>
+      </p>
+    </div>
+
+    <!-- VTK2Noodles README -->
+    <div class="readme-section">
+      <div class="readme-header">
+        <h2>VTK2Noodles</h2>
+        <p class="project-note">Primary project focus during internship</p>
+      </div>
+      <div id="vtk-readme" class="readme-content loading">
+        Loading README content...
+      </div>
+    </div>
+
+    <!-- Orzo-OpenAI README -->
+    <div class="readme-section">
+      <div class="readme-header">
+        <h2>Orzo-OpenAI</h2>
+      </div>
+      <div id="orzo-readme" class="readme-content loading">
+        Loading README content...
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Fetch and Render READMEs -->
+  <script>
+    // Configure marked options
+    marked.setOptions({
+      breaks: true,
+      gfm: true
+    });
+
+    // Fetch VTK2Noodles README
+    fetch('https://raw.githubusercontent.com/InsightCenterNoodles/VTK2Noodles/main/README.md')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch VTK2Noodles README');
+        return response.text();
+      })
+      .then(markdown => {
+        const html = marked.parse(markdown);
+        document.getElementById('vtk-readme').innerHTML = html;
+        document.getElementById('vtk-readme').classList.remove('loading');
+      })
+      .catch(error => {
+        document.getElementById('vtk-readme').innerHTML =
+          '<p style="color: #cc0000;">Error loading README: ' + error.message + '</p>';
+        document.getElementById('vtk-readme').classList.remove('loading');
+      });
+
+    // Fetch Orzo-OpenAI README
+    fetch('https://raw.githubusercontent.com/InsightCenterNoodles/Orzo-OpenAI/main/README.md')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch Orzo-OpenAI README');
+        return response.text();
+      })
+      .then(markdown => {
+        const html = marked.parse(markdown);
+        document.getElementById('orzo-readme').innerHTML = html;
+        document.getElementById('orzo-readme').classList.remove('loading');
+      })
+      .catch(error => {
+        document.getElementById('orzo-readme').innerHTML =
+          '<p style="color: #cc0000;">Error loading README: ' + error.message + '</p>';
+        document.getElementById('orzo-readme').classList.remove('loading');
+      });
+  </script>
+</body>
+</html>
