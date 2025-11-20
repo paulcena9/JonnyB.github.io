@@ -92,7 +92,8 @@
       background: #1a1a1a;
       border: 5px solid #ff5e4d;
       box-shadow: 0 16px 40px rgba(255,94,77,0.4);
-      max-width: 1200px;
+      max-width: 900px;
+      max-height: 600px;
       margin: 0 auto;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
@@ -104,8 +105,10 @@
 
     .hero-video video {
       width: 100%;
-      height: auto;
+      height: 100%;
+      max-height: 600px;
       display: block;
+      object-fit: contain;
     }
 
     /* Featured Hero Section */
@@ -197,6 +200,15 @@
         font-size: 1.8rem;
       }
 
+      .hero-video {
+        max-width: 100%;
+        max-height: 400px;
+      }
+
+      .hero-video video {
+        max-height: 400px;
+      }
+
       .masonry-grid {
         column-count: 2;
         column-gap: 0.75rem;
@@ -237,7 +249,7 @@
   <!-- Header -->
   <header class="header">
     <h1>Wildland Firefighting</h1>
-    <p>I worked on Engine 654 based out of the Chiloquin Ranger District on the Fremont-Winema National Forest for the summers of 2021 and 2022. I learned so much during these summers and also saw some pretty gnarly shit. Unfortunately all the cool stuff happened when I was actively working or running away, so below is a collection of all the things I managed to sneak a photo of.</p>
+    <p>I worked on Engine 654 based out of the Chiloquin Ranger District on the Fremont-Winema National Forest for the summers of 2021 and 2022. Unfortunately all the cool stuff happened when I was actively working or running away, so below is a collection of all the things I managed to sneak a photo of.</p>
   </header>
 
   <!-- Gallery -->
@@ -257,7 +269,7 @@
       <div class="featured-grid">
         <!-- Face Photo 1 -->
         <div class="featured-item">
-          <img src="assets/firephotos/IMG_0133.JPG" alt="Jonathan Bachman - Firefighting portrait" loading="lazy">
+          <img src="assets/firephotos/IMG_0133.jpeg" alt="Jonathan Bachman - Firefighting portrait" loading="lazy">
         </div>
 
         <!-- Face Photo 2 -->
