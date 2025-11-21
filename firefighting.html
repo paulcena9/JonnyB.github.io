@@ -344,9 +344,6 @@
     document.addEventListener('DOMContentLoaded', function() {
       const videos = document.querySelectorAll('.gallery-item video');
 
-      // Only autoplay videos on desktop (not mobile) when they come into view
-      const isMobile = window.innerWidth <= 768;
-
       // Intersection Observer to load videos only when visible
       const videoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -358,12 +355,10 @@
               video.load();
             }
 
-            // Only autoplay on desktop, not mobile (saves data/battery)
-            if (!isMobile) {
-              video.play().catch(e => {
-                console.log('Video autoplay prevented:', e);
-              });
-            }
+            // Autoplay video when it enters viewport (mobile and desktop)
+            video.play().catch(e => {
+              console.log('Video autoplay prevented:', e);
+            });
 
             // Stop observing once loaded
             videoObserver.unobserve(video);
@@ -371,23 +366,21 @@
         });
       }, {
         rootMargin: '50px', // Start loading 50px before video enters viewport
-        threshold: 0.1
+        threshold: 0.25 // Trigger when 25% of video is visible
       });
 
       // Observe all videos
       videos.forEach(video => {
         videoObserver.observe(video);
 
-        // Add click-to-play for mobile
-        if (isMobile) {
-          video.addEventListener('click', function() {
-            if (this.paused) {
-              this.play();
-            } else {
-              this.pause();
-            }
-          });
-        }
+        // Allow click to pause/play for user control
+        video.addEventListener('click', function() {
+          if (this.paused) {
+            this.play();
+          } else {
+            this.pause();
+          }
+        });
       });
     });
   </script>

@@ -160,8 +160,8 @@ nav a.in-view {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
-  min-height: 70vh;
+  justify-content: flex-start;
+  padding-top: 6rem;
   border-bottom: none;
   padding-bottom: 0.5rem;
 }
