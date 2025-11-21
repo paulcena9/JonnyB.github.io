@@ -163,12 +163,12 @@ nav a.in-view {
   justify-content: center;
   min-height: 70vh;
   border-bottom: none;
-  padding-bottom: 2rem;
+  padding-bottom: 0.5rem;
 }
 
 /* Remove excess space above Publications section */
 #writings {
-  padding-top: 2rem;
+  padding-top: 0.5rem;
 }
 .subtitle {
   font-size: 1.1rem;
