@@ -1,0 +1,1813 @@
+{
+  "lh.aparc": {
+    "regions": {
+      "bankssts": {
+        "name": "bankssts",
+        "num_vertices": 2310,
+        "surface_area": 1557.0,
+        "gray_volume": 4032.0,
+        "avg_thickness": 2.674,
+        "std_thickness": 0.393
+      },
+      "caudalanteriorcingulate": {
+        "name": "caudalanteriorcingulate",
+        "num_vertices": 1224,
+        "surface_area": 869.0,
+        "gray_volume": 2565.0,
+        "avg_thickness": 2.462,
+        "std_thickness": 0.789
+      },
+      "caudalmiddlefrontal": {
+        "name": "caudalmiddlefrontal",
+        "num_vertices": 4168,
+        "surface_area": 2808.0,
+        "gray_volume": 8099.0,
+        "avg_thickness": 2.695,
+        "std_thickness": 0.39
+      },
+      "cuneus": {
+        "name": "cuneus",
+        "num_vertices": 2964,
+        "surface_area": 1954.0,
+        "gray_volume": 4486.0,
+        "avg_thickness": 2.11,
+        "std_thickness": 0.412
+      },
+      "entorhinal": {
+        "name": "entorhinal",
+        "num_vertices": 769,
+        "surface_area": 451.0,
+        "gray_volume": 1935.0,
+        "avg_thickness": 3.093,
+        "std_thickness": 0.981
+      },
+      "fusiform": {
+        "name": "fusiform",
+        "num_vertices": 4561,
+        "surface_area": 3110.0,
+        "gray_volume": 9323.0,
+        "avg_thickness": 2.788,
+        "std_thickness": 0.506
+      },
+      "inferiorparietal": {
+        "name": "inferiorparietal",
+        "num_vertices": 7787,
+        "surface_area": 5447.0,
+        "gray_volume": 15561.0,
+        "avg_thickness": 2.526,
+        "std_thickness": 0.46
+      },
+      "inferiortemporal": {
+        "name": "inferiortemporal",
+        "num_vertices": 5876,
+        "surface_area": 4161.0,
+        "gray_volume": 13283.0,
+        "avg_thickness": 2.753,
+        "std_thickness": 0.596
+      },
+      "isthmuscingulate": {
+        "name": "isthmuscingulate",
+        "num_vertices": 1869,
+        "surface_area": 1341.0,
+        "gray_volume": 3744.0,
+        "avg_thickness": 2.601,
+        "std_thickness": 0.867
+      },
+      "lateraloccipital": {
+        "name": "lateraloccipital",
+        "num_vertices": 8094,
+        "surface_area": 5371.0,
+        "gray_volume": 13288.0,
+        "avg_thickness": 2.262,
+        "std_thickness": 0.531
+      },
+      "lateralorbitofrontal": {
+        "name": "lateralorbitofrontal",
+        "num_vertices": 4690,
+        "surface_area": 3224.0,
+        "gray_volume": 9824.0,
+        "avg_thickness": 2.759,
+        "std_thickness": 0.561
+      },
+      "lingual": {
+        "name": "lingual",
+        "num_vertices": 6087,
+        "surface_area": 4193.0,
+        "gray_volume": 9859.0,
+        "avg_thickness": 2.207,
+        "std_thickness": 0.634
+      },
+      "medialorbitofrontal": {
+        "name": "medialorbitofrontal",
+        "num_vertices": 3198,
+        "surface_area": 2283.0,
+        "gray_volume": 6543.0,
+        "avg_thickness": 2.529,
+        "std_thickness": 0.627
+      },
+      "middletemporal": {
+        "name": "middletemporal",
+        "num_vertices": 7054,
+        "surface_area": 5041.0,
+        "gray_volume": 20523.0,
+        "avg_thickness": 3.112,
+        "std_thickness": 0.666
+      },
+      "parahippocampal": {
+        "name": "parahippocampal",
+        "num_vertices": 1166,
+        "surface_area": 706.0,
+        "gray_volume": 2634.0,
+        "avg_thickness": 2.96,
+        "std_thickness": 0.745
+      },
+      "paracentral": {
+        "name": "paracentral",
+        "num_vertices": 2316,
+        "surface_area": 1448.0,
+        "gray_volume": 4191.0,
+        "avg_thickness": 2.611,
+        "std_thickness": 0.514
+      },
+      "parsopercularis": {
+        "name": "parsopercularis",
+        "num_vertices": 2514,
+        "surface_area": 1688.0,
+        "gray_volume": 5223.0,
+        "avg_thickness": 2.701,
+        "std_thickness": 0.442
+      },
+      "parsorbitalis": {
+        "name": "parsorbitalis",
+        "num_vertices": 1320,
+        "surface_area": 903.0,
+        "gray_volume": 3291.0,
+        "avg_thickness": 2.793,
+        "std_thickness": 0.531
+      },
+      "parstriangularis": {
+        "name": "parstriangularis",
+        "num_vertices": 2041,
+        "surface_area": 1375.0,
+        "gray_volume": 3752.0,
+        "avg_thickness": 2.582,
+        "std_thickness": 0.396
+      },
+      "pericalcarine": {
+        "name": "pericalcarine",
+        "num_vertices": 2594,
+        "surface_area": 2015.0,
+        "gray_volume": 3290.0,
+        "avg_thickness": 1.81,
+        "std_thickness": 0.44
+      },
+      "postcentral": {
+        "name": "postcentral",
+        "num_vertices": 7188,
+        "surface_area": 4712.0,
+        "gray_volume": 13066.0,
+        "avg_thickness": 2.414,
+        "std_thickness": 0.558
+      },
+      "posteriorcingulate": {
+        "name": "posteriorcingulate",
+        "num_vertices": 2007,
+        "surface_area": 1454.0,
+        "gray_volume": 3973.0,
+        "avg_thickness": 2.474,
+        "std_thickness": 0.744
+      },
+      "precentral": {
+        "name": "precentral",
+        "num_vertices": 9060,
+        "surface_area": 5750.0,
+        "gray_volume": 18006.0,
+        "avg_thickness": 2.803,
+        "std_thickness": 0.526
+      },
+      "precuneus": {
+        "name": "precuneus",
+        "num_vertices": 6585,
+        "surface_area": 4590.0,
+        "gray_volume": 12948.0,
+        "avg_thickness": 2.572,
+        "std_thickness": 0.51
+      },
+      "rostralanteriorcingulate": {
+        "name": "rostralanteriorcingulate",
+        "num_vertices": 1213,
+        "surface_area": 862.0,
+        "gray_volume": 2606.0,
+        "avg_thickness": 2.673,
+        "std_thickness": 0.634
+      },
+      "rostralmiddlefrontal": {
+        "name": "rostralmiddlefrontal",
+        "num_vertices": 9160,
+        "surface_area": 6478.0,
+        "gray_volume": 19029.0,
+        "avg_thickness": 2.535,
+        "std_thickness": 0.471
+      },
+      "superiorfrontal": {
+        "name": "superiorfrontal",
+        "num_vertices": 13749,
+        "surface_area": 9569.0,
+        "gray_volume": 31274.0,
+        "avg_thickness": 2.827,
+        "std_thickness": 0.512
+      },
+      "superiorparietal": {
+        "name": "superiorparietal",
+        "num_vertices": 9072,
+        "surface_area": 6019.0,
+        "gray_volume": 15223.0,
+        "avg_thickness": 2.315,
+        "std_thickness": 0.419
+      },
+      "superiortemporal": {
+        "name": "superiortemporal",
+        "num_vertices": 8273,
+        "surface_area": 5551.0,
+        "gray_volume": 19737.0,
+        "avg_thickness": 3.024,
+        "std_thickness": 0.581
+      },
+      "supramarginal": {
+        "name": "supramarginal",
+        "num_vertices": 7961,
+        "surface_area": 5469.0,
+        "gray_volume": 16243.0,
+        "avg_thickness": 2.659,
+        "std_thickness": 0.466
+      },
+      "frontalpole": {
+        "name": "frontalpole",
+        "num_vertices": 497,
+        "surface_area": 393.0,
+        "gray_volume": 1355.0,
+        "avg_thickness": 2.657,
+        "std_thickness": 0.58
+      },
+      "temporalpole": {
+        "name": "temporalpole",
+        "num_vertices": 661,
+        "surface_area": 563.0,
+        "gray_volume": 2752.0,
+        "avg_thickness": 3.319,
+        "std_thickness": 0.868
+      },
+      "transversetemporal": {
+        "name": "transversetemporal",
+        "num_vertices": 790,
+        "surface_area": 523.0,
+        "gray_volume": 1369.0,
+        "avg_thickness": 2.438,
+        "std_thickness": 0.479
+      },
+      "insula": {
+        "name": "insula",
+        "num_vertices": 4050,
+        "surface_area": 2763.0,
+        "gray_volume": 8812.0,
+        "avg_thickness": 3.008,
+        "std_thickness": 0.835
+      }
+    },
+    "metadata": {
+      "Cortex": "CortexVol",
+      "BrainSeg": "BrainSegVol",
+      "BrainSegNotVent": "BrainSegVolNotVent",
+      "BrainSegNotVentSurf": "BrainSegVolNotVentSurf",
+      "SupraTentorial": "SupraTentorialVol",
+      "SupraTentorialNotVent": "SupraTentorialVolNotVent",
+      "EstimatedTotalIntraCranialVol": "eTIV"
+    },
+    "source_file": "lh.aparc.stats"
+  },
+  "rh.aparc.a2009s": {
+    "regions": {
+      "G_and_S_frontomargin": {
+        "name": "G_and_S_frontomargin",
+        "num_vertices": 1121,
+        "surface_area": 813.0,
+        "gray_volume": 2280.0,
+        "avg_thickness": 2.399,
+        "std_thickness": 0.508
+      },
+      "G_and_S_occipital_inf": {
+        "name": "G_and_S_occipital_inf",
+        "num_vertices": 1895,
+        "surface_area": 1251.0,
+        "gray_volume": 3390.0,
+        "avg_thickness": 2.49,
+        "std_thickness": 0.507
+      },
+      "G_and_S_paracentral": {
+        "name": "G_and_S_paracentral",
+        "num_vertices": 1895,
+        "surface_area": 1046.0,
+        "gray_volume": 3479.0,
+        "avg_thickness": 2.712,
+        "std_thickness": 0.63
+      },
+      "G_and_S_subcentral": {
+        "name": "G_and_S_subcentral",
+        "num_vertices": 1810,
+        "surface_area": 1293.0,
+        "gray_volume": 4456.0,
+        "avg_thickness": 2.973,
+        "std_thickness": 0.457
+      },
+      "G_and_S_transv_frontopol": {
+        "name": "G_and_S_transv_frontopol",
+        "num_vertices": 1549,
+        "surface_area": 1135.0,
+        "gray_volume": 3881.0,
+        "avg_thickness": 2.624,
+        "std_thickness": 0.529
+      },
+      "G_and_S_cingul-Ant": {
+        "name": "G_and_S_cingul-Ant",
+        "num_vertices": 3233,
+        "surface_area": 2327.0,
+        "gray_volume": 7018.0,
+        "avg_thickness": 2.665,
+        "std_thickness": 0.512
+      },
+      "G_and_S_cingul-Mid-Ant": {
+        "name": "G_and_S_cingul-Mid-Ant",
+        "num_vertices": 1399,
+        "surface_area": 980.0,
+        "gray_volume": 2885.0,
+        "avg_thickness": 2.703,
+        "std_thickness": 0.484
+      },
+      "G_and_S_cingul-Mid-Post": {
+        "name": "G_and_S_cingul-Mid-Post",
+        "num_vertices": 1508,
+        "surface_area": 1019.0,
+        "gray_volume": 2903.0,
+        "avg_thickness": 2.683,
+        "std_thickness": 0.426
+      },
+      "G_cingul-Post-dorsal": {
+        "name": "G_cingul-Post-dorsal",
+        "num_vertices": 592,
+        "surface_area": 436.0,
+        "gray_volume": 1880.0,
+        "avg_thickness": 3.057,
+        "std_thickness": 0.599
+      },
+      "G_cingul-Post-ventral": {
+        "name": "G_cingul-Post-ventral",
+        "num_vertices": 412,
+        "surface_area": 272.0,
+        "gray_volume": 1034.0,
+        "avg_thickness": 3.001,
+        "std_thickness": 0.66
+      },
+      "G_cuneus": {
+        "name": "G_cuneus",
+        "num_vertices": 2895,
+        "surface_area": 1824.0,
+        "gray_volume": 4348.0,
+        "avg_thickness": 2.109,
+        "std_thickness": 0.544
+      },
+      "G_front_inf-Opercular": {
+        "name": "G_front_inf-Opercular",
+        "num_vertices": 1467,
+        "surface_area": 1048.0,
+        "gray_volume": 4119.0,
+        "avg_thickness": 2.968,
+        "std_thickness": 0.386
+      },
+      "G_front_inf-Orbital": {
+        "name": "G_front_inf-Orbital",
+        "num_vertices": 565,
+        "surface_area": 380.0,
+        "gray_volume": 1363.0,
+        "avg_thickness": 2.68,
+        "std_thickness": 0.37
+      },
+      "G_front_inf-Triangul": {
+        "name": "G_front_inf-Triangul",
+        "num_vertices": 583,
+        "surface_area": 434.0,
+        "gray_volume": 1414.0,
+        "avg_thickness": 2.614,
+        "std_thickness": 0.372
+      },
+      "G_front_middle": {
+        "name": "G_front_middle",
+        "num_vertices": 4230,
+        "surface_area": 3107.0,
+        "gray_volume": 11478.0,
+        "avg_thickness": 2.75,
+        "std_thickness": 0.398
+      },
+      "G_front_sup": {
+        "name": "G_front_sup",
+        "num_vertices": 8057,
+        "surface_area": 5690.0,
+        "gray_volume": 21815.0,
+        "avg_thickness": 2.962,
+        "std_thickness": 0.56
+      },
+      "G_Ins_lg_and_S_cent_ins": {
+        "name": "G_Ins_lg_and_S_cent_ins",
+        "num_vertices": 742,
+        "surface_area": 518.0,
+        "gray_volume": 2206.0,
+        "avg_thickness": 3.768,
+        "std_thickness": 0.748
+      },
+      "G_insular_short": {
+        "name": "G_insular_short",
+        "num_vertices": 658,
+        "surface_area": 475.0,
+        "gray_volume": 2644.0,
+        "avg_thickness": 3.743,
+        "std_thickness": 0.739
+      },
+      "G_occipital_middle": {
+        "name": "G_occipital_middle",
+        "num_vertices": 2654,
+        "surface_area": 1715.0,
+        "gray_volume": 6746.0,
+        "avg_thickness": 2.869,
+        "std_thickness": 0.443
+      },
+      "G_occipital_sup": {
+        "name": "G_occipital_sup",
+        "num_vertices": 1772,
+        "surface_area": 1083.0,
+        "gray_volume": 3371.0,
+        "avg_thickness": 2.509,
+        "std_thickness": 0.462
+      },
+      "G_oc-temp_lat-fusifor": {
+        "name": "G_oc-temp_lat-fusifor",
+        "num_vertices": 2062,
+        "surface_area": 1332.0,
+        "gray_volume": 6167.0,
+        "avg_thickness": 3.281,
+        "std_thickness": 0.46
+      },
+      "G_oc-temp_med-Lingual": {
+        "name": "G_oc-temp_med-Lingual",
+        "num_vertices": 4229,
+        "surface_area": 2809.0,
+        "gray_volume": 8160.0,
+        "avg_thickness": 2.389,
+        "std_thickness": 0.742
+      },
+      "G_oc-temp_med-Parahip": {
+        "name": "G_oc-temp_med-Parahip",
+        "num_vertices": 1664,
+        "surface_area": 1034.0,
+        "gray_volume": 4294.0,
+        "avg_thickness": 3.006,
+        "std_thickness": 0.92
+      },
+      "G_orbital": {
+        "name": "G_orbital",
+        "num_vertices": 3000,
+        "surface_area": 2143.0,
+        "gray_volume": 8085.0,
+        "avg_thickness": 2.853,
+        "std_thickness": 0.565
+      },
+      "G_pariet_inf-Angular": {
+        "name": "G_pariet_inf-Angular",
+        "num_vertices": 3967,
+        "surface_area": 2700.0,
+        "gray_volume": 10471.0,
+        "avg_thickness": 2.899,
+        "std_thickness": 0.512
+      },
+      "G_pariet_inf-Supramar": {
+        "name": "G_pariet_inf-Supramar",
+        "num_vertices": 2633,
+        "surface_area": 1809.0,
+        "gray_volume": 7002.0,
+        "avg_thickness": 3.028,
+        "std_thickness": 0.454
+      },
+      "G_parietal_sup": {
+        "name": "G_parietal_sup",
+        "num_vertices": 3477,
+        "surface_area": 2312.0,
+        "gray_volume": 7588.0,
+        "avg_thickness": 2.584,
+        "std_thickness": 0.425
+      },
+      "G_postcentral": {
+        "name": "G_postcentral",
+        "num_vertices": 2726,
+        "surface_area": 1680.0,
+        "gray_volume": 5865.0,
+        "avg_thickness": 2.62,
+        "std_thickness": 0.498
+      },
+      "G_precentral": {
+        "name": "G_precentral",
+        "num_vertices": 3815,
+        "surface_area": 2332.0,
+        "gray_volume": 9009.0,
+        "avg_thickness": 2.959,
+        "std_thickness": 0.455
+      },
+      "G_precuneus": {
+        "name": "G_precuneus",
+        "num_vertices": 2802,
+        "surface_area": 1931.0,
+        "gray_volume": 6488.0,
+        "avg_thickness": 2.619,
+        "std_thickness": 0.522
+      },
+      "G_rectus": {
+        "name": "G_rectus",
+        "num_vertices": 878,
+        "surface_area": 627.0,
+        "gray_volume": 2386.0,
+        "avg_thickness": 2.798,
+        "std_thickness": 0.542
+      },
+      "G_subcallosal": {
+        "name": "G_subcallosal",
+        "num_vertices": 688,
+        "surface_area": 440.0,
+        "gray_volume": 1098.0,
+        "avg_thickness": 2.426,
+        "std_thickness": 0.971
+      },
+      "G_temp_sup-G_T_transv": {
+        "name": "G_temp_sup-G_T_transv",
+        "num_vertices": 353,
+        "surface_area": 210.0,
+        "gray_volume": 794.0,
+        "avg_thickness": 2.9,
+        "std_thickness": 0.283
+      },
+      "G_temp_sup-Lateral": {
+        "name": "G_temp_sup-Lateral",
+        "num_vertices": 2416,
+        "surface_area": 1604.0,
+        "gray_volume": 7632.0,
+        "avg_thickness": 3.33,
+        "std_thickness": 0.529
+      },
+      "G_temp_sup-Plan_polar": {
+        "name": "G_temp_sup-Plan_polar",
+        "num_vertices": 1298,
+        "surface_area": 891.0,
+        "gray_volume": 3048.0,
+        "avg_thickness": 3.163,
+        "std_thickness": 1.078
+      },
+      "G_temp_sup-Plan_tempo": {
+        "name": "G_temp_sup-Plan_tempo",
+        "num_vertices": 959,
+        "surface_area": 626.0,
+        "gray_volume": 1867.0,
+        "avg_thickness": 2.699,
+        "std_thickness": 0.439
+      },
+      "G_temporal_inf": {
+        "name": "G_temporal_inf",
+        "num_vertices": 2611,
+        "surface_area": 1867.0,
+        "gray_volume": 7872.0,
+        "avg_thickness": 3.004,
+        "std_thickness": 0.653
+      },
+      "G_temporal_middle": {
+        "name": "G_temporal_middle",
+        "num_vertices": 3852,
+        "surface_area": 2639.0,
+        "gray_volume": 11951.0,
+        "avg_thickness": 3.217,
+        "std_thickness": 0.654
+      },
+      "Lat_Fis-ant-Horizont": {
+        "name": "Lat_Fis-ant-Horizont",
+        "num_vertices": 476,
+        "surface_area": 327.0,
+        "gray_volume": 738.0,
+        "avg_thickness": 2.4,
+        "std_thickness": 0.266
+      },
+      "Lat_Fis-ant-Vertical": {
+        "name": "Lat_Fis-ant-Vertical",
+        "num_vertices": 292,
+        "surface_area": 209.0,
+        "gray_volume": 450.0,
+        "avg_thickness": 2.402,
+        "std_thickness": 0.352
+      },
+      "Lat_Fis-post": {
+        "name": "Lat_Fis-post",
+        "num_vertices": 1497,
+        "surface_area": 969.0,
+        "gray_volume": 2139.0,
+        "avg_thickness": 2.756,
+        "std_thickness": 0.37
+      },
+      "Pole_occipital": {
+        "name": "Pole_occipital",
+        "num_vertices": 4578,
+        "surface_area": 2919.0,
+        "gray_volume": 6311.0,
+        "avg_thickness": 2.007,
+        "std_thickness": 0.489
+      },
+      "Pole_temporal": {
+        "name": "Pole_temporal",
+        "num_vertices": 1671,
+        "surface_area": 1305.0,
+        "gray_volume": 5783.0,
+        "avg_thickness": 3.207,
+        "std_thickness": 0.729
+      },
+      "S_calcarine": {
+        "name": "S_calcarine",
+        "num_vertices": 3387,
+        "surface_area": 2508.0,
+        "gray_volume": 4574.0,
+        "avg_thickness": 2.075,
+        "std_thickness": 0.629
+      },
+      "S_central": {
+        "name": "S_central",
+        "num_vertices": 3731,
+        "surface_area": 2439.0,
+        "gray_volume": 4658.0,
+        "avg_thickness": 2.205,
+        "std_thickness": 0.52
+      },
+      "S_cingul-Marginalis": {
+        "name": "S_cingul-Marginalis",
+        "num_vertices": 1426,
+        "surface_area": 951.0,
+        "gray_volume": 2210.0,
+        "avg_thickness": 2.461,
+        "std_thickness": 0.397
+      },
+      "S_circular_insula_ant": {
+        "name": "S_circular_insula_ant",
+        "num_vertices": 728,
+        "surface_area": 479.0,
+        "gray_volume": 1039.0,
+        "avg_thickness": 2.689,
+        "std_thickness": 0.409
+      },
+      "S_circular_insula_inf": {
+        "name": "S_circular_insula_inf",
+        "num_vertices": 1298,
+        "surface_area": 829.0,
+        "gray_volume": 1897.0,
+        "avg_thickness": 2.805,
+        "std_thickness": 0.5
+      },
+      "S_circular_insula_sup": {
+        "name": "S_circular_insula_sup",
+        "num_vertices": 1802,
+        "surface_area": 1157.0,
+        "gray_volume": 2547.0,
+        "avg_thickness": 2.635,
+        "std_thickness": 0.391
+      },
+      "S_collat_transv_ant": {
+        "name": "S_collat_transv_ant",
+        "num_vertices": 1047,
+        "surface_area": 685.0,
+        "gray_volume": 1654.0,
+        "avg_thickness": 2.661,
+        "std_thickness": 0.463
+      },
+      "S_collat_transv_post": {
+        "name": "S_collat_transv_post",
+        "num_vertices": 823,
+        "surface_area": 534.0,
+        "gray_volume": 1059.0,
+        "avg_thickness": 2.537,
+        "std_thickness": 0.413
+      },
+      "S_front_inf": {
+        "name": "S_front_inf",
+        "num_vertices": 1915,
+        "surface_area": 1290.0,
+        "gray_volume": 2701.0,
+        "avg_thickness": 2.323,
+        "std_thickness": 0.355
+      },
+      "S_front_middle": {
+        "name": "S_front_middle",
+        "num_vertices": 2947,
+        "surface_area": 1988.0,
+        "gray_volume": 4582.0,
+        "avg_thickness": 2.299,
+        "std_thickness": 0.371
+      },
+      "S_front_sup": {
+        "name": "S_front_sup",
+        "num_vertices": 3928,
+        "surface_area": 2580.0,
+        "gray_volume": 6391.0,
+        "avg_thickness": 2.585,
+        "std_thickness": 0.422
+      },
+      "S_interm_prim-Jensen": {
+        "name": "S_interm_prim-Jensen",
+        "num_vertices": 718,
+        "surface_area": 521.0,
+        "gray_volume": 1432.0,
+        "avg_thickness": 2.844,
+        "std_thickness": 0.386
+      },
+      "S_intrapariet_and_P_trans": {
+        "name": "S_intrapariet_and_P_trans",
+        "num_vertices": 4388,
+        "surface_area": 2941.0,
+        "gray_volume": 6290.0,
+        "avg_thickness": 2.291,
+        "std_thickness": 0.361
+      },
+      "S_oc_middle_and_Lunatus": {
+        "name": "S_oc_middle_and_Lunatus",
+        "num_vertices": 1106,
+        "surface_area": 745.0,
+        "gray_volume": 1517.0,
+        "avg_thickness": 2.428,
+        "std_thickness": 0.332
+      },
+      "S_oc_sup_and_transversal": {
+        "name": "S_oc_sup_and_transversal",
+        "num_vertices": 1638,
+        "surface_area": 1090.0,
+        "gray_volume": 2326.0,
+        "avg_thickness": 2.348,
+        "std_thickness": 0.335
+      },
+      "S_occipital_ant": {
+        "name": "S_occipital_ant",
+        "num_vertices": 1215,
+        "surface_area": 833.0,
+        "gray_volume": 1802.0,
+        "avg_thickness": 2.362,
+        "std_thickness": 0.398
+      },
+      "S_oc-temp_lat": {
+        "name": "S_oc-temp_lat",
+        "num_vertices": 1165,
+        "surface_area": 813.0,
+        "gray_volume": 2038.0,
+        "avg_thickness": 2.742,
+        "std_thickness": 0.496
+      },
+      "S_oc-temp_med_and_Lingual": {
+        "name": "S_oc-temp_med_and_Lingual",
+        "num_vertices": 2659,
+        "surface_area": 1788.0,
+        "gray_volume": 4181.0,
+        "avg_thickness": 2.603,
+        "std_thickness": 0.358
+      },
+      "S_orbital_lateral": {
+        "name": "S_orbital_lateral",
+        "num_vertices": 566,
+        "surface_area": 370.0,
+        "gray_volume": 627.0,
+        "avg_thickness": 1.998,
+        "std_thickness": 0.41
+      },
+      "S_orbital_med-olfact": {
+        "name": "S_orbital_med-olfact",
+        "num_vertices": 774,
+        "surface_area": 517.0,
+        "gray_volume": 1083.0,
+        "avg_thickness": 2.267,
+        "std_thickness": 0.778
+      },
+      "S_orbital-H_Shaped": {
+        "name": "S_orbital-H_Shaped",
+        "num_vertices": 1553,
+        "surface_area": 1106.0,
+        "gray_volume": 2869.0,
+        "avg_thickness": 2.623,
+        "std_thickness": 0.511
+      },
+      "S_parieto_occipital": {
+        "name": "S_parieto_occipital",
+        "num_vertices": 2483,
+        "surface_area": 1678.0,
+        "gray_volume": 3810.0,
+        "avg_thickness": 2.476,
+        "std_thickness": 0.378
+      },
+      "S_pericallosal": {
+        "name": "S_pericallosal",
+        "num_vertices": 1459,
+        "surface_area": 994.0,
+        "gray_volume": 1525.0,
+        "avg_thickness": 1.783,
+        "std_thickness": 0.658
+      },
+      "S_postcentral": {
+        "name": "S_postcentral",
+        "num_vertices": 3244,
+        "surface_area": 2118.0,
+        "gray_volume": 4263.0,
+        "avg_thickness": 2.314,
+        "std_thickness": 0.345
+      },
+      "S_precentral-inf-part": {
+        "name": "S_precentral-inf-part",
+        "num_vertices": 2620,
+        "surface_area": 1708.0,
+        "gray_volume": 4212.0,
+        "avg_thickness": 2.625,
+        "std_thickness": 0.343
+      },
+      "S_precentral-sup-part": {
+        "name": "S_precentral-sup-part",
+        "num_vertices": 1569,
+        "surface_area": 1023.0,
+        "gray_volume": 2249.0,
+        "avg_thickness": 2.621,
+        "std_thickness": 0.414
+      },
+      "S_suborbital": {
+        "name": "S_suborbital",
+        "num_vertices": 504,
+        "surface_area": 341.0,
+        "gray_volume": 643.0,
+        "avg_thickness": 2.191,
+        "std_thickness": 0.483
+      },
+      "S_subparietal": {
+        "name": "S_subparietal",
+        "num_vertices": 1550,
+        "surface_area": 1045.0,
+        "gray_volume": 2422.0,
+        "avg_thickness": 2.549,
+        "std_thickness": 0.393
+      },
+      "S_temporal_inf": {
+        "name": "S_temporal_inf",
+        "num_vertices": 1706,
+        "surface_area": 1132.0,
+        "gray_volume": 2568.0,
+        "avg_thickness": 2.641,
+        "std_thickness": 0.5
+      },
+      "S_temporal_sup": {
+        "name": "S_temporal_sup",
+        "num_vertices": 9026,
+        "surface_area": 5855.0,
+        "gray_volume": 14747.0,
+        "avg_thickness": 2.74,
+        "std_thickness": 0.423
+      },
+      "S_temporal_transverse": {
+        "name": "S_temporal_transverse",
+        "num_vertices": 273,
+        "surface_area": 199.0,
+        "gray_volume": 483.0,
+        "avg_thickness": 2.944,
+        "std_thickness": 0.436
+      }
+    },
+    "metadata": {
+      "Cortex": "CortexVol",
+      "BrainSeg": "BrainSegVol",
+      "BrainSegNotVent": "BrainSegVolNotVent",
+      "BrainSegNotVentSurf": "BrainSegVolNotVentSurf",
+      "SupraTentorial": "SupraTentorialVol",
+      "SupraTentorialNotVent": "SupraTentorialVolNotVent",
+      "EstimatedTotalIntraCranialVol": "eTIV"
+    },
+    "source_file": "rh.aparc.a2009s.stats"
+  },
+  "rh.aparc": {
+    "regions": {
+      "bankssts": {
+        "name": "bankssts",
+        "num_vertices": 1883,
+        "surface_area": 1218.0,
+        "gray_volume": 3336.0,
+        "avg_thickness": 2.854,
+        "std_thickness": 0.41
+      },
+      "caudalanteriorcingulate": {
+        "name": "caudalanteriorcingulate",
+        "num_vertices": 1013,
+        "surface_area": 740.0,
+        "gray_volume": 2160.0,
+        "avg_thickness": 2.439,
+        "std_thickness": 0.732
+      },
+      "caudalmiddlefrontal": {
+        "name": "caudalmiddlefrontal",
+        "num_vertices": 3865,
+        "surface_area": 2594.0,
+        "gray_volume": 7542.0,
+        "avg_thickness": 2.622,
+        "std_thickness": 0.411
+      },
+      "cuneus": {
+        "name": "cuneus",
+        "num_vertices": 2890,
+        "surface_area": 1840.0,
+        "gray_volume": 4399.0,
+        "avg_thickness": 2.152,
+        "std_thickness": 0.497
+      },
+      "entorhinal": {
+        "name": "entorhinal",
+        "num_vertices": 834,
+        "surface_area": 519.0,
+        "gray_volume": 1858.0,
+        "avg_thickness": 2.851,
+        "std_thickness": 0.876
+      },
+      "fusiform": {
+        "name": "fusiform",
+        "num_vertices": 4852,
+        "surface_area": 3238.0,
+        "gray_volume": 11291.0,
+        "avg_thickness": 2.98,
+        "std_thickness": 0.524
+      },
+      "inferiorparietal": {
+        "name": "inferiorparietal",
+        "num_vertices": 11328,
+        "surface_area": 7586.0,
+        "gray_volume": 23453.0,
+        "avg_thickness": 2.699,
+        "std_thickness": 0.488
+      },
+      "inferiortemporal": {
+        "name": "inferiortemporal",
+        "num_vertices": 5168,
+        "surface_area": 3621.0,
+        "gray_volume": 12532.0,
+        "avg_thickness": 2.832,
+        "std_thickness": 0.635
+      },
+      "isthmuscingulate": {
+        "name": "isthmuscingulate",
+        "num_vertices": 1696,
+        "surface_area": 1183.0,
+        "gray_volume": 3383.0,
+        "avg_thickness": 2.625,
+        "std_thickness": 0.779
+      },
+      "lateraloccipital": {
+        "name": "lateraloccipital",
+        "num_vertices": 9913,
+        "surface_area": 6389.0,
+        "gray_volume": 16220.0,
+        "avg_thickness": 2.363,
+        "std_thickness": 0.525
+      },
+      "lateralorbitofrontal": {
+        "name": "lateralorbitofrontal",
+        "num_vertices": 4091,
+        "surface_area": 2919.0,
+        "gray_volume": 8625.0,
+        "avg_thickness": 2.7,
+        "std_thickness": 0.617
+      },
+      "lingual": {
+        "name": "lingual",
+        "num_vertices": 6692,
+        "surface_area": 4578.0,
+        "gray_volume": 11939.0,
+        "avg_thickness": 2.344,
+        "std_thickness": 0.681
+      },
+      "medialorbitofrontal": {
+        "name": "medialorbitofrontal",
+        "num_vertices": 3252,
+        "surface_area": 2281.0,
+        "gray_volume": 6821.0,
+        "avg_thickness": 2.558,
+        "std_thickness": 0.601
+      },
+      "middletemporal": {
+        "name": "middletemporal",
+        "num_vertices": 6397,
+        "surface_area": 4340.0,
+        "gray_volume": 16450.0,
+        "avg_thickness": 3.046,
+        "std_thickness": 0.616
+      },
+      "parahippocampal": {
+        "name": "parahippocampal",
+        "num_vertices": 1237,
+        "surface_area": 774.0,
+        "gray_volume": 2879.0,
+        "avg_thickness": 2.984,
+        "std_thickness": 0.827
+      },
+      "paracentral": {
+        "name": "paracentral",
+        "num_vertices": 2947,
+        "surface_area": 1783.0,
+        "gray_volume": 5352.0,
+        "avg_thickness": 2.689,
+        "std_thickness": 0.526
+      },
+      "parsopercularis": {
+        "name": "parsopercularis",
+        "num_vertices": 2223,
+        "surface_area": 1536.0,
+        "gray_volume": 4875.0,
+        "avg_thickness": 2.801,
+        "std_thickness": 0.381
+      },
+      "parsorbitalis": {
+        "name": "parsorbitalis",
+        "num_vertices": 1470,
+        "surface_area": 978.0,
+        "gray_volume": 3268.0,
+        "avg_thickness": 2.687,
+        "std_thickness": 0.484
+      },
+      "parstriangularis": {
+        "name": "parstriangularis",
+        "num_vertices": 2166,
+        "surface_area": 1499.0,
+        "gray_volume": 4030.0,
+        "avg_thickness": 2.477,
+        "std_thickness": 0.376
+      },
+      "pericalcarine": {
+        "name": "pericalcarine",
+        "num_vertices": 2999,
+        "surface_area": 2150.0,
+        "gray_volume": 3504.0,
+        "avg_thickness": 1.848,
+        "std_thickness": 0.487
+      },
+      "postcentral": {
+        "name": "postcentral",
+        "num_vertices": 7508,
+        "surface_area": 4850.0,
+        "gray_volume": 13329.0,
+        "avg_thickness": 2.406,
+        "std_thickness": 0.556
+      },
+      "posteriorcingulate": {
+        "name": "posteriorcingulate",
+        "num_vertices": 1687,
+        "surface_area": 1156.0,
+        "gray_volume": 3321.0,
+        "avg_thickness": 2.516,
+        "std_thickness": 0.756
+      },
+      "precentral": {
+        "name": "precentral",
+        "num_vertices": 9722,
+        "surface_area": 6196.0,
+        "gray_volume": 19028.0,
+        "avg_thickness": 2.781,
+        "std_thickness": 0.498
+      },
+      "precuneus": {
+        "name": "precuneus",
+        "num_vertices": 6460,
+        "surface_area": 4439.0,
+        "gray_volume": 12009.0,
+        "avg_thickness": 2.546,
+        "std_thickness": 0.468
+      },
+      "rostralanteriorcingulate": {
+        "name": "rostralanteriorcingulate",
+        "num_vertices": 930,
+        "surface_area": 710.0,
+        "gray_volume": 2374.0,
+        "avg_thickness": 2.717,
+        "std_thickness": 0.64
+      },
+      "rostralmiddlefrontal": {
+        "name": "rostralmiddlefrontal",
+        "num_vertices": 9919,
+        "surface_area": 6969.0,
+        "gray_volume": 20127.0,
+        "avg_thickness": 2.467,
+        "std_thickness": 0.481
+      },
+      "superiorfrontal": {
+        "name": "superiorfrontal",
+        "num_vertices": 12595,
+        "surface_area": 8699.0,
+        "gray_volume": 28657.0,
+        "avg_thickness": 2.831,
+        "std_thickness": 0.534
+      },
+      "superiorparietal": {
+        "name": "superiorparietal",
+        "num_vertices": 10260,
+        "surface_area": 6747.0,
+        "gray_volume": 18379.0,
+        "avg_thickness": 2.441,
+        "std_thickness": 0.431
+      },
+      "superiortemporal": {
+        "name": "superiortemporal",
+        "num_vertices": 6405,
+        "surface_area": 4185.0,
+        "gray_volume": 15095.0,
+        "avg_thickness": 3.12,
+        "std_thickness": 0.557
+      },
+      "supramarginal": {
+        "name": "supramarginal",
+        "num_vertices": 5765,
+        "surface_area": 3914.0,
+        "gray_volume": 12006.0,
+        "avg_thickness": 2.838,
+        "std_thickness": 0.454
+      },
+      "frontalpole": {
+        "name": "frontalpole",
+        "num_vertices": 574,
+        "surface_area": 445.0,
+        "gray_volume": 1656.0,
+        "avg_thickness": 2.78,
+        "std_thickness": 0.59
+      },
+      "temporalpole": {
+        "name": "temporalpole",
+        "num_vertices": 640,
+        "surface_area": 477.0,
+        "gray_volume": 2342.0,
+        "avg_thickness": 3.67,
+        "std_thickness": 0.962
+      },
+      "transversetemporal": {
+        "name": "transversetemporal",
+        "num_vertices": 537,
+        "surface_area": 345.0,
+        "gray_volume": 1084.0,
+        "avg_thickness": 2.848,
+        "std_thickness": 0.337
+      },
+      "insula": {
+        "name": "insula",
+        "num_vertices": 4311,
+        "surface_area": 2913.0,
+        "gray_volume": 8986.0,
+        "avg_thickness": 2.946,
+        "std_thickness": 0.908
+      }
+    },
+    "metadata": {
+      "Cortex": "CortexVol",
+      "BrainSeg": "BrainSegVol",
+      "BrainSegNotVent": "BrainSegVolNotVent",
+      "BrainSegNotVentSurf": "BrainSegVolNotVentSurf",
+      "SupraTentorial": "SupraTentorialVol",
+      "SupraTentorialNotVent": "SupraTentorialVolNotVent",
+      "EstimatedTotalIntraCranialVol": "eTIV"
+    },
+    "source_file": "rh.aparc.stats"
+  },
+  "lh.aparc.a2009s": {
+    "regions": {
+      "G_and_S_frontomargin": {
+        "name": "G_and_S_frontomargin",
+        "num_vertices": 1663,
+        "surface_area": 1206.0,
+        "gray_volume": 3322.0,
+        "avg_thickness": 2.347,
+        "std_thickness": 0.489
+      },
+      "G_and_S_occipital_inf": {
+        "name": "G_and_S_occipital_inf",
+        "num_vertices": 1643,
+        "surface_area": 1105.0,
+        "gray_volume": 3455.0,
+        "avg_thickness": 2.593,
+        "std_thickness": 0.573
+      },
+      "G_and_S_paracentral": {
+        "name": "G_and_S_paracentral",
+        "num_vertices": 1994,
+        "surface_area": 1238.0,
+        "gray_volume": 3885.0,
+        "avg_thickness": 2.61,
+        "std_thickness": 0.584
+      },
+      "G_and_S_subcentral": {
+        "name": "G_and_S_subcentral",
+        "num_vertices": 2046,
+        "surface_area": 1395.0,
+        "gray_volume": 4560.0,
+        "avg_thickness": 2.762,
+        "std_thickness": 0.501
+      },
+      "G_and_S_transv_frontopol": {
+        "name": "G_and_S_transv_frontopol",
+        "num_vertices": 925,
+        "surface_area": 763.0,
+        "gray_volume": 2733.0,
+        "avg_thickness": 2.688,
+        "std_thickness": 0.528
+      },
+      "G_and_S_cingul-Ant": {
+        "name": "G_and_S_cingul-Ant",
+        "num_vertices": 2614,
+        "surface_area": 1867.0,
+        "gray_volume": 5478.0,
+        "avg_thickness": 2.741,
+        "std_thickness": 0.411
+      },
+      "G_and_S_cingul-Mid-Ant": {
+        "name": "G_and_S_cingul-Mid-Ant",
+        "num_vertices": 1595,
+        "surface_area": 1104.0,
+        "gray_volume": 3174.0,
+        "avg_thickness": 2.787,
+        "std_thickness": 0.399
+      },
+      "G_and_S_cingul-Mid-Post": {
+        "name": "G_and_S_cingul-Mid-Post",
+        "num_vertices": 1484,
+        "surface_area": 1019.0,
+        "gray_volume": 2845.0,
+        "avg_thickness": 2.651,
+        "std_thickness": 0.443
+      },
+      "G_cingul-Post-dorsal": {
+        "name": "G_cingul-Post-dorsal",
+        "num_vertices": 682,
+        "surface_area": 503.0,
+        "gray_volume": 2022.0,
+        "avg_thickness": 2.987,
+        "std_thickness": 0.657
+      },
+      "G_cingul-Post-ventral": {
+        "name": "G_cingul-Post-ventral",
+        "num_vertices": 407,
+        "surface_area": 295.0,
+        "gray_volume": 1107.0,
+        "avg_thickness": 3.068,
+        "std_thickness": 0.702
+      },
+      "G_cuneus": {
+        "name": "G_cuneus",
+        "num_vertices": 2948,
+        "surface_area": 1864.0,
+        "gray_volume": 4359.0,
+        "avg_thickness": 2.016,
+        "std_thickness": 0.456
+      },
+      "G_front_inf-Opercular": {
+        "name": "G_front_inf-Opercular",
+        "num_vertices": 1495,
+        "surface_area": 1038.0,
+        "gray_volume": 4157.0,
+        "avg_thickness": 2.975,
+        "std_thickness": 0.43
+      },
+      "G_front_inf-Orbital": {
+        "name": "G_front_inf-Orbital",
+        "num_vertices": 563,
+        "surface_area": 381.0,
+        "gray_volume": 1668.0,
+        "avg_thickness": 2.987,
+        "std_thickness": 0.399
+      },
+      "G_front_inf-Triangul": {
+        "name": "G_front_inf-Triangul",
+        "num_vertices": 1098,
+        "surface_area": 742.0,
+        "gray_volume": 2734.0,
+        "avg_thickness": 2.782,
+        "std_thickness": 0.44
+      },
+      "G_front_middle": {
+        "name": "G_front_middle",
+        "num_vertices": 5189,
+        "surface_area": 3669.0,
+        "gray_volume": 13020.0,
+        "avg_thickness": 2.771,
+        "std_thickness": 0.449
+      },
+      "G_front_sup": {
+        "name": "G_front_sup",
+        "num_vertices": 9266,
+        "surface_area": 6518.0,
+        "gray_volume": 24609.0,
+        "avg_thickness": 2.974,
+        "std_thickness": 0.522
+      },
+      "G_Ins_lg_and_S_cent_ins": {
+        "name": "G_Ins_lg_and_S_cent_ins",
+        "num_vertices": 808,
+        "surface_area": 561.0,
+        "gray_volume": 2066.0,
+        "avg_thickness": 3.305,
+        "std_thickness": 0.745
+      },
+      "G_insular_short": {
+        "name": "G_insular_short",
+        "num_vertices": 771,
+        "surface_area": 597.0,
+        "gray_volume": 3112.0,
+        "avg_thickness": 3.67,
+        "std_thickness": 0.701
+      },
+      "G_occipital_middle": {
+        "name": "G_occipital_middle",
+        "num_vertices": 2344,
+        "surface_area": 1630.0,
+        "gray_volume": 5752.0,
+        "avg_thickness": 2.644,
+        "std_thickness": 0.489
+      },
+      "G_occipital_sup": {
+        "name": "G_occipital_sup",
+        "num_vertices": 1594,
+        "surface_area": 1033.0,
+        "gray_volume": 2753.0,
+        "avg_thickness": 2.281,
+        "std_thickness": 0.48
+      },
+      "G_oc-temp_lat-fusifor": {
+        "name": "G_oc-temp_lat-fusifor",
+        "num_vertices": 1867,
+        "surface_area": 1267.0,
+        "gray_volume": 4648.0,
+        "avg_thickness": 2.893,
+        "std_thickness": 0.524
+      },
+      "G_oc-temp_med-Lingual": {
+        "name": "G_oc-temp_med-Lingual",
+        "num_vertices": 4084,
+        "surface_area": 2747.0,
+        "gray_volume": 6815.0,
+        "avg_thickness": 2.127,
+        "std_thickness": 0.691
+      },
+      "G_oc-temp_med-Parahip": {
+        "name": "G_oc-temp_med-Parahip",
+        "num_vertices": 1527,
+        "surface_area": 889.0,
+        "gray_volume": 3632.0,
+        "avg_thickness": 2.949,
+        "std_thickness": 0.979
+      },
+      "G_orbital": {
+        "name": "G_orbital",
+        "num_vertices": 2856,
+        "surface_area": 2034.0,
+        "gray_volume": 7213.0,
+        "avg_thickness": 2.735,
+        "std_thickness": 0.614
+      },
+      "G_pariet_inf-Angular": {
+        "name": "G_pariet_inf-Angular",
+        "num_vertices": 2981,
+        "surface_area": 2141.0,
+        "gray_volume": 7231.0,
+        "avg_thickness": 2.656,
+        "std_thickness": 0.469
+      },
+      "G_pariet_inf-Supramar": {
+        "name": "G_pariet_inf-Supramar",
+        "num_vertices": 4377,
+        "surface_area": 3052.0,
+        "gray_volume": 10524.0,
+        "avg_thickness": 2.784,
+        "std_thickness": 0.489
+      },
+      "G_parietal_sup": {
+        "name": "G_parietal_sup",
+        "num_vertices": 3825,
+        "surface_area": 2584.0,
+        "gray_volume": 7569.0,
+        "avg_thickness": 2.386,
+        "std_thickness": 0.456
+      },
+      "G_postcentral": {
+        "name": "G_postcentral",
+        "num_vertices": 2960,
+        "surface_area": 1864.0,
+        "gray_volume": 6059.0,
+        "avg_thickness": 2.548,
+        "std_thickness": 0.555
+      },
+      "G_precentral": {
+        "name": "G_precentral",
+        "num_vertices": 3204,
+        "surface_area": 1971.0,
+        "gray_volume": 8138.0,
+        "avg_thickness": 3.029,
+        "std_thickness": 0.525
+      },
+      "G_precuneus": {
+        "name": "G_precuneus",
+        "num_vertices": 3148,
+        "surface_area": 2285.0,
+        "gray_volume": 8065.0,
+        "avg_thickness": 2.72,
+        "std_thickness": 0.528
+      },
+      "G_rectus": {
+        "name": "G_rectus",
+        "num_vertices": 1157,
+        "surface_area": 892.0,
+        "gray_volume": 2960.0,
+        "avg_thickness": 2.628,
+        "std_thickness": 0.595
+      },
+      "G_subcallosal": {
+        "name": "G_subcallosal",
+        "num_vertices": 789,
+        "surface_area": 496.0,
+        "gray_volume": 1158.0,
+        "avg_thickness": 2.232,
+        "std_thickness": 0.965
+      },
+      "G_temp_sup-G_T_transv": {
+        "name": "G_temp_sup-G_T_transv",
+        "num_vertices": 625,
+        "surface_area": 399.0,
+        "gray_volume": 1388.0,
+        "avg_thickness": 2.784,
+        "std_thickness": 0.548
+      },
+      "G_temp_sup-Lateral": {
+        "name": "G_temp_sup-Lateral",
+        "num_vertices": 3116,
+        "surface_area": 2165.0,
+        "gray_volume": 10145.0,
+        "avg_thickness": 3.25,
+        "std_thickness": 0.628
+      },
+      "G_temp_sup-Plan_polar": {
+        "name": "G_temp_sup-Plan_polar",
+        "num_vertices": 834,
+        "surface_area": 601.0,
+        "gray_volume": 2391.0,
+        "avg_thickness": 3.466,
+        "std_thickness": 0.593
+      },
+      "G_temp_sup-Plan_tempo": {
+        "name": "G_temp_sup-Plan_tempo",
+        "num_vertices": 1293,
+        "surface_area": 845.0,
+        "gray_volume": 2378.0,
+        "avg_thickness": 2.683,
+        "std_thickness": 0.43
+      },
+      "G_temporal_inf": {
+        "name": "G_temporal_inf",
+        "num_vertices": 3011,
+        "surface_area": 2175.0,
+        "gray_volume": 7921.0,
+        "avg_thickness": 2.823,
+        "std_thickness": 0.638
+      },
+      "G_temporal_middle": {
+        "name": "G_temporal_middle",
+        "num_vertices": 4012,
+        "surface_area": 2957.0,
+        "gray_volume": 14482.0,
+        "avg_thickness": 3.377,
+        "std_thickness": 0.634
+      },
+      "Lat_Fis-ant-Horizont": {
+        "name": "Lat_Fis-ant-Horizont",
+        "num_vertices": 414,
+        "surface_area": 286.0,
+        "gray_volume": 612.0,
+        "avg_thickness": 2.536,
+        "std_thickness": 0.361
+      },
+      "Lat_Fis-ant-Vertical": {
+        "name": "Lat_Fis-ant-Vertical",
+        "num_vertices": 434,
+        "surface_area": 279.0,
+        "gray_volume": 583.0,
+        "avg_thickness": 2.496,
+        "std_thickness": 0.33
+      },
+      "Lat_Fis-post": {
+        "name": "Lat_Fis-post",
+        "num_vertices": 1493,
+        "surface_area": 981.0,
+        "gray_volume": 2008.0,
+        "avg_thickness": 2.523,
+        "std_thickness": 0.337
+      },
+      "Pole_occipital": {
+        "name": "Pole_occipital",
+        "num_vertices": 2300,
+        "surface_area": 1521.0,
+        "gray_volume": 3199.0,
+        "avg_thickness": 1.981,
+        "std_thickness": 0.541
+      },
+      "Pole_temporal": {
+        "name": "Pole_temporal",
+        "num_vertices": 1588,
+        "surface_area": 1319.0,
+        "gray_volume": 5994.0,
+        "avg_thickness": 3.181,
+        "std_thickness": 0.738
+      },
+      "S_calcarine": {
+        "name": "S_calcarine",
+        "num_vertices": 3516,
+        "surface_area": 2742.0,
+        "gray_volume": 5081.0,
+        "avg_thickness": 2.111,
+        "std_thickness": 0.611
+      },
+      "S_central": {
+        "name": "S_central",
+        "num_vertices": 3508,
+        "surface_area": 2323.0,
+        "gray_volume": 4468.0,
+        "avg_thickness": 2.23,
+        "std_thickness": 0.481
+      },
+      "S_cingul-Marginalis": {
+        "name": "S_cingul-Marginalis",
+        "num_vertices": 1135,
+        "surface_area": 731.0,
+        "gray_volume": 1497.0,
+        "avg_thickness": 2.353,
+        "std_thickness": 0.273
+      },
+      "S_circular_insula_ant": {
+        "name": "S_circular_insula_ant",
+        "num_vertices": 685,
+        "surface_area": 447.0,
+        "gray_volume": 1120.0,
+        "avg_thickness": 2.993,
+        "std_thickness": 0.386
+      },
+      "S_circular_insula_inf": {
+        "name": "S_circular_insula_inf",
+        "num_vertices": 1631,
+        "surface_area": 1043.0,
+        "gray_volume": 2633.0,
+        "avg_thickness": 3.111,
+        "std_thickness": 0.548
+      },
+      "S_circular_insula_sup": {
+        "name": "S_circular_insula_sup",
+        "num_vertices": 2022,
+        "surface_area": 1293.0,
+        "gray_volume": 2803.0,
+        "avg_thickness": 2.654,
+        "std_thickness": 0.366
+      },
+      "S_collat_transv_ant": {
+        "name": "S_collat_transv_ant",
+        "num_vertices": 898,
+        "surface_area": 635.0,
+        "gray_volume": 1943.0,
+        "avg_thickness": 2.97,
+        "std_thickness": 0.544
+      },
+      "S_collat_transv_post": {
+        "name": "S_collat_transv_post",
+        "num_vertices": 577,
+        "surface_area": 387.0,
+        "gray_volume": 744.0,
+        "avg_thickness": 2.271,
+        "std_thickness": 0.443
+      },
+      "S_front_inf": {
+        "name": "S_front_inf",
+        "num_vertices": 2075,
+        "surface_area": 1414.0,
+        "gray_volume": 3275.0,
+        "avg_thickness": 2.427,
+        "std_thickness": 0.312
+      },
+      "S_front_middle": {
+        "name": "S_front_middle",
+        "num_vertices": 1804,
+        "surface_area": 1212.0,
+        "gray_volume": 2768.0,
+        "avg_thickness": 2.397,
+        "std_thickness": 0.366
+      },
+      "S_front_sup": {
+        "name": "S_front_sup",
+        "num_vertices": 4053,
+        "surface_area": 2730.0,
+        "gray_volume": 6628.0,
+        "avg_thickness": 2.572,
+        "std_thickness": 0.367
+      },
+      "S_interm_prim-Jensen": {
+        "name": "S_interm_prim-Jensen",
+        "num_vertices": 129,
+        "surface_area": 97.0,
+        "gray_volume": 240.0,
+        "avg_thickness": 2.651,
+        "std_thickness": 0.22
+      },
+      "S_intrapariet_and_P_trans": {
+        "name": "S_intrapariet_and_P_trans",
+        "num_vertices": 3394,
+        "surface_area": 2254.0,
+        "gray_volume": 4550.0,
+        "avg_thickness": 2.222,
+        "std_thickness": 0.342
+      },
+      "S_oc_middle_and_Lunatus": {
+        "name": "S_oc_middle_and_Lunatus",
+        "num_vertices": 858,
+        "surface_area": 594.0,
+        "gray_volume": 1100.0,
+        "avg_thickness": 2.067,
+        "std_thickness": 0.382
+      },
+      "S_oc_sup_and_transversal": {
+        "name": "S_oc_sup_and_transversal",
+        "num_vertices": 1731,
+        "surface_area": 1145.0,
+        "gray_volume": 2346.0,
+        "avg_thickness": 2.302,
+        "std_thickness": 0.296
+      },
+      "S_occipital_ant": {
+        "name": "S_occipital_ant",
+        "num_vertices": 839,
+        "surface_area": 560.0,
+        "gray_volume": 1082.0,
+        "avg_thickness": 2.397,
+        "std_thickness": 0.339
+      },
+      "S_oc-temp_lat": {
+        "name": "S_oc-temp_lat",
+        "num_vertices": 836,
+        "surface_area": 560.0,
+        "gray_volume": 1286.0,
+        "avg_thickness": 2.521,
+        "std_thickness": 0.389
+      },
+      "S_oc-temp_med_and_Lingual": {
+        "name": "S_oc-temp_med_and_Lingual",
+        "num_vertices": 2689,
+        "surface_area": 1809.0,
+        "gray_volume": 4216.0,
+        "avg_thickness": 2.632,
+        "std_thickness": 0.42
+      },
+      "S_orbital_lateral": {
+        "name": "S_orbital_lateral",
+        "num_vertices": 274,
+        "surface_area": 197.0,
+        "gray_volume": 379.0,
+        "avg_thickness": 2.214,
+        "std_thickness": 0.346
+      },
+      "S_orbital_med-olfact": {
+        "name": "S_orbital_med-olfact",
+        "num_vertices": 844,
+        "surface_area": 555.0,
+        "gray_volume": 1173.0,
+        "avg_thickness": 2.35,
+        "std_thickness": 0.595
+      },
+      "S_orbital-H_Shaped": {
+        "name": "S_orbital-H_Shaped",
+        "num_vertices": 1783,
+        "surface_area": 1240.0,
+        "gray_volume": 3451.0,
+        "avg_thickness": 2.768,
+        "std_thickness": 0.498
+      },
+      "S_parieto_occipital": {
+        "name": "S_parieto_occipital",
+        "num_vertices": 2518,
+        "surface_area": 1673.0,
+        "gray_volume": 3697.0,
+        "avg_thickness": 2.389,
+        "std_thickness": 0.463
+      },
+      "S_pericallosal": {
+        "name": "S_pericallosal",
+        "num_vertices": 1696,
+        "surface_area": 1169.0,
+        "gray_volume": 1592.0,
+        "avg_thickness": 1.658,
+        "std_thickness": 0.598
+      },
+      "S_postcentral": {
+        "name": "S_postcentral",
+        "num_vertices": 3361,
+        "surface_area": 2251.0,
+        "gray_volume": 4952.0,
+        "avg_thickness": 2.345,
+        "std_thickness": 0.366
+      },
+      "S_precentral-inf-part": {
+        "name": "S_precentral-inf-part",
+        "num_vertices": 2208,
+        "surface_area": 1426.0,
+        "gray_volume": 3419.0,
+        "avg_thickness": 2.663,
+        "std_thickness": 0.394
+      },
+      "S_precentral-sup-part": {
+        "name": "S_precentral-sup-part",
+        "num_vertices": 1305,
+        "surface_area": 833.0,
+        "gray_volume": 1937.0,
+        "avg_thickness": 2.606,
+        "std_thickness": 0.415
+      },
+      "S_suborbital": {
+        "name": "S_suborbital",
+        "num_vertices": 770,
+        "surface_area": 520.0,
+        "gray_volume": 1054.0,
+        "avg_thickness": 2.329,
+        "std_thickness": 0.576
+      },
+      "S_subparietal": {
+        "name": "S_subparietal",
+        "num_vertices": 1243,
+        "surface_area": 856.0,
+        "gray_volume": 1877.0,
+        "avg_thickness": 2.465,
+        "std_thickness": 0.36
+      },
+      "S_temporal_inf": {
+        "name": "S_temporal_inf",
+        "num_vertices": 2567,
+        "surface_area": 1724.0,
+        "gray_volume": 3966.0,
+        "avg_thickness": 2.557,
+        "std_thickness": 0.446
+      },
+      "S_temporal_sup": {
+        "name": "S_temporal_sup",
+        "num_vertices": 8292,
+        "surface_area": 5513.0,
+        "gray_volume": 13581.0,
+        "avg_thickness": 2.617,
+        "std_thickness": 0.432
+      },
+      "S_temporal_transverse": {
+        "name": "S_temporal_transverse",
+        "num_vertices": 603,
+        "surface_area": 434.0,
+        "gray_volume": 1051.0,
+        "avg_thickness": 2.56,
+        "std_thickness": 0.5
+      }
+    },
+    "metadata": {
+      "Cortex": "CortexVol",
+      "BrainSeg": "BrainSegVol",
+      "BrainSegNotVent": "BrainSegVolNotVent",
+      "BrainSegNotVentSurf": "BrainSegVolNotVentSurf",
+      "SupraTentorial": "SupraTentorialVol",
+      "SupraTentorialNotVent": "SupraTentorialVolNotVent",
+      "EstimatedTotalIntraCranialVol": "eTIV"
+    },
+    "source_file": "lh.aparc.a2009s.stats"
+  },
+  "aseg": {
+    "regions": {},
+    "metadata": {
+      "BrainSeg": "BrainSegVol",
+      "BrainSegNotVent": "BrainSegVolNotVent",
+      "VentricleChoroidVol": "VentricleChoroidVol",
+      "lhCortex": "lhCortexVol",
+      "rhCortex": "rhCortexVol",
+      "Cortex": "CortexVol",
+      "lhCerebralWhiteMatter": "lhCerebralWhiteMatterVol",
+      "rhCerebralWhiteMatter": "rhCerebralWhiteMatterVol",
+      "CerebralWhiteMatter": "CerebralWhiteMatterVol",
+      "SubCortGray": "SubCortGrayVol",
+      "TotalGray": "TotalGrayVol",
+      "SupraTentorial": "SupraTentorialVol",
+      "SupraTentorialNotVent": "SupraTentorialVolNotVent",
+      "Mask": "MaskVol",
+      "BrainSegVol-to-eTIV": "BrainSegVol-to-eTIV",
+      "MaskVol-to-eTIV": "MaskVol-to-eTIV",
+      "lhSurfaceHoles": "lhSurfaceHoles",
+      "rhSurfaceHoles": "rhSurfaceHoles",
+      "SurfaceHoles": "SurfaceHoles",
+      "EstimatedTotalIntraCranialVol": "eTIV",
+      "SegmentedTotalIntraCranialVol": "sTIV"
+    },
+    "source_file": "aseg.stats"
+  }
+}
