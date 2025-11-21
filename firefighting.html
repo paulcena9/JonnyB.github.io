@@ -8,6 +8,10 @@
   <!-- Import Courier Prime font to match site style -->
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 
+  <!-- Preload critical hero images for faster loading -->
+  <link rel="preload" as="image" href="assets/firephotos/IMG_2589.JPG">
+  <link rel="preload" as="image" href="assets/firephotos/IMG_2587.JPG">
+
   <style>
     * {
       margin: 0;
@@ -279,14 +283,14 @@
 
       <!-- Controlled Burn Video -->
       <div class="gallery-item video-item">
-        <video src="assets/firephotos/coolfire.MOV" muted loop autoplay playsinline>
+        <video src="assets/firephotos/coolfire.MOV" muted loop playsinline preload="none">
           Your browser does not support the video tag.
         </video>
       </div>
 
       <!-- Air Support Video - Plane -->
       <div class="gallery-item video-item">
-        <video src="assets/firephotos/plane.MOV" muted loop autoplay playsinline>
+        <video src="assets/firephotos/plane.MOV" muted loop playsinline preload="none">
           Your browser does not support the video tag.
         </video>
       </div>
@@ -298,7 +302,7 @@
 
       <!-- Night Burn Video -->
       <div class="gallery-item video-item">
-        <video src="assets/firephotos/burnlight.MOV" muted loop autoplay playsinline>
+        <video src="assets/firephotos/burnlight.MOV" muted loop playsinline preload="none">
           Your browser does not support the video tag.
         </video>
       </div>
@@ -310,7 +314,7 @@
 
       <!-- Field Operations Video -->
       <div class="gallery-item video-item">
-        <video src="assets/firephotos/IMG_0148.MOV" muted loop autoplay playsinline>
+        <video src="assets/firephotos/IMG_0148.MOV" muted loop playsinline preload="none">
           Your browser does not support the video tag.
         </video>
       </div>
@@ -322,7 +326,7 @@
 
       <!-- Active Fire Video -->
       <div class="gallery-item video-item">
-        <video src="assets/firephotos/IMG_0170.MOV" muted loop autoplay playsinline>
+        <video src="assets/firephotos/IMG_0170.MOV" muted loop playsinline preload="none">
           Your browser does not support the video tag.
         </video>
       </div>
@@ -335,19 +339,55 @@
     </div>
   </div>
 
-  <!-- Ensure videos play on load -->
+  <!-- Optimized lazy video loading with Intersection Observer -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const videos = document.querySelectorAll('.gallery-item video');
 
-      videos.forEach(video => {
-        // Ensure videos start playing
-        video.play().catch(e => {
-          // Auto-play was prevented, try again on user interaction
-          document.addEventListener('click', () => {
-            video.play();
-          }, { once: true });
+      // Only autoplay videos on desktop (not mobile) when they come into view
+      const isMobile = window.innerWidth <= 768;
+
+      // Intersection Observer to load videos only when visible
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const video = entry.target;
+
+            // Load the video if not already loaded
+            if (video.readyState === 0) {
+              video.load();
+            }
+
+            // Only autoplay on desktop, not mobile (saves data/battery)
+            if (!isMobile) {
+              video.play().catch(e => {
+                console.log('Video autoplay prevented:', e);
+              });
+            }
+
+            // Stop observing once loaded
+            videoObserver.unobserve(video);
+          }
         });
+      }, {
+        rootMargin: '50px', // Start loading 50px before video enters viewport
+        threshold: 0.1
+      });
+
+      // Observe all videos
+      videos.forEach(video => {
+        videoObserver.observe(video);
+
+        // Add click-to-play for mobile
+        if (isMobile) {
+          video.addEventListener('click', function() {
+            if (this.paused) {
+              this.play();
+            } else {
+              this.pause();
+            }
+          });
+        }
       });
     });
   </script>
