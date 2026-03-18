@@ -7,51 +7,32 @@
 
   <!-- Import Courier Prime font to match site style -->
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 
   <style>
-    :root {
-      --bg-primary: #ffffff;
-      --bg-secondary: #f8f9fa;
-      --text-primary: #000000;
-      --text-secondary: #666666;
-      --accent: #e74c3c;
-      --border: #e0e0e0;
-      --shadow: rgba(0, 0, 0, 0.1);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: 'Courier Prime', monospace;
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      line-height: 1.6;
+      background: var(--color-bg-secondary);
       min-height: 100vh;
     }
 
     /* Header Section */
     .header {
-      background: var(--bg-primary);
+      background: var(--color-bg);
       padding: 3rem 1.5rem;
       text-align: center;
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 2px 10px var(--shadow);
+      border-bottom: 1px solid var(--color-border-light);
+      box-shadow: var(--shadow-sm);
     }
 
     .preprint-badge {
       display: inline-block;
-      background: var(--accent);
+      background: var(--color-accent);
       color: white;
       padding: 0.3rem 0.8rem;
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      border-radius: 3px;
       margin-bottom: 1.5rem;
     }
 
@@ -65,14 +46,14 @@
 
     .authors {
       font-size: 0.95rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
+      color: var(--color-text-muted);
+      line-height: var(--line-height-body);
       margin-bottom: 0.5rem;
     }
 
     .affiliations {
       font-size: 0.85rem;
-      color: var(--text-secondary);
+      color: var(--color-text-muted);
       font-style: italic;
       line-height: 1.4;
     }
@@ -82,21 +63,20 @@
       vertical-align: super;
     }
 
-
     /* Main Content Container */
     .container {
-      max-width: 1200px;
+      max-width: var(--max-width);
       margin: 0 auto;
       padding: 3rem 1.5rem;
     }
 
     /* Video Section */
     .video-section {
-      background: var(--bg-primary);
-      border-radius: 8px;
+      background: var(--color-bg);
       padding: 2rem;
       margin-bottom: 3rem;
-      box-shadow: 0 4px 20px var(--shadow);
+      border: var(--border-lg) solid var(--color-border);
+      box-shadow: var(--shadow-md);
     }
 
     .section-label {
@@ -104,17 +84,16 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--text-secondary);
+      color: var(--color-text-muted);
       margin-bottom: 1.5rem;
       text-align: center;
     }
 
     .video-wrapper {
       position: relative;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      padding-bottom: 56.25%;
       height: 0;
       overflow: hidden;
-      border-radius: 4px;
       background: #000;
     }
 
@@ -129,51 +108,26 @@
 
     /* PDF Section */
     .pdf-section {
-      background: var(--bg-primary);
-      border-radius: 8px;
+      background: var(--color-bg);
       padding: 2rem;
-      box-shadow: 0 4px 20px var(--shadow);
+      border: var(--border-lg) solid var(--color-border);
+      box-shadow: var(--shadow-md);
     }
 
     .pdf-wrapper {
       width: 100%;
-      height: 800px;
-      border-radius: 4px;
+      height: 70vh;
+      min-height: 400px;
+      max-height: 900px;
       overflow: hidden;
-      border: 1px solid var(--border);
+      border: 1px solid var(--color-border-light);
     }
 
     .pdf-wrapper iframe {
       width: 100%;
       height: 100%;
       border: none;
-      background: var(--bg-secondary);
-    }
-
-    /* Navigation Link */
-    .nav-link {
-      position: fixed;
-      top: 2rem;
-      left: 2rem;
-      text-decoration: none;
-      color: var(--text-primary);
-      font-size: 0.875rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0.5rem 1rem;
-      background: var(--bg-primary);
-      border: 2px solid var(--text-primary);
-      border-radius: 4px;
-      transition: all 0.3s ease;
-      z-index: 100;
-    }
-
-    .nav-link:hover {
-      background: var(--text-primary);
-      color: var(--bg-primary);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px var(--shadow);
+      background: var(--color-bg-secondary);
     }
 
     /* Responsive Design */
@@ -194,40 +148,25 @@
       .pdf-section {
         padding: 1.5rem;
       }
-
-      .pdf-wrapper {
-        height: 600px;
-      }
-
-      .nav-link {
-        top: 1rem;
-        left: 1rem;
-        font-size: 0.75rem;
-        padding: 0.4rem 0.8rem;
-      }
     }
 
     @media (max-width: 480px) {
       .paper-title {
         font-size: 1.25rem;
       }
-
-      .pdf-wrapper {
-        height: 500px;
-      }
     }
   </style>
 </head>
 <body>
   <!-- Navigation Back Link -->
-  <a href="index.html" class="nav-link">← Back</a>
+  <a href="index.html" class="nav-link">&larr; Back</a>
 
   <!-- Header Section -->
   <header class="header">
     <div class="preprint-badge">Published</div>
     <h1 class="paper-title">Decadal Changes Across An Arctic Coastal Tundra Site</h1>
     <p class="authors">
-      Jonathan A. Bachman<sup>1</sup>, John Lamb<sup>1</sup>, Craig Ulrich<sup>1</sup>, Neslihan Taş<sup>1</sup>, Baptiste Dafflon<sup>1</sup>
+      Jonathan A. Bachman<sup>1</sup>, John Lamb<sup>1</sup>, Craig Ulrich<sup>1</sup>, Neslihan Ta&#351;<sup>1</sup>, Baptiste Dafflon<sup>1</sup>
     </p>
     <p class="affiliations">
       <sup>1</sup> Earth and Environmental Sciences, Lawrence Berkeley National Laboratory, Berkeley, CA, USA
@@ -256,5 +195,11 @@
       </div>
     </section>
   </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.classList.add('loaded');
+    });
+  </script>
 </body>
 </html>

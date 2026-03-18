@@ -3,22 +3,21 @@ import { useGLTF } from '@react-three/drei'
 import { useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import useBrainStore from '../../store/brainStore'
+import { getRegionForVertex, getRegionBoundingBox } from '../../utils/dataProcessing'
+import { createParcellationColors } from '../../utils/colorMaps'
 
 /**
- * Brain Model Component - Simplified for baseline functionality
- * Matches the original brain.js implementation
+ * Brain Model Component - Interactive Region Explorer
+ * Features: Click detection, region highlighting, camera animation
  */
 function BrainModel() {
   const { scene } = useGLTF('/model.glb')
   const { camera, controls } = useThree()
 
   // Debug: GLB Loading
-  console.log('[MODEL] useGLTF returned scene:', scene ? 'loaded' : 'null')
   if (scene) {
-    console.log('[MODEL] Scene details:', {
-      type: scene.type,
+    console.log('[MODEL] ✅ GLB model loaded successfully:', {
       children: scene.children.length,
-      uuid: scene.uuid,
       hasGeometry: scene.children.some(child => child.geometry)
     })
   }
@@ -27,7 +26,11 @@ function BrainModel() {
   const {
     currentLayer,
     hemisphereVisibility,
-    setLoading
+    setLoading,
+    parcellationData,
+    setSelectedRegion,
+    selectedRegion,
+    setCameraTarget
   } = useBrainStore()
 
   // Mesh references
@@ -43,15 +46,7 @@ function BrainModel() {
 
   // Calculate visibility state based on current layer and hemisphere settings
   const visibilityState = useMemo(() => {
-    console.log('[VISIBILITY] Computing visibility state...')
-    console.log('[VISIBILITY] Current layer:', currentLayer)
-    console.log('[VISIBILITY] Hemisphere visibility:', hemisphereVisibility)
-    console.log('[VISIBILITY] Meshes ready:', meshesReady)
-
-    if (!meshesReady) {
-      console.log('[VISIBILITY] Meshes not ready, returning empty state')
-      return {}
-    }
+    if (!meshesReady) return {}
 
     const state = {
       face: false,
@@ -81,10 +76,6 @@ function BrainModel() {
         break
     }
 
-    console.log('[VISIBILITY] Computed state:', state)
-    const visibleCount = Object.values(state).filter(v => v).length
-    console.log('[VISIBILITY] Meshes that should be visible:', visibleCount)
-
     return state
   }, [currentLayer, hemisphereVisibility, meshesReady])
 
@@ -92,94 +83,41 @@ function BrainModel() {
   useEffect(() => {
     if (!scene) return
 
-    console.log('═══════════════════════════════════════')
     console.log('[MESH] Scanning GLB model for meshes...')
+
+    const foundMeshes = []
 
     scene.traverse((obj) => {
       if (!obj.isMesh) return
 
       const name = obj.name.toLowerCase()
-      console.log(`[MESH] Found mesh: "${obj.name}"`)
 
-      // Detailed mesh inspection
-      console.log('[MESH]   Properties:', {
-        visible: obj.visible,
-        frustumCulled: obj.frustumCulled,
-        renderOrder: obj.renderOrder,
-        matrixAutoUpdate: obj.matrixAutoUpdate,
-        castShadow: obj.castShadow,
-        receiveShadow: obj.receiveShadow
-      })
-
+      // Compute bounding box/sphere for geometry
       if (obj.geometry) {
         obj.geometry.computeBoundingBox()
         obj.geometry.computeBoundingSphere()
-        console.log('[MESH]   Geometry:', {
-          type: obj.geometry.type,
-          vertices: obj.geometry.attributes.position?.count || 0,
-          hasBoundingBox: !!obj.geometry.boundingBox,
-          boundingBox: obj.geometry.boundingBox ? {
-            min: obj.geometry.boundingBox.min.toArray(),
-            max: obj.geometry.boundingBox.max.toArray()
-          } : null,
-          boundingSphere: obj.geometry.boundingSphere ? {
-            center: obj.geometry.boundingSphere.center.toArray(),
-            radius: obj.geometry.boundingSphere.radius
-          } : null
-        })
-      } else {
-        console.warn('[MESH]   ⚠️  NO GEOMETRY!')
       }
-
-      if (obj.material) {
-        console.log('[MESH]   Material:', {
-          type: obj.material.type,
-          color: obj.material.color ? obj.material.color.getHexString() : 'N/A',
-          opacity: obj.material.opacity,
-          transparent: obj.material.transparent,
-          visible: obj.material.visible,
-          side: obj.material.side
-        })
-      } else {
-        console.warn('[MESH]   ⚠️  NO MATERIAL!')
-      }
-
-      console.log('[MESH]   Transform:', {
-        position: obj.position.toArray(),
-        rotation: obj.rotation.toArray().slice(0, 3),
-        scale: obj.scale.toArray()
-      })
 
       // Assign to refs
       if (name === 'head_hollow_scooped') {
         meshRefs.current.face = obj
-        console.log('[MESH]   ✅ Assigned to: face')
+        foundMeshes.push('face')
       } else if (name === 'lh_white_corrected') {
         meshRefs.current.lh_white = obj
-        console.log('[MESH]   ✅ Assigned to: lh_white')
+        foundMeshes.push('lh_white')
       } else if (name === 'rh_white_corrected') {
         meshRefs.current.rh_white = obj
-        console.log('[MESH]   ✅ Assigned to: rh_white')
+        foundMeshes.push('rh_white')
       } else if (name.startsWith('lh_pial')) {
         meshRefs.current.lh_pial = obj
-        console.log('[MESH]   ✅ Assigned to: lh_pial')
+        foundMeshes.push('lh_pial')
       } else if (name.startsWith('rh_pial')) {
         meshRefs.current.rh_pial = obj
-        console.log('[MESH]   ✅ Assigned to: rh_pial')
-      } else {
-        console.log('[MESH]   ⚠️  Not assigned (unknown mesh)')
+        foundMeshes.push('rh_pial')
       }
-      console.log('───────────────────────────────────────')
     })
 
-    console.log('[MESH] Mesh assignment summary:', {
-      face: !!meshRefs.current.face,
-      lh_pial: !!meshRefs.current.lh_pial,
-      rh_pial: !!meshRefs.current.rh_pial,
-      lh_white: !!meshRefs.current.lh_white,
-      rh_white: !!meshRefs.current.rh_white
-    })
-    console.log('═══════════════════════════════════════')
+    console.log('[MESH] ✅ Found meshes:', foundMeshes.join(', '))
 
     setMeshesReady(true)
     setLoading('model', false)
@@ -188,9 +126,6 @@ function BrainModel() {
   // Frame camera when model is first loaded
   useEffect(() => {
     if (!scene || !meshesReady) return
-
-    console.log('═══════════════════════════════════════')
-    console.log('[CAMERA] Framing camera to model...')
 
     const box = new THREE.Box3().setFromObject(scene)
     const size = new THREE.Vector3()
@@ -202,134 +137,235 @@ function BrainModel() {
     const maxDim = Math.max(size.x, size.y, size.z)
     const dist = maxDim * 1.7
 
-    console.log('[CAMERA] Model bounding box:', {
-      min: box.min.toArray(),
-      max: box.max.toArray(),
-      size: size.toArray(),
-      center: center.toArray(),
-      maxDimension: maxDim,
-      calculatedDistance: dist
-    })
-
     // Set camera position
     camera.position.set(center.x, center.y, center.z + dist)
     camera.near = dist / 100
     camera.far = dist * 100
     camera.updateProjectionMatrix()
 
-    console.log('[CAMERA] Camera configured:', {
-      position: camera.position.toArray(),
-      near: camera.near,
-      far: camera.far,
-      fov: camera.fov,
-      aspect: camera.aspect
-    })
+    // Make camera look at the model center
+    camera.lookAt(center)
 
     // Set OrbitControls target to model center
     if (controls) {
       controls.target.copy(center)
       controls.update()
-      console.log('[CAMERA] OrbitControls:', {
-        target: controls.target.toArray(),
-        enabled: controls.enabled,
-        enableDamping: controls.enableDamping
-      })
-    } else {
-      console.warn('[CAMERA] ⚠️  OrbitControls not available!')
     }
 
-    console.log('[CAMERA] ✅ Camera framing complete')
-    console.log('═══════════════════════════════════════')
+    console.log('[CAMERA] ✅ Camera framed to model')
   }, [scene, camera, controls, meshesReady])
 
   // Apply visibility state to meshes
   useEffect(() => {
     if (!meshesReady) return
 
-    console.log('═══════════════════════════════════════')
-    console.log(`[VISIBILITY] Applying layer: "${currentLayer}"`)
-
-    let appliedCount = 0
-    let errorCount = 0
-
     // Apply visibility state to each mesh
     Object.entries(meshRefs.current).forEach(([key, mesh]) => {
-      if (!mesh) {
-        console.log(`[VISIBILITY] ${key}: mesh is null/undefined`)
-        return
-      }
-
-      const shouldBeVisible = visibilityState[key] || false
-      const wasVisible = mesh.visible
-
-      console.log(`[VISIBILITY] ${key}:`)
-      console.log(`[VISIBILITY]   - Should be visible: ${shouldBeVisible}`)
-      console.log(`[VISIBILITY]   - Was visible (before): ${wasVisible}`)
-
-      // Set visibility
-      mesh.visible = shouldBeVisible
-
-      // Verify the change
-      const isNowVisible = mesh.visible
-      console.log(`[VISIBILITY]   - Is visible (after): ${isNowVisible}`)
-
-      if (isNowVisible !== shouldBeVisible) {
-        console.error(`[VISIBILITY]   ❌ ERROR: Failed to set visibility! Expected ${shouldBeVisible}, got ${isNowVisible}`)
-        errorCount++
-      } else if (shouldBeVisible) {
-        console.log(`[VISIBILITY]   ✅ Successfully showing ${key}`)
-        appliedCount++
-
-        // Additional checks for visible meshes
-        console.log(`[VISIBILITY]   - Mesh details:`, {
-          hasGeometry: !!mesh.geometry,
-          hasMaterial: !!mesh.material,
-          frustumCulled: mesh.frustumCulled,
-          renderOrder: mesh.renderOrder,
-          inScene: mesh.parent !== null
-        })
+      if (mesh) {
+        mesh.visible = visibilityState[key] || false
       }
     })
 
-    console.log(`[VISIBILITY] Summary: ${appliedCount} visible, ${errorCount} errors`)
-    console.log('═══════════════════════════════════════')
+    const visibleMeshes = Object.entries(visibilityState)
+      .filter(([_, visible]) => visible)
+      .map(([key, _]) => key)
+
+    console.log(`[VISIBILITY] Layer "${currentLayer}": ${visibleMeshes.join(', ') || 'none'}`)
   }, [visibilityState, currentLayer, meshesReady])
 
-  // Monitor rendering - log every 120 frames (every 2 seconds at 60fps)
-  const frameCount = useRef(0)
-  const lastLogTime = useRef(Date.now())
+  // Apply vertex colors for parcellation visualization
+  useEffect(() => {
+    if (!meshesReady) return
 
-  useFrame(() => {
-    frameCount.current++
+    let coloredHemispheres = []
 
-    // Log every 120 frames
-    if (frameCount.current % 120 === 0) {
-      const now = Date.now()
-      const fps = Math.round(120 / ((now - lastLogTime.current) / 1000))
-      lastLogTime.current = now
+    // Apply colors to left hemisphere pial mesh
+    if (meshRefs.current.lh_pial && parcellationData.lh) {
+      const mesh = meshRefs.current.lh_pial
+      const data = parcellationData.lh
 
-      // Count visible meshes
-      let visibleMeshCount = 0
-      Object.values(meshRefs.current).forEach(mesh => {
-        if (mesh && mesh.visible) visibleMeshCount++
-      })
+      const highlightedRegions = selectedRegion && selectedRegion.hemisphere === 'lh'
+        ? [selectedRegion.id]
+        : []
 
-      console.log('[RENDER] Frame stats:', {
-        frameNumber: frameCount.current,
-        fps: fps,
-        visibleMeshes: visibleMeshCount,
-        currentLayer: currentLayer,
-        meshesReady: meshesReady
-      })
+      const colors = createParcellationColors(
+        data.vertex_labels,
+        data.regions,
+        {
+          highlightedRegions,
+          highlightColor: [1.0, 0.8, 0.0], // Golden yellow
+          dimFactor: 0.3
+        }
+      )
 
-      // Diagnostic check
-      if (meshesReady && visibleMeshCount === 0) {
-        console.warn('[RENDER] ⚠️  WARNING: Meshes are ready but NONE are visible!')
+      // Apply colors to geometry
+      if (!mesh.geometry.attributes.color) {
+        mesh.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+      } else {
+        mesh.geometry.attributes.color.array.set(colors)
+        mesh.geometry.attributes.color.needsUpdate = true
       }
+
+      // Ensure material supports vertex colors
+      if (mesh.material) {
+        mesh.material.vertexColors = true
+        mesh.material.needsUpdate = true
+      }
+
+      coloredHemispheres.push('LH')
     }
+
+    // Apply colors to right hemisphere pial mesh
+    if (meshRefs.current.rh_pial && parcellationData.rh) {
+      const mesh = meshRefs.current.rh_pial
+      const data = parcellationData.rh
+
+      const highlightedRegions = selectedRegion && selectedRegion.hemisphere === 'rh'
+        ? [selectedRegion.id]
+        : []
+
+      const colors = createParcellationColors(
+        data.vertex_labels,
+        data.regions,
+        {
+          highlightedRegions,
+          highlightColor: [1.0, 0.8, 0.0], // Golden yellow
+          dimFactor: 0.3
+        }
+      )
+
+      // Apply colors to geometry
+      if (!mesh.geometry.attributes.color) {
+        mesh.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+      } else {
+        mesh.geometry.attributes.color.array.set(colors)
+        mesh.geometry.attributes.color.needsUpdate = true
+      }
+
+      // Ensure material supports vertex colors
+      if (mesh.material) {
+        mesh.material.vertexColors = true
+        mesh.material.needsUpdate = true
+      }
+
+      coloredHemispheres.push('RH')
+    }
+
+    if (coloredHemispheres.length > 0) {
+      const highlightInfo = selectedRegion
+        ? ` (highlighting: ${selectedRegion.name})`
+        : ''
+      console.log(`[COLORS] ✅ Colored ${coloredHemispheres.join(', ')}${highlightInfo}`)
+    }
+  }, [meshesReady, parcellationData, selectedRegion])
+
+  // Frame update (for future animations if needed)
+  useFrame(() => {
+    // Currently no per-frame updates needed
   })
 
-  return <primitive object={scene} />
+  // Click handling for region selection
+  const raycaster = useRef(new THREE.Raycaster())
+  const mouse = useRef(new THREE.Vector2())
+
+  const handleClick = (event) => {
+    if (!meshesReady) return
+
+    // Calculate mouse position in normalized device coordinates
+    const canvas = event.target
+    const rect = canvas.getBoundingClientRect()
+    mouse.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+    mouse.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+
+    // Update raycaster
+    raycaster.current.setFromCamera(mouse.current, camera)
+
+    // Get visible pial meshes (only these are clickable)
+    const clickableMeshes = []
+    if (meshRefs.current.lh_pial && meshRefs.current.lh_pial.visible) {
+      clickableMeshes.push(meshRefs.current.lh_pial)
+    }
+    if (meshRefs.current.rh_pial && meshRefs.current.rh_pial.visible) {
+      clickableMeshes.push(meshRefs.current.rh_pial)
+    }
+
+    if (clickableMeshes.length === 0) return
+
+    // Check for intersections
+    const intersects = raycaster.current.intersectObjects(clickableMeshes, false)
+    if (intersects.length === 0) return
+
+    const intersection = intersects[0]
+    const clickedMesh = intersection.object
+    const hemisphere = clickedMesh === meshRefs.current.lh_pial ? 'lh' : 'rh'
+
+    // Get vertex index from face
+    const geometry = clickedMesh.geometry
+    const faceIndex = intersection.faceIndex
+
+    if (!geometry.index) return
+
+    const indices = geometry.index.array
+    const vertexIndex = indices[faceIndex * 3]
+
+    // Get parcellation data for this hemisphere
+    const hemData = parcellationData[hemisphere]
+    if (!hemData) return
+
+    // Get region for this vertex
+    const region = getRegionForVertex(vertexIndex, hemData)
+    if (!region) return
+
+    console.log(`[CLICK] Selected: ${region.name} (${hemisphere === 'lh' ? 'Left' : 'Right'})`)
+
+    // Update store with selected region
+    setSelectedRegion({
+      ...region,
+      hemisphere
+    })
+
+    // Calculate region bounding box for camera animation
+    const bbox = getRegionBoundingBox(region.id, hemData, geometry)
+
+    if (bbox) {
+      const centroid = bbox.center
+      const size = {
+        x: bbox.max.x - bbox.min.x,
+        y: bbox.max.y - bbox.min.y,
+        z: bbox.max.z - bbox.min.z
+      }
+
+      const maxSize = Math.max(size.x, size.y, size.z)
+      const distance = maxSize * 2.5
+
+      // Position camera with side angle based on hemisphere
+      const cameraOffset = new THREE.Vector3(
+        hemisphere === 'lh' ? -distance * 0.5 : distance * 0.5,
+        distance * 0.3,
+        distance * 0.8
+      )
+
+      const cameraPosition = {
+        x: centroid.x + cameraOffset.x,
+        y: centroid.y + cameraOffset.y,
+        z: centroid.z + cameraOffset.z
+      }
+
+      // Trigger camera animation
+      setCameraTarget({
+        position: cameraPosition,
+        lookAt: centroid,
+        duration: 1.2
+      })
+    }
+  }
+
+  return (
+    <primitive
+      object={scene}
+      onClick={handleClick}
+    />
+  )
 }
 
 // Preload the GLB model

@@ -12,39 +12,16 @@ import CameraController from './CameraController'
 function BrainCanvas() {
   return (
     <Canvas
-      shadows
       gl={{
         antialias: true,
         alpha: false,
-        powerPreference: 'high-performance'
+        powerPreference: 'high-performance',
+        outputColorSpace: THREE.SRGBColorSpace
       }}
       onCreated={({ scene, gl, camera }) => {
-        // Dark background for better contrast with white brain model
-        scene.background = new THREE.Color(0x0a0a0a)
-        // Very subtle fog - won't hide the model
-        scene.fog = new THREE.Fog(0x0a0a0a, 15, 30)
-
-        // Debug: Canvas initialization
-        console.log('═══════════════════════════════════════')
-        console.log('[CANVAS] Canvas initialized successfully')
-        console.log('[CANVAS] WebGL Renderer:', {
-          capabilities: gl.capabilities,
-          info: gl.info,
-          powerPreference: gl.getContextAttributes().powerPreference
-        })
-        console.log('[CANVAS] Camera:', {
-          type: camera.type,
-          fov: camera.fov,
-          position: camera.position.toArray(),
-          near: camera.near,
-          far: camera.far
-        })
-        console.log('[CANVAS] Scene:', {
-          background: scene.background,
-          fog: scene.fog ? 'enabled' : 'disabled',
-          children: scene.children.length
-        })
-        console.log('═══════════════════════════════════════')
+        // Light grey background - MATCHING WORKING brain.js
+        scene.background = new THREE.Color(0xf0f0f0)
+        console.log('[CANVAS] ✅ Background set to 0xf0f0f0 (light grey - matching working version)')
       }}
       style={{
         position: 'absolute',
@@ -54,57 +31,45 @@ function BrainCanvas() {
         height: '100%'
       }}
     >
-      {/* Camera - position will be set by BrainModel.frameModel() */}
+      {/* Camera */}
       <PerspectiveCamera
         makeDefault
+        position={[0, 0.6, 1.8]}
         fov={50}
         near={0.01}
         far={100}
       />
 
-      {/* Studio lighting setup for dark background */}
-      {/* Strong ambient base */}
-      <ambientLight intensity={1.5} color="#ffffff" />
+      {/* Lighting - EXACT MATCH to working brain.js */}
+      {/* 1. Ambient fill */}
+      <ambientLight color={0x606060} intensity={0.6} />
 
-      {/* Hemisphere light for natural look */}
-      <hemisphereLight
-        color="#ffffff"
-        groundColor="#444444"
-        intensity={1.0}
-      />
-
-      {/* Main key light */}
+      {/* 2. Key light (front-right) */}
       <directionalLight
-        position={[3, 3, 3]}
-        intensity={2.0}
-        color="#ffffff"
+        color={0xffffff}
+        intensity={0.8}
+        position={[1, 1, 0.5]}
       />
 
-      {/* Fill lights */}
+      {/* 3. Fill light (front-left, softer) */}
       <directionalLight
-        position={[-3, 2, 2]}
-        intensity={1.5}
-        color="#ffffff"
+        color={0xffeedd}
+        intensity={0.4}
+        position={[-1, 0.5, 1]}
       />
 
+      {/* 4. Rim light (behind, to highlight silhouette) */}
       <directionalLight
-        position={[0, 3, -2]}
-        intensity={1.2}
-        color="#ffffff"
+        color={0xffffff}
+        intensity={0.3}
+        position={[-0.5, 1, -1]}
       />
 
-      {/* Point light at camera for extra illumination */}
-      <pointLight
-        position={[0, 0, 2]}
-        intensity={1.0}
-        distance={10}
-        decay={2}
-      />
-
-      {/* Orbit controls - target will be set by BrainModel.frameModel() */}
+      {/* Orbit controls - matching original brain.js */}
       <OrbitControls
         enableDamping
         dampingFactor={0.05}
+        target={[0, 0.2, 0]}
       />
 
       {/* Camera controller for programmatic animations */}

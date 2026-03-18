@@ -58,7 +58,7 @@ function NavigationPanel() {
         position: 'absolute',
         top: '24px',
         left: '24px',
-        width: '320px',
+        width: 'min(320px, calc(100vw - 48px))',
         maxHeight: 'calc(100vh - 48px)',
         overflowY: 'auto',
         zIndex: 10

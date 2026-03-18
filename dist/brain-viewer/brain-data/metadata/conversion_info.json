@@ -1,0 +1,46 @@
+{
+  "conversion_date": "2025-11-21 13:11:30",
+  "input_directory": "./freesurfer_data",
+  "output_directory": "./public/brain-data",
+  "available_data": {
+    "parcellations": [
+      "lh.aparc",
+      "rh.aparc",
+      "lh.aparc.a2009s",
+      "rh.aparc.a2009s"
+    ],
+    "morphometry": [
+      "lh.thickness",
+      "rh.thickness",
+      "lh.curv",
+      "rh.curv",
+      "lh.sulc",
+      "rh.sulc"
+    ],
+    "statistics": [
+      "all_stats"
+    ]
+  },
+  "region_descriptions": {
+    "superiorfrontal": {
+      "name": "Superior Frontal Gyrus",
+      "function": "Executive function, working memory, self-awareness",
+      "clinical": "Damage may cause executive dysfunction, personality changes"
+    },
+    "inferiorfrontal": {
+      "name": "Inferior Frontal Gyrus",
+      "function": "Language production (Broca area), inhibition",
+      "clinical": "Damage causes Broca aphasia, difficulty with speech production"
+    },
+    "precentral": {
+      "name": "Precentral Gyrus",
+      "function": "Primary motor cortex, voluntary movement control",
+      "clinical": "Damage causes paralysis or weakness on opposite side of body"
+    },
+    "postcentral": {
+      "name": "Postcentral Gyrus",
+      "function": "Primary somatosensory cortex, touch and proprioception",
+      "clinical": "Damage causes loss of sensation on opposite side of body"
+    }
+  }
+}

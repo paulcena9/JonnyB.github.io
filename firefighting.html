@@ -7,57 +7,24 @@
 
   <!-- Import Courier Prime font to match site style -->
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 
   <!-- Preload critical hero images for faster loading -->
   <link rel="preload" as="image" href="assets/firephotos/IMG_2589.JPG">
   <link rel="preload" as="image" href="assets/firephotos/IMG_2587.JPG">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: 'Courier Prime', monospace;
-      background: #1a1a1a;
-      color: #fff;
+      background: var(--color-bg);
+      color: var(--color-text);
       min-height: 100vh;
-      position: relative;
-    }
-
-    /* Navigation Back */
-    .nav-link {
-      position: fixed;
-      top: 2rem;
-      left: 2rem;
-      text-decoration: none;
-      color: #fff;
-      font-size: 0.875rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0.5rem 1rem;
-      background: rgba(0,0,0,0.5);
-      border: 2px solid #fff;
-      border-radius: 4px;
-      transition: all 0.3s ease;
-      z-index: 100;
-      backdrop-filter: blur(10px);
-    }
-
-    .nav-link:hover {
-      background: #fff;
-      color: #000;
-      transform: translateY(-2px);
     }
 
     /* Header */
     .header {
       text-align: center;
       padding: 4rem 2rem 2rem;
-      background: linear-gradient(180deg, rgba(255,94,77,0.3) 0%, rgba(0,0,0,0) 100%);
+      background: linear-gradient(180deg, rgba(231,76,60,0.1) 0%, rgba(255,255,255,0) 100%);
     }
 
     .header h1 {
@@ -66,13 +33,12 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       margin-bottom: 0.5rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
     .header p {
       font-size: 1.1rem;
-      color: #e0e0e0;
-      max-width: 800px;
+      color: var(--color-text-muted);
+      max-width: var(--max-width-content);
       margin: 0 auto;
       line-height: 1.7;
       text-align: left;
@@ -99,15 +65,15 @@
     .hero-photo-item {
       position: relative;
       overflow: hidden;
-      background: #1a1a1a;
-      border: 5px solid #ff5e4d;
-      box-shadow: 0 16px 40px rgba(255,94,77,0.4);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: var(--color-bg-secondary);
+      border: 5px solid var(--color-accent);
+      box-shadow: var(--shadow-lg);
+      transition: transform var(--transition-normal), box-shadow var(--transition-normal);
     }
 
     .hero-photo-item:hover {
       transform: scale(1.02) translateY(-5px);
-      box-shadow: 0 20px 50px rgba(255,94,77,0.6);
+      box-shadow: 0 20px 50px rgba(231,76,60,0.25);
       z-index: 10;
     }
 
@@ -133,16 +99,16 @@
     .featured-item {
       position: relative;
       overflow: hidden;
-      background: #1a1a1a;
-      border: 4px solid #ff5e4d;
-      box-shadow: 0 12px 30px rgba(255,94,77,0.3);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: var(--color-bg-secondary);
+      border: var(--border-lg) solid var(--color-accent);
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition-normal), box-shadow var(--transition-normal);
       cursor: pointer;
     }
 
     .featured-item:hover {
       transform: scale(1.05) translateY(-8px);
-      box-shadow: 0 16px 40px rgba(255,94,77,0.5);
+      box-shadow: 0 16px 40px rgba(231,76,60,0.2);
       z-index: 10;
     }
 
@@ -163,10 +129,10 @@
     .gallery-item {
       position: relative;
       overflow: hidden;
-      background: #1a1a1a;
-      border: 3px solid #fff;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: var(--color-bg-secondary);
+      border: var(--border-md) solid var(--color-border);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-normal), box-shadow var(--transition-normal);
       cursor: pointer;
       margin-bottom: 1rem;
       break-inside: avoid;
@@ -176,20 +142,23 @@
 
     .gallery-item:hover {
       transform: scale(1.03) translateY(-5px);
-      box-shadow: 0 12px 30px rgba(255,94,77,0.4);
+      box-shadow: 0 12px 30px rgba(231,76,60,0.15);
       z-index: 10;
     }
 
-    /* Images/videos fill container completely and preserve aspect ratio */
+    /* Images/videos fill container and use cover */
     .gallery-item img,
     .gallery-item video {
       width: 100%;
       height: auto;
       display: block;
-      object-fit: contain;
+      object-fit: cover;
     }
 
-
+    /* Video items */
+    .gallery-item.video-item {
+      background: var(--color-bg-secondary);
+    }
 
     /* Responsive */
     @media (max-width: 1200px) {
@@ -225,19 +194,12 @@
         grid-template-columns: 1fr;
         gap: 1rem;
       }
-
-      .nav-link {
-        top: 1rem;
-        left: 1rem;
-        padding: 0.4rem 0.8rem;
-        font-size: 0.75rem;
-      }
     }
   </style>
 </head>
 <body>
   <!-- Back Navigation -->
-  <a href="index.html" class="nav-link">← Back</a>
+  <a href="index.html" class="nav-link">&larr; Back</a>
 
   <!-- Header -->
   <header class="header">
@@ -342,6 +304,8 @@
   <!-- Optimized lazy video loading with Intersection Observer -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      document.body.classList.add('loaded');
+
       const videos = document.querySelectorAll('.gallery-item video');
 
       // Intersection Observer to load videos only when visible
@@ -365,8 +329,8 @@
           }
         });
       }, {
-        rootMargin: '50px', // Start loading 50px before video enters viewport
-        threshold: 0.25 // Trigger when 25% of video is visible
+        rootMargin: '50px',
+        threshold: 0.25
       });
 
       // Observe all videos

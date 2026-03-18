@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Jonathan Bachman – Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <style>
     /* two-column layout */
@@ -19,7 +20,7 @@
     }
     .tree-container {
       flex: 0 0 40vw; position: relative;
-      border-left: 1px solid #ddd; overflow: hidden;
+      border-left: 1px solid var(--color-border-light, #ddd); overflow: hidden;
     }
     /* season orb container */
     .season-orbs {
@@ -29,7 +30,7 @@
       z-index: 1000;
     }
     .season-orb {
-      width: 24px; height: 24px;
+      width: 32px; height: 32px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid transparent;
@@ -87,17 +88,17 @@
         <a href="firefighting.html" class="contact-btn">View Gallery →</a>
       </section>
       <footer class="section-container">
-        <p>© 2025 Jonny Bachman. All rights reserved.</p>
+        <p>© 2026 Jonny Bachman. All rights reserved.</p>
       </footer>
     </div>
 
     <!-- right column: P5 sketch + season orbs -->
     <div class="tree-container" id="pine-container">
       <div class="season-orbs">
-        <div class="season-orb active" data-season="spring" title="Spring"></div>
-        <div class="season-orb"        data-season="summer" title="Summer"></div>
-        <div class="season-orb"        data-season="fall"   title="Fall"></div>
-        <div class="season-orb"        data-season="winter" title="Winter"></div>
+        <div class="season-orb active" data-season="spring" title="Spring" aria-label="Switch to spring season" role="button" tabindex="0"></div>
+        <div class="season-orb"        data-season="summer" title="Summer" aria-label="Switch to summer season" role="button" tabindex="0"></div>
+        <div class="season-orb"        data-season="fall"   title="Fall" aria-label="Switch to fall season" role="button" tabindex="0"></div>
+        <div class="season-orb"        data-season="winter" title="Winter" aria-label="Switch to winter season" role="button" tabindex="0"></div>
       </div>
       <canvas id="tree-canvas"></canvas>
     </div>
@@ -298,8 +299,12 @@ function drawFireworks() {
   fireworks.forEach(fw => fw.draw());
 }
 
-  // —— MAIN DRAW LOOP —— 
+  // —— MAIN DRAW LOOP ——
   function draw() {
+    // Reduce particles for users who prefer reduced motion
+    if (window._prefersReducedMotion && frameCount > 1) {
+      if (frameCount % 10 !== 0) return; // only draw every 10th frame
+    }
     t += deltaTime * 0.001;
     clear();
 
@@ -323,13 +328,12 @@ function drawFireworks() {
     endShape(CLOSE);
 
     // particles
-    if      (season === 'winter') updateSnow();
-    else if (season === 'fall')   updateLeaves();
+    if (season === 'fall') updateLeaves();
 
     // seasonal pre-tree effects
     if (season === 'spring') { updateFlowers(); updateBees(); }
      if (season === 'winter') { updateSnow(); updateSnowmen();}
-    if (season === 'summer'){ updateFireflies(), updateFireworks()};
+    if (season === 'summer') { updateFireflies(); updateFireworks(); };
     if (season === 'fall')   drawWind();
     
 
@@ -340,7 +344,7 @@ function drawFireworks() {
 
     // seasonal post-tree effects
     if (season === 'spring') { drawFlowers(); drawBees(); }
-    if (season === 'summer') { drawFireworks; drawFireflies(); }
+    if (season === 'summer') { drawFireworks(); drawFireflies(); }
     if (season === 'fall')   drawLeafPile();
     if (season === 'winter') {drawSnowmen(); }
   }
@@ -426,14 +430,6 @@ function drawLeafPile() {
     ellipse(L.x, height - L.sz * 0.5, L.sz, L.sz * 0.6);
   });
 }
-
-  function drawLeafPile() {
-    noStroke();
-    leafPile.forEach(L => {
-      fill(L.col);
-      ellipse(L.x, height - L.sz*0.5, L.sz, L.sz*0.6);
-    });
-  }
 
 
 const flowers = [];
@@ -691,5 +687,14 @@ function drawSnowmen() {
     pop();
   }
 </script>
+
+  <!-- Page load fade-in & reduced motion -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.classList.add('loaded');
+    });
+    // Reduce particles when user prefers reduced motion
+    window._prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  </script>
 </body>
 </html>
