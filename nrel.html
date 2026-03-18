@@ -422,6 +422,12 @@
 
     // Function to fix relative paths in README HTML
     function fixRelativePaths(html, repoBaseUrl) {
+      // Fix GitHub blob URLs → raw URLs so images load correctly
+      html = html.replace(
+        /https:\/\/github\.com\/([^/]+\/[^/]+)\/blob\/([^/]+)\//g,
+        'https://raw.githubusercontent.com/$1/$2/'
+      );
+
       // Fix image src attributes
       html = html.replace(/<img([^>]*)src="([^"]+)"/g, (match, attrs, src) => {
         if (src.startsWith('http://') || src.startsWith('https://')) {
