@@ -116,8 +116,7 @@
 
     .pdf-wrapper {
       width: 100%;
-      height: 70vh;
-      min-height: 400px;
+      height: max(70vh, 700px);
       max-height: 900px;
       overflow: hidden;
       border: 1px solid var(--color-border-light);
@@ -148,11 +147,19 @@
       .pdf-section {
         padding: 1.5rem;
       }
+
+      .pdf-wrapper {
+        height: 600px;
+      }
     }
 
     @media (max-width: 480px) {
       .paper-title {
         font-size: 1.25rem;
+      }
+
+      .pdf-wrapper {
+        height: 500px;
       }
     }
   </style>

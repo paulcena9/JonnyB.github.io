@@ -72,6 +72,18 @@
   let isP5Paused = false;
   let brainPreloadPromise = null; // Store the preload promise
 
+  function updateLoadingProgress(event) {
+    const el = document.getElementById('brain-load-percent');
+    if (!el) return;
+    if (event.total > 0) {
+      const pct = Math.round((event.loaded / event.total) * 100);
+      el.textContent = pct + '%';
+    } else {
+      const mb = (event.loaded / (1024 * 1024)).toFixed(1);
+      el.textContent = mb + ' MB loaded';
+    }
+  }
+
   async function initBrainModal() {
     brainModal = document.getElementById('brain-modal');
     const openBtn = document.getElementById('open-brain');
@@ -141,7 +153,7 @@
           // Dynamic import and initialize the brain viewer
           const { default: BrainViewer } = await import('./brain-modal.js');
           brainViewer = new BrainViewer(preloadContainer);
-          await brainViewer.init();
+          await brainViewer.init(updateLoadingProgress);
 
           // Clean up the preload container but keep the viewer instance
           document.body.removeChild(preloadContainer);
@@ -172,6 +184,8 @@
 
       const loadingEl = document.getElementById('brain-loading');
       const container = document.getElementById('brain-container');
+      const percentEl = document.getElementById('brain-load-percent');
+      if (percentEl) percentEl.textContent = '';
 
       // Check if brain viewer is already loaded or being loaded
       if (brainViewer) {
@@ -191,22 +205,26 @@
           // Preload failed, try loading directly
           const { default: BrainViewer } = await import('./brain-modal.js');
           brainViewer = new BrainViewer(container);
-          await brainViewer.init();
+          await brainViewer.init(updateLoadingProgress);
         }
         if (loadingEl) loadingEl.classList.remove('active');
+        if (percentEl) percentEl.textContent = '';
       } else {
         // No preload started (shouldn't happen), load directly
         if (loadingEl) loadingEl.classList.add('active');
         const { default: BrainViewer } = await import('./brain-modal.js');
         brainViewer = new BrainViewer(container);
-        await brainViewer.init();
+        await brainViewer.init(updateLoadingProgress);
         if (loadingEl) loadingEl.classList.remove('active');
+        if (percentEl) percentEl.textContent = '';
       }
 
     } catch (error) {
       console.error('Error opening brain modal:', error);
       const loadingEl = document.getElementById('brain-loading');
       if (loadingEl) loadingEl.classList.remove('active');
+      const percentElErr = document.getElementById('brain-load-percent');
+      if (percentElErr) percentElErr.textContent = '';
       alert('Failed to load brain viewer. Please try again.');
       closeBrainModal();
     }

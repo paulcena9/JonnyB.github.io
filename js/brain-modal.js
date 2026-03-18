@@ -28,7 +28,7 @@ class BrainViewer {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
-  async init() {
+  async init(onProgress) {
     if (this.isInitialized) return;
 
     const MODEL_URL = 'assets/model.glb';
@@ -88,7 +88,7 @@ class BrainViewer {
     // Load model with progressive loading strategy
     try {
       const gltf = await new Promise((resolve, reject) => {
-        loader.load(MODEL_URL, resolve, undefined, reject);
+        loader.load(MODEL_URL, resolve, onProgress || undefined, reject);
       });
 
       const root = gltf.scene || gltf.scenes[0];
