@@ -447,15 +447,12 @@ nav a.in-view {
     flex-direction: column;
     height: auto;
   }
-  .content-wrapper,
-  .tree-container {
+  .content-wrapper {
     flex: none;
     width: 100%;
   }
   .tree-container {
-    height: min(50vh, 300px);
-    border-left: none;
-    border-top: 1px solid var(--color-border-light);
+    display: none;
   }
   .season-orbs {
     top: 0.5rem;
